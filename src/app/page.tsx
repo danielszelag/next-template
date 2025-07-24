@@ -1,48 +1,6 @@
-import Link from 'next/link'
-
 export default function Home() {
   return (
-    <div className='min-h-screen bg-white'>
-      {/* Navigation */}
-      <nav className='bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50'>
-        <div className='max-w-7xl mx-auto px-6 py-4'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center space-x-3'>
-              <div className='w-8 h-8 bg-gray-900 rounded-lg'></div>
-              <span className='text-xl font-semibold text-gray-900'>
-                YourApp
-              </span>
-            </div>
-            <div className='hidden md:flex items-center space-x-8'>
-              <Link
-                href='/features'
-                className='text-gray-600 hover:text-gray-900 transition-colors'
-              >
-                Features
-              </Link>
-              <Link
-                href='/pricing'
-                className='text-gray-600 hover:text-gray-900 transition-colors'
-              >
-                Pricing
-              </Link>
-              <Link
-                href='/about'
-                className='text-gray-600 hover:text-gray-900 transition-colors'
-              >
-                About
-              </Link>
-              <Link
-                href='/dashboard'
-                className='bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors'
-              >
-                Dashboard
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
-
+    <div className='bg-white'>
       {/* Hero Section */}
       <main className='relative'>
         <div className='max-w-7xl mx-auto px-6 pt-24 pb-32'>
@@ -53,16 +11,12 @@ export default function Home() {
             </div>
 
             <h1 className='text-5xl md:text-7xl font-light text-gray-900 mb-8 leading-tight'>
-              Build the future
-              <span className='block font-medium text-gray-700'>
-                with Next.js
-              </span>
+              My sprzątamy
+              <span className='block font-medium text-gray-700'></span>
             </h1>
 
             <p className='text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed font-light'>
-              Create beautiful, fast, and scalable web applications with the
-              power of React, deployed instantly on Cloudflare&apos;s edge
-              network.
+              Ty oglądasz
             </p>
 
             <div className='flex flex-col sm:flex-row gap-4 justify-center items-center mb-20'>
