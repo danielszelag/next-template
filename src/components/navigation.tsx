@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 function SprzatanieLogо() {
   return (
@@ -13,15 +13,32 @@ function SprzatanieLogо() {
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isMenuOpen])
 
   return (
     <nav className='bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50'>
-      <div className='max-w-7xl mx-auto px-6 py-4'>
+      <div className='max-w-7xl mx-auto px-6 py-4' ref={menuRef}>
         <div className='flex items-center justify-between'>
           <div className='flex items-center space-x-3'>
             <SprzatanieLogо />
             <Link href='/' className='text-xl font-semibold text-gray-900'>
-              sprzatanie.tv
+              sprzatamy.live
             </Link>
           </div>
 

@@ -15,8 +15,8 @@ export default function Features() {
         </div>
 
         <div className='grid md:grid-cols-2 gap-12'>
-          <div className='space-y-6'>
-            <div className='w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center'>
+          <div className='space-y-6 text-center md:text-left'>
+            <div className='w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto md:mx-0'>
               <svg
                 className='w-6 h-6 text-blue-600'
                 fill='none'
@@ -41,8 +41,8 @@ export default function Features() {
             </p>
           </div>
 
-          <div className='space-y-6'>
-            <div className='w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center'>
+          <div className='space-y-6 text-center md:text-left'>
+            <div className='w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto md:mx-0'>
               <svg
                 className='w-6 h-6 text-green-600'
                 fill='none'
@@ -65,8 +65,8 @@ export default function Features() {
             </p>
           </div>
 
-          <div className='space-y-6'>
-            <div className='w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center'>
+          <div className='space-y-6 text-center md:text-left'>
+            <div className='w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto md:mx-0'>
               <svg
                 className='w-6 h-6 text-purple-600'
                 fill='none'
@@ -91,8 +91,8 @@ export default function Features() {
             </p>
           </div>
 
-          <div className='space-y-6'>
-            <div className='w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center'>
+          <div className='space-y-6 text-center md:text-left'>
+            <div className='w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto md:mx-0'>
               <svg
                 className='w-6 h-6 text-orange-600'
                 fill='none'

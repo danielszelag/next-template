@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'sprzatanie.tv',
+  title: 'sprzatamy.live',
   description:
     'Profesjonalne usługi sprzątania - przejrzyste ceny, wysoka jakość',
   icons: {
