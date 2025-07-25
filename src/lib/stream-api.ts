@@ -34,8 +34,9 @@ export interface LiveInput {
 // Mock API responses for development
 export const mockStreamAPI = {
   // Get user's recordings
-  async getUserRecordings(_userId: string): Promise<StreamVideo[]> {
+  async getUserRecordings(): Promise<StreamVideo[]> {
     // In production, this would make actual API calls to Cloudflare Stream
+    // The userId parameter would be used to filter recordings by user
     return [
       {
         uid: 'abc123',
