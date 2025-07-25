@@ -1,8 +1,10 @@
 'use client'
 
 import PageLayout from '@/components/page-layout'
+import RecordingsGallery from '@/components/recordings-gallery'
 import { useUser, SignInButton } from '@clerk/nextjs'
 import { useEffect, useState } from 'react'
+import { mockCleaningSessions } from '@/db/mock-data'
 
 export default function Dashboard() {
   const { isSignedIn, user, isLoaded } = useUser()
@@ -33,20 +35,28 @@ export default function Dashboard() {
         <div className='flex items-center justify-center min-h-[50vh]'>
           <div className='text-center max-w-md mx-auto'>
             <div className='w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6'>
-              <svg className='w-8 h-8 text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' />
+              <svg
+                className='w-8 h-8 text-gray-400'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
+                />
               </svg>
             </div>
             <h1 className='text-2xl font-bold text-gray-900 mb-4'>
               Dostęp do panelu wymaga logowania
             </h1>
             <p className='text-gray-600 mb-8'>
-              Zaloguj się, aby uzyskać dostęp do swojego panelu sprzątania i zarządzać usługami.
+              Zaloguj się, aby uzyskać dostęp do swojego panelu sprzątania i
+              zarządzać usługami.
             </p>
-            <SignInButton 
-              mode="modal"
-              forceRedirectUrl="/dashboard"
-            >
+            <SignInButton mode='modal' forceRedirectUrl='/dashboard'>
               <button className='bg-gray-900 text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium'>
                 Zaloguj się
               </button>
@@ -57,17 +67,160 @@ export default function Dashboard() {
     )
   }
 
+  // Mock data for development - in production this would come from the database
+  const userSessions = mockCleaningSessions.map((session) => ({
+    ...session,
+    userId: user.id, // Replace with actual user ID
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }))
+
+  const completedSessions = userSessions.filter(
+    (s) => s.status === 'completed'
+  ).length
+  const totalDuration = userSessions
+    .filter((s) => s.duration)
+    .reduce((sum, s) => sum + (s.duration || 0), 0)
+  const averageRating = userSessions
+    .filter((s) => s.rating)
+    .reduce((sum, s, _, arr) => sum + (s.rating || 0) / arr.length, 0)
+  const upcomingSessions = userSessions.filter(
+    (s) => s.status === 'scheduled'
+  ).length
+
   return (
     <PageLayout>
       <div className='space-y-8'>
         {/* Header */}
         <div className='text-center'>
           <h1 className='text-4xl md:text-6xl font-light text-gray-900 mb-4'>
-            Witaj, {user?.firstName || user?.emailAddresses[0]?.emailAddress?.split('@')[0] || 'Użytkowniku'}! 👋
+            Witaj,{' '}
+            {user?.firstName ||
+              user?.emailAddresses[0]?.emailAddress?.split('@')[0] ||
+              'Użytkowniku'}
+            ! 👋
           </h1>
           <p className='text-xl text-gray-600 max-w-3xl mx-auto'>
-            Oto przegląd Twoich usług sprzątania.
+            Twoje nagrania i statystyki sprzątania w jednym miejscu.
           </p>
+        </div>
+
+        {/* Stats Cards */}
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+          <div className='bg-white rounded-xl border border-gray-100 p-6'>
+            <div className='flex items-center justify-between'>
+              <div>
+                <p className='text-sm font-medium text-gray-600'>
+                  Zakończone sprzątania
+                </p>
+                <p className='text-3xl font-bold text-gray-900 mt-2'>
+                  {completedSessions}
+                </p>
+              </div>
+              <div className='w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center'>
+                <svg
+                  className='w-6 h-6 text-green-600'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div className='bg-white rounded-xl border border-gray-100 p-6'>
+            <div className='flex items-center justify-between'>
+              <div>
+                <p className='text-sm font-medium text-gray-600'>Łączny czas</p>
+                <p className='text-3xl font-bold text-gray-900 mt-2'>
+                  {Math.floor(totalDuration / 60)}h {totalDuration % 60}min
+                </p>
+              </div>
+              <div className='w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center'>
+                <svg
+                  className='w-6 h-6 text-blue-600'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div className='bg-white rounded-xl border border-gray-100 p-6'>
+            <div className='flex items-center justify-between'>
+              <div>
+                <p className='text-sm font-medium text-gray-600'>
+                  Średnia ocena
+                </p>
+                <p className='text-3xl font-bold text-gray-900 mt-2'>
+                  {averageRating > 0 ? averageRating.toFixed(1) : '-'}
+                </p>
+              </div>
+              <div className='w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center'>
+                <svg
+                  className='w-6 h-6 text-yellow-600'
+                  fill='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z' />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div className='bg-white rounded-xl border border-gray-100 p-6'>
+            <div className='flex items-center justify-between'>
+              <div>
+                <p className='text-sm font-medium text-gray-600'>Nadchodzące</p>
+                <p className='text-3xl font-bold text-gray-900 mt-2'>
+                  {upcomingSessions}
+                </p>
+              </div>
+              <div className='w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center'>
+                <svg
+                  className='w-6 h-6 text-purple-600'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Recordings Gallery */}
+        <div>
+          <div className='flex items-center justify-between mb-6'>
+            <h2 className='text-2xl font-bold text-gray-900'>Twoje nagrania</h2>
+            <div className='text-sm text-gray-500'>
+              {userSessions.length}{' '}
+              {userSessions.length === 1 ? 'nagranie' : 'nagrań'}
+            </div>
+          </div>
+
+          <RecordingsGallery sessions={userSessions} />
         </div>
 
         {/* Metrics Cards */}
