@@ -43,7 +43,10 @@ export default function Dashboard() {
             <p className='text-gray-600 mb-8'>
               Zaloguj się, aby uzyskać dostęp do swojego panelu sprzątania i zarządzać usługami.
             </p>
-            <SignInButton mode="modal">
+            <SignInButton 
+              mode="modal"
+              forceRedirectUrl="/dashboard"
+            >
               <button className='bg-gray-900 text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium'>
                 Zaloguj się
               </button>

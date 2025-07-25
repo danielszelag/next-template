@@ -2,9 +2,11 @@
 
 import PolandMap from '@/components/poland-map'
 import { useUser, SignedIn, SignedOut } from '@clerk/nextjs'
+import { useAuthRedirect } from '@/hooks/useAuthRedirect'
 
 export default function Home() {
   const { user } = useUser()
+  useAuthRedirect()
 
   return (
     <div className='bg-white'>
