@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
+import { SignInButton, SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs'
 
 function SprzatanieLogо() {
   return (
@@ -14,6 +15,7 @@ function SprzatanieLogо() {
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const { user } = useUser()
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -62,12 +64,39 @@ export default function Navigation() {
             >
               O nas
             </Link>
-            <Link
-              href='/dashboard'
-              className='bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors'
-            >
-              Twój panel
-            </Link>
+
+            {/* Auth Section */}
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className='bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors font-medium'>
+                  Zaloguj się
+                </button>
+              </SignInButton>
+            </SignedOut>
+            
+            <SignedIn>
+              <Link
+                href='/dashboard'
+                className='text-gray-600 hover:text-gray-900 transition-colors'
+              >
+                Twój panel
+              </Link>
+              <div className='flex items-center space-x-3'>
+                <div className='flex items-center space-x-2 bg-gray-50 px-3 py-1.5 rounded-full'>
+                  <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                  <span className='text-sm font-medium text-gray-700'>
+                    {user?.firstName || user?.emailAddresses[0]?.emailAddress?.split('@')[0] || 'Użytkownik'}
+                  </span>
+                </div>
+                <UserButton 
+                  appearance={{
+                    elements: {
+                      avatarBox: "w-8 h-8"
+                    }
+                  }}
+                />
+              </div>
+            </SignedIn>
           </div>
 
           {/* Mobile Hamburger Button */}
@@ -100,7 +129,7 @@ export default function Navigation() {
         <div
           className={`md:hidden transition-all duration-300 ease-in-out ${
             isMenuOpen
-              ? 'max-h-64 opacity-100 mt-4'
+              ? 'max-h-80 opacity-100 mt-4'
               : 'max-h-0 opacity-0 overflow-hidden'
           }`}
         >
@@ -126,13 +155,44 @@ export default function Navigation() {
             >
               O nas
             </Link>
-            <Link
-              href='/dashboard'
-              className='block bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors text-center'
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Twój panel
-            </Link>
+
+            {/* Mobile Auth Section */}
+            <SignedOut>
+              <div className='px-6'>
+                <SignInButton mode="modal">
+                  <button className='w-full bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium'>
+                    Zaloguj się
+                  </button>
+                </SignInButton>
+              </div>
+            </SignedOut>
+            
+            <SignedIn>
+              <div className='px-6 space-y-3'>
+                <div className='flex items-center justify-center space-x-2 bg-gray-50 px-4 py-2 rounded-full'>
+                  <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                  <span className='text-sm font-medium text-gray-700'>
+                    {user?.firstName || user?.emailAddresses[0]?.emailAddress?.split('@')[0] || 'Użytkownik'}
+                  </span>
+                </div>
+                <Link
+                  href='/dashboard'
+                  className='block bg-gray-100 text-gray-900 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors text-center font-medium'
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Twój panel
+                </Link>
+                <div className='flex justify-center'>
+                  <UserButton 
+                    appearance={{
+                      elements: {
+                        avatarBox: "w-10 h-10"
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            </SignedIn>
           </div>
         </div>
       </div>
