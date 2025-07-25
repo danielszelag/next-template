@@ -33,10 +33,8 @@ export default function PricingCard({
 
   return (
     <div
-      className={`rounded-xl border p-8 relative transition-all cursor-pointer hover:shadow-lg flex flex-col h-full ${
-        isSelected
-          ? 'border-2 border-gray-900'
-          : 'border-gray-100 hover:border-gray-200'
+      className={`rounded-xl border-2 p-8 relative transition-all cursor-pointer hover:shadow-lg flex flex-col h-full ${
+        isSelected ? 'border-gray-900' : 'border-gray-100 hover:border-gray-200'
       }`}
       onClick={onClick}
     >
@@ -70,7 +68,15 @@ export default function PricingCard({
           </div>
         ))}
       </div>
-      <button className={buttonClasses}>{buttonText}</button>
+      <button
+        className={buttonClasses}
+        onClick={(e) => {
+          e.stopPropagation()
+          onClick?.()
+        }}
+      >
+        {buttonText}
+      </button>
     </div>
   )
 }

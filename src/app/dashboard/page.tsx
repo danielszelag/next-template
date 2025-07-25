@@ -1,3 +1,5 @@
+'use client'
+
 import PageLayout from '@/components/page-layout'
 
 export default function Dashboard() {
@@ -7,10 +9,10 @@ export default function Dashboard() {
         {/* Header */}
         <div className='text-center'>
           <h1 className='text-4xl md:text-6xl font-light text-gray-900 mb-4'>
-            Twój panel
+            Witaj
           </h1>
           <p className='text-xl text-gray-600 max-w-3xl mx-auto'>
-            Witaj z powrotem! Oto przegląd Twoich usług sprzątania.
+            Oto przegląd Twoich usług sprzątania.
           </p>
         </div>
 
@@ -19,12 +21,24 @@ export default function Dashboard() {
           <div className='bg-white rounded-xl border border-gray-100 p-6'>
             <div className='flex items-center justify-between'>
               <div>
-                <p className='text-sm font-medium text-gray-600'>Łączne sprzątania</p>
+                <p className='text-sm font-medium text-gray-600'>
+                  Łączne sprzątania
+                </p>
                 <p className='text-3xl font-bold text-gray-900 mt-2'>47</p>
               </div>
               <div className='w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center'>
-                <svg className='w-6 h-6 text-blue-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' />
+                <svg
+                  className='w-6 h-6 text-blue-600'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+                  />
                 </svg>
               </div>
             </div>
@@ -34,12 +48,24 @@ export default function Dashboard() {
           <div className='bg-white rounded-xl border border-gray-100 p-6'>
             <div className='flex items-center justify-between'>
               <div>
-                <p className='text-sm font-medium text-gray-600'>Oszczędzone godziny</p>
+                <p className='text-sm font-medium text-gray-600'>
+                  Oszczędzone godziny
+                </p>
                 <p className='text-3xl font-bold text-gray-900 mt-2'>142</p>
               </div>
               <div className='w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center'>
-                <svg className='w-6 h-6 text-green-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' />
+                <svg
+                  className='w-6 h-6 text-green-600'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
+                  />
                 </svg>
               </div>
             </div>
@@ -49,12 +75,26 @@ export default function Dashboard() {
           <div className='bg-white rounded-xl border border-gray-100 p-6'>
             <div className='flex items-center justify-between'>
               <div>
-                <p className='text-sm font-medium text-gray-600'>Następne sprzątanie</p>
-                <p className='text-2xl font-bold text-gray-900 mt-2'>Za 3 dni</p>
+                <p className='text-sm font-medium text-gray-600'>
+                  Następne sprzątanie
+                </p>
+                <p className='text-2xl font-bold text-gray-900 mt-2'>
+                  Za 3 dni
+                </p>
               </div>
               <div className='w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center'>
-                <svg className='w-6 h-6 text-purple-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z' />
+                <svg
+                  className='w-6 h-6 text-purple-600'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z'
+                  />
                 </svg>
               </div>
             </div>
@@ -64,11 +104,17 @@ export default function Dashboard() {
           <div className='bg-white rounded-xl border border-gray-100 p-6'>
             <div className='flex items-center justify-between'>
               <div>
-                <p className='text-sm font-medium text-gray-600'>Ocena jakości</p>
+                <p className='text-sm font-medium text-gray-600'>
+                  Ocena jakości
+                </p>
                 <p className='text-3xl font-bold text-gray-900 mt-2'>4.9</p>
               </div>
               <div className='w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center'>
-                <svg className='w-6 h-6 text-yellow-600' fill='currentColor' viewBox='0 0 20 20'>
+                <svg
+                  className='w-6 h-6 text-yellow-600'
+                  fill='currentColor'
+                  viewBox='0 0 20 20'
+                >
                   <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
                 </svg>
               </div>
@@ -80,18 +126,34 @@ export default function Dashboard() {
         <div className='grid lg:grid-cols-3 gap-8'>
           {/* Recent Services */}
           <div className='lg:col-span-2 bg-white rounded-xl border border-gray-100 p-6'>
-            <h2 className='text-xl font-semibold text-gray-900 mb-6'>Ostatnie sprzątania</h2>
+            <h2 className='text-xl font-semibold text-gray-900 mb-6'>
+              Ostatnie sprzątania
+            </h2>
             <div className='space-y-4'>
               <div className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'>
                 <div className='flex items-center space-x-4'>
                   <div className='w-10 h-10 bg-green-100 rounded-full flex items-center justify-center'>
-                    <svg className='w-5 h-5 text-green-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
+                    <svg
+                      className='w-5 h-5 text-green-600'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M5 13l4 4L19 7'
+                      />
                     </svg>
                   </div>
                   <div>
-                    <p className='font-medium text-gray-900'>Sprzątanie mieszkania</p>
-                    <p className='text-sm text-gray-500'>20 stycznia 2025 • Anna K.</p>
+                    <p className='font-medium text-gray-900'>
+                      Sprzątanie mieszkania
+                    </p>
+                    <p className='text-sm text-gray-500'>
+                      20 stycznia 2025 • Anna K.
+                    </p>
                   </div>
                 </div>
                 <div className='text-right'>
@@ -103,13 +165,25 @@ export default function Dashboard() {
               <div className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'>
                 <div className='flex items-center space-x-4'>
                   <div className='w-10 h-10 bg-green-100 rounded-full flex items-center justify-center'>
-                    <svg className='w-5 h-5 text-green-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
+                    <svg
+                      className='w-5 h-5 text-green-600'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M5 13l4 4L19 7'
+                      />
                     </svg>
                   </div>
                   <div>
                     <p className='font-medium text-gray-900'>Pranie okien</p>
-                    <p className='text-sm text-gray-500'>15 stycznia 2025 • Michał S.</p>
+                    <p className='text-sm text-gray-500'>
+                      15 stycznia 2025 • Michał S.
+                    </p>
                   </div>
                 </div>
                 <div className='text-right'>
@@ -121,13 +195,27 @@ export default function Dashboard() {
               <div className='flex items-center justify-between p-4 bg-blue-50 rounded-lg'>
                 <div className='flex items-center space-x-4'>
                   <div className='w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center'>
-                    <svg className='w-5 h-5 text-blue-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' />
+                    <svg
+                      className='w-5 h-5 text-blue-600'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
+                      />
                     </svg>
                   </div>
                   <div>
-                    <p className='font-medium text-gray-900'>Sprzątanie biura</p>
-                    <p className='text-sm text-gray-500'>28 stycznia 2025 • 10:00</p>
+                    <p className='font-medium text-gray-900'>
+                      Sprzątanie biura
+                    </p>
+                    <p className='text-sm text-gray-500'>
+                      28 stycznia 2025 • 10:00
+                    </p>
                   </div>
                 </div>
                 <div className='text-right'>
@@ -140,21 +228,43 @@ export default function Dashboard() {
 
           {/* Quick Actions */}
           <div className='bg-white rounded-xl border border-gray-100 p-6'>
-            <h2 className='text-xl font-semibold text-gray-900 mb-6'>Szybkie akcje</h2>
+            <h2 className='text-xl font-semibold text-gray-900 mb-6'>
+              Szybkie akcje
+            </h2>
             <div className='space-y-3'>
               <button className='w-full bg-gray-900 text-white p-3 rounded-lg hover:bg-gray-800 transition-colors text-left'>
                 <div className='flex items-center space-x-3'>
-                  <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 6v6m0 0v6m0-6h6m-6 0H6' />
+                  <svg
+                    className='w-5 h-5'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M12 6v6m0 0v6m0-6h6m-6 0H6'
+                    />
                   </svg>
                   <span>Zamów sprzątanie</span>
                 </div>
               </button>
-              
+
               <button className='w-full border border-gray-300 text-gray-700 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left'>
                 <div className='flex items-center space-x-3'>
-                  <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z' />
+                  <svg
+                    className='w-5 h-5'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z'
+                    />
                   </svg>
                   <span>Zmień termin</span>
                 </div>
@@ -162,8 +272,18 @@ export default function Dashboard() {
 
               <button className='w-full border border-gray-300 text-gray-700 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left'>
                 <div className='flex items-center space-x-3'>
-                  <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z' />
+                  <svg
+                    className='w-5 h-5'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z'
+                    />
                   </svg>
                   <span>Skontaktuj się</span>
                 </div>
@@ -177,37 +297,57 @@ export default function Dashboard() {
           {/* Order History */}
           <div className='bg-white rounded-xl border border-gray-100 p-6'>
             <div className='flex items-center justify-between mb-6'>
-              <h2 className='text-xl font-semibold text-gray-900'>Historia zamówień</h2>
-              <button className='text-sm text-gray-600 hover:text-gray-900'>Zobacz wszystkie</button>
+              <h2 className='text-xl font-semibold text-gray-900'>
+                Historia zamówień
+              </h2>
+              <button className='text-sm text-gray-600 hover:text-gray-900'>
+                Zobacz wszystkie
+              </button>
             </div>
             <div className='space-y-3'>
               <div className='flex items-center justify-between py-3 border-b border-gray-100'>
                 <div>
                   <p className='font-medium text-gray-900'>#SP-2025-047</p>
-                  <p className='text-sm text-gray-500'>Sprzątanie mieszkania • 20.01.2025</p>
+                  <p className='text-sm text-gray-500'>
+                    Sprzątanie mieszkania • 20.01.2025
+                  </p>
                 </div>
-                <span className='px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full'>Zakończone</span>
+                <span className='px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full'>
+                  Zakończone
+                </span>
               </div>
               <div className='flex items-center justify-between py-3 border-b border-gray-100'>
                 <div>
                   <p className='font-medium text-gray-900'>#SP-2025-046</p>
-                  <p className='text-sm text-gray-500'>Pranie okien • 15.01.2025</p>
+                  <p className='text-sm text-gray-500'>
+                    Pranie okien • 15.01.2025
+                  </p>
                 </div>
-                <span className='px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full'>Zakończone</span>
+                <span className='px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full'>
+                  Zakończone
+                </span>
               </div>
               <div className='flex items-center justify-between py-3 border-b border-gray-100'>
                 <div>
                   <p className='font-medium text-gray-900'>#SP-2025-045</p>
-                  <p className='text-sm text-gray-500'>Sprzątanie biura • 10.01.2025</p>
+                  <p className='text-sm text-gray-500'>
+                    Sprzątanie biura • 10.01.2025
+                  </p>
                 </div>
-                <span className='px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full'>Zakończone</span>
+                <span className='px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full'>
+                  Zakończone
+                </span>
               </div>
               <div className='flex items-center justify-between py-3'>
                 <div>
                   <p className='font-medium text-gray-900'>#SP-2025-044</p>
-                  <p className='text-sm text-gray-500'>Sprzątanie mieszkania • 05.01.2025</p>
+                  <p className='text-sm text-gray-500'>
+                    Sprzątanie mieszkania • 05.01.2025
+                  </p>
                 </div>
-                <span className='px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full'>Zakończone</span>
+                <span className='px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full'>
+                  Zakończone
+                </span>
               </div>
             </div>
           </div>
@@ -215,8 +355,12 @@ export default function Dashboard() {
           {/* Cleaning Stream Recordings */}
           <div className='bg-white rounded-xl border border-gray-100 p-6'>
             <div className='flex items-center justify-between mb-6'>
-              <h2 className='text-xl font-semibold text-gray-900'>Nagrania ze sprzątania</h2>
-              <button className='text-sm text-gray-600 hover:text-gray-900'>Zobacz wszystkie</button>
+              <h2 className='text-xl font-semibold text-gray-900'>
+                Nagrania ze sprzątania
+              </h2>
+              <button className='text-sm text-gray-600 hover:text-gray-900'>
+                Zobacz wszystkie
+              </button>
             </div>
             <div className='space-y-4'>
               <div className='relative group cursor-pointer'>
@@ -224,12 +368,24 @@ export default function Dashboard() {
                   <div className='w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center'>
                     <div className='text-center'>
                       <div className='w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform'>
-                        <svg className='w-6 h-6 text-gray-600' fill='currentColor' viewBox='0 0 20 20'>
-                          <path fillRule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z' clipRule='evenodd' />
+                        <svg
+                          className='w-6 h-6 text-gray-600'
+                          fill='currentColor'
+                          viewBox='0 0 20 20'
+                        >
+                          <path
+                            fillRule='evenodd'
+                            d='M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z'
+                            clipRule='evenodd'
+                          />
                         </svg>
                       </div>
-                      <p className='text-sm font-medium text-gray-700'>Sprzątanie mieszkania</p>
-                      <p className='text-xs text-gray-500'>20 stycznia 2025 • 45 min</p>
+                      <p className='text-sm font-medium text-gray-700'>
+                        Sprzątanie mieszkania
+                      </p>
+                      <p className='text-xs text-gray-500'>
+                        20 stycznia 2025 • 45 min
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -240,19 +396,33 @@ export default function Dashboard() {
                   <div className='w-full h-full bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center'>
                     <div className='text-center'>
                       <div className='w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform'>
-                        <svg className='w-6 h-6 text-gray-600' fill='currentColor' viewBox='0 0 20 20'>
-                          <path fillRule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z' clipRule='evenodd' />
+                        <svg
+                          className='w-6 h-6 text-gray-600'
+                          fill='currentColor'
+                          viewBox='0 0 20 20'
+                        >
+                          <path
+                            fillRule='evenodd'
+                            d='M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z'
+                            clipRule='evenodd'
+                          />
                         </svg>
                       </div>
-                      <p className='text-sm font-medium text-gray-700'>Pranie okien</p>
-                      <p className='text-xs text-gray-500'>15 stycznia 2025 • 30 min</p>
+                      <p className='text-sm font-medium text-gray-700'>
+                        Pranie okien
+                      </p>
+                      <p className='text-xs text-gray-500'>
+                        15 stycznia 2025 • 30 min
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className='text-center py-4'>
-                <p className='text-sm text-gray-500 mb-3'>Wszystkie nagrania są dostępne przez 30 dni po usłudze</p>
+                <p className='text-sm text-gray-500 mb-3'>
+                  Wszystkie nagrania są dostępne przez 30 dni po usłudze
+                </p>
                 <button className='text-sm text-blue-600 hover:text-blue-800 font-medium'>
                   Przeglądaj archiwum nagrań →
                 </button>

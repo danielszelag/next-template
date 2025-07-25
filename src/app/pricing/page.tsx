@@ -16,7 +16,7 @@ export default function Pricing() {
         'Sprzątanie podstawowe',
         'Do 50m²',
         'Raz w tygodniu',
-        'Podstawowe środki czystości'
+        'Podstawowe środki czystości',
       ],
       buttonText: 'Wybierz plan',
     },
@@ -46,7 +46,7 @@ export default function Pricing() {
         'Codzienne sprzątanie',
         'Pranie i prasowanie',
         'Organizacja przestrzeni',
-        'Wsparcie 24/7'
+        'Wsparcie 24/7',
       ],
       buttonText: 'Skontaktuj się',
     },
@@ -59,7 +59,7 @@ export default function Pricing() {
             Przejrzyste Cenniki Sprzątania
           </h1>
           <p className='text-xl text-gray-600 max-w-3xl mx-auto'>
-            Wybierz plan sprzątania idealny dla Twojego domu. Profesjonalne 
+            Wybierz plan sprzątania idealny dla Twojego domu. Profesjonalne
             usługi dostosowane do Twoich potrzeb.
           </p>
         </div>
@@ -99,7 +99,7 @@ export default function Pricing() {
                 Czy mogę zmienić plan w każdej chwili?
               </h3>
               <p className='text-gray-600'>
-                Tak, możesz zmienić plan sprzątania w każdej chwili. Zmiany 
+                Tak, możesz zmienić plan sprzątania w każdej chwili. Zmiany
                 wchodzą w życie od następnej wizyty.
               </p>
             </div>
@@ -108,7 +108,7 @@ export default function Pricing() {
                 Czy oferujecie bezpłatną wizytę próbną?
               </h3>
               <p className='text-gray-600'>
-                Tak, oferujemy bezpłatną wizytę próbną dla wszystkich nowych 
+                Tak, oferujemy bezpłatną wizytę próbną dla wszystkich nowych
                 klientów. Bez zobowiązań i ukrytych kosztów.
               </p>
             </div>
@@ -117,8 +117,9 @@ export default function Pricing() {
                 Jakie formy płatności akceptujecie?
               </h3>
               <p className='text-gray-600'>
-                Akceptujemy gotówkę, przelewy bankowe, karty płatnicze oraz 
-                płatności przez BLIK. Płatność możliwa po każdej wizycie lub miesięcznie.
+                Akceptujemy gotówkę, przelewy bankowe, karty płatnicze oraz
+                płatności przez BLIK. Płatność możliwa po każdej wizycie lub
+                miesięcznie.
               </p>
             </div>
           </div>
