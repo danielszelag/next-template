@@ -1,8 +1,8 @@
 {
-  "name": "next-template",
-  "description": "Build a full-stack web application with Next.js.",
+  "name": "cleanrecord-pl",
+  "description": "cleanrecord.pl - Professional cleaning services with video recording capabilities",
   "cloudflare": {
-    "label": "Next.js Framework Starter",
+    "label": "cleanrecord.pl - Cleaning Service Platform",
     "products": [
       "Workers"
     ],

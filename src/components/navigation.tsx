@@ -7,21 +7,11 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
-  useUser,
 } from '@clerk/nextjs'
-
-function SprzatanieLogо() {
-  return (
-    <div className='w-8 h-8 bg-gray-900 rounded flex items-center justify-center'>
-      <span className='text-white font-bold text-lg'>S</span>
-    </div>
-  )
-}
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
-  const { user } = useUser()
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -44,9 +34,8 @@ export default function Navigation() {
       <div className='max-w-7xl mx-auto px-6 py-4' ref={menuRef}>
         <div className='flex items-center justify-between'>
           <div className='flex items-center space-x-3'>
-            <SprzatanieLogо />
             <Link href='/' className='text-xl font-semibold text-gray-900'>
-              sprzatamy.live
+              cleanrecord.pl
             </Link>
           </div>
 
@@ -56,7 +45,7 @@ export default function Navigation() {
               href='/features'
               className='text-gray-600 hover:text-gray-900 transition-colors'
             >
-              Usługi
+              Jak to działa
             </Link>
             <Link
               href='/pricing'
@@ -83,19 +72,11 @@ export default function Navigation() {
             <SignedIn>
               <Link
                 href='/dashboard'
-                className='text-gray-600 hover:text-gray-900 transition-colors'
+                className='bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors font-medium'
               >
                 Twój panel
               </Link>
               <div className='flex items-center space-x-3'>
-                <div className='flex items-center space-x-2 bg-gray-50 px-3 py-1.5 rounded-full'>
-                  <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                  <span className='text-sm font-medium text-gray-700'>
-                    {user?.firstName ||
-                      user?.emailAddresses[0]?.emailAddress?.split('@')[0] ||
-                      'Użytkownik'}
-                  </span>
-                </div>
                 <UserButton
                   appearance={{
                     elements: {
@@ -135,19 +116,21 @@ export default function Navigation() {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden transition-all duration-300 ease-in-out ${
-            isMenuOpen
-              ? 'max-h-80 opacity-100 mt-4'
-              : 'max-h-0 opacity-0 overflow-hidden'
+          className={`md:hidden transition-all duration-300 ease-out overflow-hidden ${
+            isMenuOpen ? 'max-h-80 opacity-100 mt-4' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className='py-4 space-y-4 border-t border-gray-100'>
+          <div
+            className={`space-y-4 border-t border-gray-100 transition-transform duration-300 ease-out ${
+              isMenuOpen ? 'translate-y-0' : '-translate-y-4'
+            }`}
+          >
             <Link
               href='/features'
               className='block text-gray-600 hover:text-gray-900 transition-colors px-6 py-3 text-center'
               onClick={() => setIsMenuOpen(false)}
             >
-              Usługi
+              Jak to działa
             </Link>
             <Link
               href='/pricing'
@@ -177,21 +160,6 @@ export default function Navigation() {
 
             <SignedIn>
               <div className='px-6 space-y-3'>
-                <div className='flex items-center justify-center space-x-2 bg-gray-50 px-4 py-2 rounded-full'>
-                  <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                  <span className='text-sm font-medium text-gray-700'>
-                    {user?.firstName ||
-                      user?.emailAddresses[0]?.emailAddress?.split('@')[0] ||
-                      'Użytkownik'}
-                  </span>
-                </div>
-                <Link
-                  href='/dashboard'
-                  className='block bg-gray-100 text-gray-900 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors text-center font-medium'
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Twój panel
-                </Link>
                 <div className='flex justify-center'>
                   <UserButton
                     appearance={{
@@ -201,6 +169,13 @@ export default function Navigation() {
                     }}
                   />
                 </div>
+                <Link
+                  href='/dashboard'
+                  className='block bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors text-center font-medium'
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Twój panel
+                </Link>
               </div>
             </SignedIn>
           </div>

@@ -1,6 +1,6 @@
-# Next.js Framework Starter
+# cleanrecord.pl
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/next-starter-template)
+Professional cleaning services platform with video recording capabilities built with Next.js and deployed on Cloudflare Workers.
 
 <!-- dash-content-start -->
 

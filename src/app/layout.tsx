@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'sprzatamy.live',
+  title: 'cleanrecord.pl - Profesjonalne sprzątanie z nagrywaniem',
   description:
-    'Profesjonalne usługi sprzątania - przejrzyste ceny, wysoka jakość',
+    'cleanrecord.pl - Profesjonalne usługi sprzątania z możliwością nagrywania procesu. Przejrzyste ceny, wysoka jakość, pełna transparentność.',
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
