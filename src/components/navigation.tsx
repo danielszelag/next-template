@@ -2,12 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
-import {
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -39,8 +34,20 @@ export default function Navigation() {
             </Link>
           </div>
 
-          {/* Desktop Menu */}
-          <div className='hidden md:flex items-center space-x-8'>
+          <div className='flex items-center space-x-4'>
+            {/* Avatar - always visible */}
+            <SignedIn>
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: 'w-8 h-8',
+                  },
+                }}
+              />
+            </SignedIn>
+
+            {/* Desktop Menu */}
+            <div className='hidden md:flex items-center space-x-8'>
             <Link
               href='/features'
               className='text-gray-600 hover:text-gray-900 transition-colors'
@@ -76,42 +83,34 @@ export default function Navigation() {
               >
                 Twój panel
               </Link>
-              <div className='flex items-center space-x-3'>
-                <UserButton
-                  appearance={{
-                    elements: {
-                      avatarBox: 'w-8 h-8',
-                    },
-                  }}
+            </SignedIn>
+            </div>
+
+            {/* Mobile Hamburger Button */}
+            <button
+              className='md:hidden p-2'
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label='Toggle menu'
+            >
+              <div className='w-6 h-6 flex flex-col justify-center items-center space-y-1'>
+                <span
+                  className={`block w-5 h-0.5 bg-gray-900 transition-all duration-300 origin-center ${
+                    isMenuOpen ? 'rotate-45 translate-y-1.5' : ''
+                  }`}
+                />
+                <span
+                  className={`block w-5 h-0.5 bg-gray-900 transition-all duration-300 ${
+                    isMenuOpen ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
+                  }`}
+                />
+                <span
+                  className={`block w-5 h-0.5 bg-gray-900 transition-all duration-300 origin-center ${
+                    isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
+                  }`}
                 />
               </div>
-            </SignedIn>
+            </button>
           </div>
-
-          {/* Mobile Hamburger Button */}
-          <button
-            className='md:hidden p-2'
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label='Toggle menu'
-          >
-            <div className='w-6 h-6 flex flex-col justify-center items-center space-y-1'>
-              <span
-                className={`block w-5 h-0.5 bg-gray-900 transition-all duration-300 origin-center ${
-                  isMenuOpen ? 'rotate-45 translate-y-1.5' : ''
-                }`}
-              />
-              <span
-                className={`block w-5 h-0.5 bg-gray-900 transition-all duration-300 ${
-                  isMenuOpen ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
-                }`}
-              />
-              <span
-                className={`block w-5 h-0.5 bg-gray-900 transition-all duration-300 origin-center ${
-                  isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
-                }`}
-              />
-            </div>
-          </button>
         </div>
 
         {/* Mobile Menu */}
@@ -159,16 +158,7 @@ export default function Navigation() {
             </SignedOut>
 
             <SignedIn>
-              <div className='px-6 space-y-3'>
-                <div className='flex justify-center'>
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: 'w-10 h-10',
-                      },
-                    }}
-                  />
-                </div>
+              <div className='px-6'>
                 <Link
                   href='/dashboard'
                   className='block bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors text-center font-medium'
