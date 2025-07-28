@@ -105,7 +105,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 sm:mt-12'>
         <div className='bg-white rounded-xl border border-gray-100 p-6'>
           <div className='flex items-center justify-between'>
             <div>
@@ -208,7 +208,7 @@ export default function Dashboard() {
       </div>
 
       {/* Recordings Gallery */}
-      <div>
+      <div className='mt-8 sm:mt-12'>
         <div className='flex items-center justify-between mb-6'>
           <h2 className='text-2xl font-bold text-gray-900'>Twoje nagrania</h2>
           <div className='text-sm text-gray-500'>
@@ -221,7 +221,7 @@ export default function Dashboard() {
       </div>
 
       {/* Metrics Cards */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 sm:mt-12'>
         <div className='bg-white rounded-xl border border-gray-100 p-6'>
           <div className='flex items-center justify-between'>
             <div>
@@ -323,7 +323,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className='grid lg:grid-cols-3 gap-8'>
+      <div className='grid lg:grid-cols-3 gap-8 mt-8 sm:mt-12'>
         {/* Recent Services */}
         <div className='lg:col-span-2 bg-white rounded-xl border border-gray-100 p-6'>
           <h2 className='text-xl font-semibold text-gray-900 mb-6'>
@@ -491,7 +491,7 @@ export default function Dashboard() {
       </div>
 
       {/* Order History & Cleaning Streams */}
-      <div className='grid lg:grid-cols-2 gap-8'>
+      <div className='grid lg:grid-cols-2 gap-8 mt-8 sm:mt-12'>
         {/* Order History */}
         <div className='bg-white rounded-xl border border-gray-100 p-6'>
           <div className='flex items-center justify-between mb-6'>
