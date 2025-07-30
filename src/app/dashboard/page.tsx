@@ -6,6 +6,11 @@ import { useState } from 'react'
 import PageLayout from '@/components/page-layout'
 import RecordingsGallery from '@/components/recordings-gallery'
 import { mockCleaningSessions } from '@/db/mock-data'
+import LightningIcon from '@/components/icons/LightningIcon'
+import VideoIcon from '@/components/icons/VideoIcon'
+import ChartBarIcon from '@/components/icons/ChartBarIcon'
+import ClockIcon from '@/components/icons/ClockIcon'
+import DocumentIcon from '@/components/icons/DocumentIcon'
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser()
@@ -201,21 +206,7 @@ export default function DashboardPage() {
         <AccordionSection
           id='actions'
           title='Szybkie akcje'
-          icon={
-            <svg
-              className='w-6 h-6 text-blue-600'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M13 10V3L4 14h7v7l9-11h-7z'
-              />
-            </svg>
-          }
+          icon={<LightningIcon className='w-6 h-6 text-blue-600' />}
         >
           <div className='space-y-3'>
             <button className='w-full bg-gray-900 text-white p-4 rounded-lg hover:bg-gray-800 transition-colors text-left'>
@@ -255,44 +246,6 @@ export default function DashboardPage() {
                 <span className='font-medium'>Zmień termin</span>
               </div>
             </button>
-
-            <button className='w-full border border-gray-200 bg-white text-gray-700 p-4 rounded-lg hover:bg-gray-50 transition-colors text-left'>
-              <div className='flex items-center space-x-3'>
-                <svg
-                  className='w-5 h-5'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z'
-                  />
-                </svg>
-                <span className='font-medium'>Skontaktuj się</span>
-              </div>
-            </button>
-
-            <button className='w-full border border-gray-200 bg-white text-gray-700 p-4 rounded-lg hover:bg-gray-50 transition-colors text-left'>
-              <div className='flex items-center space-x-3'>
-                <svg
-                  className='w-5 h-5'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
-                  />
-                </svg>
-                <span className='font-medium'>Zobacz raporty</span>
-              </div>
-            </button>
           </div>
         </AccordionSection>
 
@@ -300,24 +253,10 @@ export default function DashboardPage() {
         <AccordionSection
           id='recordings'
           title='Twoje nagrania'
-          icon={
-            <svg
-              className='w-6 h-6 text-purple-600'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z'
-              />
-            </svg>
-          }
+          icon={<VideoIcon className='w-6 h-6 text-purple-600' />}
           defaultOpen={true}
         >
-          <div className='bg-white rounded-lg p-4 -mx-2'>
+          <div className='rounded-lg p-4 -mx-2'>
             <RecordingsGallery sessions={userSessions} />
           </div>
         </AccordionSection>
@@ -326,21 +265,7 @@ export default function DashboardPage() {
         <AccordionSection
           id='stats'
           title='Przegląd statystyk'
-          icon={
-            <svg
-              className='w-6 h-6 text-green-600'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
-              />
-            </svg>
-          }
+          icon={<ChartBarIcon className='w-6 h-6 text-green-600' />}
         >
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
             <div className='bg-white rounded-lg border border-gray-200 p-4'>
@@ -446,22 +371,8 @@ export default function DashboardPage() {
         {/* Recent Activities */}
         <AccordionSection
           id='recent'
-          title='Ostatnie sprzątania'
-          icon={
-            <svg
-              className='w-6 h-6 text-orange-600'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
-              />
-            </svg>
-          }
+          title='Historia sprzątania'
+          icon={<ClockIcon className='w-6 h-6 text-orange-600' />}
         >
           <div className='space-y-3'>
             <div className='bg-white rounded-lg border border-gray-200 p-4'>
@@ -551,83 +462,6 @@ export default function DashboardPage() {
                 </div>
                 <p className='font-medium text-gray-900 text-sm'>350 zł</p>
               </div>
-            </div>
-          </div>
-        </AccordionSection>
-
-        {/* Order History */}
-        <AccordionSection
-          id='history'
-          title='Historia zamówień'
-          icon={
-            <svg
-              className='w-6 h-6 text-indigo-600'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
-              />
-            </svg>
-          }
-        >
-          <div className='space-y-2'>
-            <div className='bg-white rounded-lg border border-gray-200 p-4'>
-              <div className='flex items-center justify-between'>
-                <div>
-                  <p className='font-medium text-gray-900 text-sm'>
-                    #SP-2025-047
-                  </p>
-                  <p className='text-xs text-gray-500'>
-                    Sprzątanie mieszkania • 20.01.2025
-                  </p>
-                </div>
-                <span className='px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded'>
-                  Zakończone
-                </span>
-              </div>
-            </div>
-
-            <div className='bg-white rounded-lg border border-gray-200 p-4'>
-              <div className='flex items-center justify-between'>
-                <div>
-                  <p className='font-medium text-gray-900 text-sm'>
-                    #SP-2025-046
-                  </p>
-                  <p className='text-xs text-gray-500'>
-                    Pranie okien • 15.01.2025
-                  </p>
-                </div>
-                <span className='px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded'>
-                  Zakończone
-                </span>
-              </div>
-            </div>
-
-            <div className='bg-white rounded-lg border border-gray-200 p-4'>
-              <div className='flex items-center justify-between'>
-                <div>
-                  <p className='font-medium text-gray-900 text-sm'>
-                    #SP-2025-045
-                  </p>
-                  <p className='text-xs text-gray-500'>
-                    Sprzątanie biura • 10.01.2025
-                  </p>
-                </div>
-                <span className='px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded'>
-                  Zakończone
-                </span>
-              </div>
-            </div>
-
-            <div className='pt-3 text-center'>
-              <button className='text-gray-600 hover:text-gray-900 font-medium text-sm transition-colors'>
-                Zobacz wszystkie zamówienia →
-              </button>
             </div>
           </div>
         </AccordionSection>

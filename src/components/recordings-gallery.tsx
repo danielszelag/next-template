@@ -34,12 +34,6 @@ export default function RecordingsGallery({
 
   return (
     <div className='space-y-6'>
-      {/* Results count */}
-      <div className='text-sm text-gray-600'>
-        Znaleziono nagrań:{' '}
-        {sortedSessions.filter((s) => s.streamId || s.liveInputId).length}{' '}
-      </div>
-
       {/* Sessions grid */}
       {sortedSessions.length > 0 ? (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
