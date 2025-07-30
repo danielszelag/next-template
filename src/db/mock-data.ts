@@ -1,13 +1,17 @@
 import { CleaningSession } from './schema'
 
-export const mockCleaningSessions: Omit<CleaningSession, 'createdAt' | 'updatedAt'>[] = [
+export const mockCleaningSessions: Omit<
+  CleaningSession,
+  'createdAt' | 'updatedAt'
+>[] = [
   {
     id: '1',
     userId: 'user_mock_1', // This will be replaced with actual Clerk user ID
     streamId: 'stream_abc123',
     liveInputId: null,
     cleanerName: 'Anna Kowalska',
-    cleanerAvatar: 'https://images.unsplash.com/photo-1494790108755-2616b9da6f87?w=64&h=64&fit=crop&crop=face',
+    cleanerAvatar:
+      'https://images.unsplash.com/photo-1494790108755-2616b9da6f87?w=64&h=64&fit=crop&crop=face',
     location: 'Wrocław - Stare Miasto, ul. Rynek 15',
     serviceType: 'standard',
     scheduledTime: new Date('2025-01-25T14:00:00'),
@@ -15,12 +19,16 @@ export const mockCleaningSessions: Omit<CleaningSession, 'createdAt' | 'updatedA
     endTime: new Date('2025-01-25T16:15:00'),
     duration: 130,
     status: 'completed',
-    recordingUrl: 'https://customer-stream.cloudflarestream.com/abc123/manifest/video.m3u8',
-    thumbnailUrl: 'https://customer-stream.cloudflarestream.com/abc123/thumbnails/thumbnail.jpg',
+    recordingUrl:
+      'https://customer-stream.cloudflarestream.com/abc123/manifest/video.m3u8',
+    thumbnailUrl:
+      'https://customer-stream.cloudflarestream.com/abc123/thumbnails/thumbnail.jpg',
     playbackId: 'abc123',
-    notes: 'Standardowe sprzątanie mieszkania. Szczególną uwagę zwrócono na kuchnię i łazienkę.',
+    notes:
+      'Standardowe sprzątanie mieszkania. Szczególną uwagę zwrócono na kuchnię i łazienkę.',
     rating: 5,
-    customerFeedback: 'Doskonała praca! Anna była bardzo dokładna i profesjonalna.',
+    customerFeedback:
+      'Doskonała praca! Anna była bardzo dokładna i profesjonalna.',
   },
   {
     id: '2',
@@ -28,7 +36,8 @@ export const mockCleaningSessions: Omit<CleaningSession, 'createdAt' | 'updatedA
     streamId: 'stream_def456',
     liveInputId: null,
     cleanerName: 'Piotr Nowak',
-    cleanerAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop&crop=face',
+    cleanerAvatar:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop&crop=face',
     location: 'Wrocław - Krzyki, os. Huby 5/12',
     serviceType: 'deep',
     scheduledTime: new Date('2025-01-20T10:00:00'),
@@ -36,12 +45,16 @@ export const mockCleaningSessions: Omit<CleaningSession, 'createdAt' | 'updatedA
     endTime: new Date('2025-01-20T14:30:00'),
     duration: 260,
     status: 'completed',
-    recordingUrl: 'https://customer-stream.cloudflarestream.com/def456/manifest/video.m3u8',
-    thumbnailUrl: 'https://customer-stream.cloudflarestream.com/def456/thumbnails/thumbnail.jpg',
+    recordingUrl:
+      'https://customer-stream.cloudflarestream.com/def456/manifest/video.m3u8',
+    thumbnailUrl:
+      'https://customer-stream.cloudflarestream.com/def456/thumbnails/thumbnail.jpg',
     playbackId: 'def456',
-    notes: 'Głębokie sprzątanie po remoncie. Usunięcie kurzu budowlanego, mycie okien.',
+    notes:
+      'Głębokie sprzątanie po remoncie. Usunięcie kurzu budowlanego, mycie okien.',
     rating: 4,
-    customerFeedback: 'Bardzo dobra robota, wszystko czyste. Może trochę dłużej niż oczekiwałem.',
+    customerFeedback:
+      'Bardzo dobra robota, wszystko czyste. Może trochę dłużej niż oczekiwałem.',
   },
   {
     id: '3',
@@ -49,7 +62,8 @@ export const mockCleaningSessions: Omit<CleaningSession, 'createdAt' | 'updatedA
     streamId: null,
     liveInputId: 'live_input_789',
     cleanerName: 'Maria Wiśniewska',
-    cleanerAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&crop=face',
+    cleanerAvatar:
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&crop=face',
     location: 'Wrocław - Fabryczna, ul. Legnicka 52',
     serviceType: 'window',
     scheduledTime: new Date('2025-01-25T15:30:00'),
@@ -60,7 +74,8 @@ export const mockCleaningSessions: Omit<CleaningSession, 'createdAt' | 'updatedA
     recordingUrl: null,
     thumbnailUrl: null,
     playbackId: null,
-    notes: 'Mycie okien w mieszkaniu na 3 piętrze. Okna od strony ulicy i podwórka.',
+    notes:
+      'Mycie okien w mieszkaniu na 3 piętrze. Okna od strony ulicy i podwórka.',
     rating: null,
     customerFeedback: null,
   },
@@ -70,7 +85,8 @@ export const mockCleaningSessions: Omit<CleaningSession, 'createdAt' | 'updatedA
     streamId: null,
     liveInputId: null,
     cleanerName: 'Katarzyna Dąbrowska',
-    cleanerAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop&crop=face',
+    cleanerAvatar:
+      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop&crop=face',
     location: 'Wrocław - Psie Pole, ul. Żmigrodzka 15',
     serviceType: 'standard',
     scheduledTime: new Date('2025-01-26T09:00:00'),
@@ -84,7 +100,7 @@ export const mockCleaningSessions: Omit<CleaningSession, 'createdAt' | 'updatedA
     notes: 'Cotygodniowe sprzątanie mieszkania. Zwykły zakres.',
     rating: null,
     customerFeedback: null,
-  }
+  },
 ]
 
 export const serviceTypeLabels = {
@@ -92,12 +108,12 @@ export const serviceTypeLabels = {
   deep: 'Głębokie',
   window: 'Mycie okien',
   carpet: 'Pranie dywanów',
-  office: 'Biurowe'
+  office: 'Biurowe',
 } as const
 
 export const statusLabels = {
   scheduled: 'Zaplanowane',
   live: 'Na żywo',
   completed: 'Zakończone',
-  cancelled: 'Anulowane'
+  cancelled: 'Anulowane',
 } as const

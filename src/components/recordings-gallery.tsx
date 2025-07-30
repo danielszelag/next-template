@@ -32,35 +32,8 @@ export default function RecordingsGallery({
     setSelectedSession(session)
   }
 
-  const liveSession = sessions.find((s) => s.status === 'live')
-
   return (
     <div className='space-y-6'>
-      {/* Live session banner */}
-      {liveSession && (
-        <div className='bg-gradient-to-r from-red-500 to-pink-600 rounded-xl p-6 text-white'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center space-x-4'>
-              <div className='flex items-center space-x-2'>
-                <div className='w-3 h-3 bg-white rounded-full animate-pulse'></div>
-                <span className='font-semibold text-lg'>
-                  Trwa sprzątanie na żywo!
-                </span>
-              </div>
-              <div className='text-red-100'>
-                {liveSession.cleanerName} • {liveSession.location}
-              </div>
-            </div>
-            <button
-              onClick={() => handlePlaySession(liveSession)}
-              className='bg-white/20 hover:bg-white/30 px-6 py-2 rounded-lg font-medium transition-colors'
-            >
-              Oglądaj na żywo
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Results count */}
       <div className='text-sm text-gray-600'>
         Znaleziono {sortedSessions.length} nagrań
