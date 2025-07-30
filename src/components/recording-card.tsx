@@ -31,30 +31,30 @@ export default function RecordingCard({ session, onPlay }: RecordingCardProps) {
 
   return (
     <div
-      className={`bg-white rounded-lg p-4 hover:shadow-lg hover:-translate-y-1 hover:border-gray-300 active:scale-95 active:shadow-md transition-all duration-200 cursor-pointer relative border border-gray-200 h-48 min-h-48`}
+      className={`bg-white hover:bg-gray-50 rounded-lg p-4 hover:shadow-lg active:bg-gray-100 transition-all duration-200 cursor-pointer relative border border-gray-200 hover:border-gray-300 h-48 min-h-48 hover:backdrop-blur-sm`}
       onClick={() => onPlay(session)}
     >
       {/* Date in top left corner */}
-      <p className='absolute top-3 left-3 text-xs text-gray-500'>
+      <p className='absolute top-3 left-3 text-xs text-gray-500 hover:blur-[0.5px] transition-all duration-200'>
         {formatDate(session.startTime || session.scheduledTime)}
       </p>
 
       {/* Live indicator in top right corner */}
       {session.status === 'live' && (
-        <div className='absolute top-3 right-3 flex items-center space-x-1'>
+        <div className='absolute top-3 right-3 flex items-center space-x-1 hover:blur-[0.5px] transition-all duration-200'>
           <div className='w-2 h-2 bg-red-500 rounded-full animate-pulse'></div>
           <span className='text-xs font-medium text-red-600'>LIVE</span>
         </div>
       )}
 
       <div className='flex flex-col items-center justify-center h-full'>
-        {/* Centered Play button */}
+        {/* Centered Play button - stays sharp */}
         <button
           onClick={(e) => {
             e.stopPropagation()
             onPlay(session)
           }}
-          className='w-16 h-16 bg-gray-100 hover:bg-gray-200 hover:scale-110 active:scale-95 rounded-full flex items-center justify-center transition-all duration-200 shadow-sm group'
+          className='w-16 h-16 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 rounded-full flex items-center justify-center transition-all duration-200 shadow-sm group z-10 relative'
         >
           <svg
             className='w-6 h-6 text-gray-600 ml-0.5 group-hover:text-gray-800 transition-colors duration-200'
@@ -67,7 +67,7 @@ export default function RecordingCard({ session, onPlay }: RecordingCardProps) {
       </div>
 
       {/* Street name in bottom left corner */}
-      <p className='absolute bottom-3 left-3 text-sm text-gray-700 font-medium'>
+      <p className='absolute bottom-3 left-3 text-sm text-gray-700 font-medium hover:blur-[0.5px] transition-all duration-200'>
         {formatLocation(session.location)}
       </p>
     </div>
