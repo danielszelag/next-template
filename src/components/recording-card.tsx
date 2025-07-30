@@ -34,8 +34,8 @@ export default function RecordingCard({ session, onPlay }: RecordingCardProps) {
   return (
     <div
       className={`bg-white rounded-lg p-4 hover:shadow-lg active:bg-gray-100 transition-all duration-200 cursor-pointer relative border border-gray-200 h-48 min-h-48 hover:backdrop-blur-sm ${
-        isLive 
-          ? 'hover:bg-red-50 hover:border-red-200' 
+        isLive
+          ? 'hover:bg-red-50 hover:border-red-200'
           : 'hover:bg-gray-50 hover:border-gray-300'
       }`}
       onClick={() => onPlay(session)}

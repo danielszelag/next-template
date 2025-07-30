@@ -15,8 +15,12 @@ export default function RecordingsGallery({
   const [selectedSession, setSelectedSession] =
     useState<CleaningSession | null>(null)
 
+  const filteredSessions = [...sessions].filter(
+    (s) => s.liveInputId || s.streamId
+  )
+
   // Sort sessions: live first, then by most recent time
-  const sortedSessions = [...sessions].sort((a, b) => {
+  const sortedSessions = [...filteredSessions].sort((a, b) => {
     // Live sessions always come first
     if (a.status === 'live' && b.status !== 'live') return -1
     if (b.status === 'live' && a.status !== 'live') return 1
@@ -34,15 +38,15 @@ export default function RecordingsGallery({
 
   return (
     <div className='space-y-6'>
-      {/* Sessions grid */}
       {sortedSessions.length > 0 ? (
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <div className='flex flex-wrap gap-6'>
           {sortedSessions.map((session) => (
-            <RecordingCard
+            <div
               key={session.id}
-              session={session}
-              onPlay={handlePlaySession}
-            />
+              className='w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]'
+            >
+              <RecordingCard session={session} onPlay={handlePlaySession} />
+            </div>
           ))}
         </div>
       ) : (
