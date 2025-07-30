@@ -559,7 +559,6 @@ export default function DashboardPage() {
         <AccordionSection
           id='history'
           title='Historia zamówień'
-          badge='47 zamówień'
           icon={
             <svg
               className='w-6 h-6 text-indigo-600'
