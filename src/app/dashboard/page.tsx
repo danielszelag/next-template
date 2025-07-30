@@ -10,7 +10,6 @@ import LightningIcon from '@/components/icons/LightningIcon'
 import VideoIcon from '@/components/icons/VideoIcon'
 import ChartBarIcon from '@/components/icons/ChartBarIcon'
 import ClockIcon from '@/components/icons/ClockIcon'
-import DocumentIcon from '@/components/icons/DocumentIcon'
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser()
