@@ -95,9 +95,12 @@ export default function DashboardPage() {
         </button>
 
         <div
-          className={`transition-all duration-300 ease-in-out overflow-hidden ${
-            isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+          className={`transition-all duration-300 ease-in-out ${
+            isOpen ? 'opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
           }`}
+          style={{
+            maxHeight: isOpen ? 'none' : '0',
+          }}
         >
           <div className='px-6 py-4 bg-gray-50 border-t border-gray-200 transform transition-transform duration-200'>
             {children}

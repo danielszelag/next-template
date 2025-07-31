@@ -79,28 +79,6 @@ export const mockCleaningSessions: Omit<
     rating: null,
     customerFeedback: null,
   },
-  {
-    id: '4',
-    userId: 'user_mock_1',
-    streamId: null,
-    liveInputId: null,
-    cleanerName: 'Katarzyna Dąbrowska',
-    cleanerAvatar:
-      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop&crop=face',
-    location: 'Wrocław - Psie Pole, ul. Żmigrodzka 15',
-    serviceType: 'standard',
-    scheduledTime: new Date('2025-01-26T09:00:00'),
-    startTime: null,
-    endTime: null,
-    duration: null,
-    status: 'scheduled',
-    recordingUrl: null,
-    thumbnailUrl: null,
-    playbackId: null,
-    notes: 'Cotygodniowe sprzątanie mieszkania. Zwykły zakres.',
-    rating: null,
-    customerFeedback: null,
-  },
 ]
 
 export const serviceTypeLabels = {
