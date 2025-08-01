@@ -35,7 +35,47 @@ export default function Navigation() {
           </div>
 
           <div className='flex items-center space-x-4'>
-            {/* Avatar - always visible */}
+            {/* Desktop Menu */}
+            <div className='hidden md:flex items-center space-x-8'>
+              <Link
+                href='/features'
+                className='text-gray-600 hover:text-gray-900 transition-colors font-bold'
+              >
+                Jak to działa
+              </Link>
+              <Link
+                href='/pricing'
+                className='text-gray-600 hover:text-gray-900 transition-colors font-bold'
+              >
+                Cennik
+              </Link>
+              <Link
+                href='/about'
+                className='text-gray-600 hover:text-gray-900 transition-colors font-bold'
+              >
+                O nas
+              </Link>
+
+              {/* Auth Section */}
+              <SignedOut>
+                <SignInButton mode='modal' forceRedirectUrl='/dashboard'>
+                  <button className='bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors font-medium'>
+                    Zaloguj się
+                  </button>
+                </SignInButton>
+              </SignedOut>
+
+              <SignedIn>
+                <Link
+                  href='/dashboard'
+                  className='bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors font-medium'
+                >
+                  Twój panel
+                </Link>
+              </SignedIn>
+            </div>
+
+            {/* Avatar - positioned at far right */}
             <SignedIn>
               <UserButton
                 appearance={{
@@ -45,46 +85,6 @@ export default function Navigation() {
                 }}
               />
             </SignedIn>
-
-            {/* Desktop Menu */}
-            <div className='hidden md:flex items-center space-x-8'>
-            <Link
-              href='/features'
-              className='text-gray-600 hover:text-gray-900 transition-colors'
-            >
-              Jak to działa
-            </Link>
-            <Link
-              href='/pricing'
-              className='text-gray-600 hover:text-gray-900 transition-colors'
-            >
-              Cennik
-            </Link>
-            <Link
-              href='/about'
-              className='text-gray-600 hover:text-gray-900 transition-colors'
-            >
-              O nas
-            </Link>
-
-            {/* Auth Section */}
-            <SignedOut>
-              <SignInButton mode='modal' forceRedirectUrl='/dashboard'>
-                <button className='bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors font-medium'>
-                  Zaloguj się
-                </button>
-              </SignInButton>
-            </SignedOut>
-
-            <SignedIn>
-              <Link
-                href='/dashboard'
-                className='bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors font-medium'
-              >
-                Twój panel
-              </Link>
-            </SignedIn>
-            </div>
 
             {/* Mobile Hamburger Button */}
             <button
@@ -120,27 +120,27 @@ export default function Navigation() {
           }`}
         >
           <div
-            className={`space-y-4 border-t border-gray-100 transition-transform duration-300 ease-out ${
+            className={`border-t border-gray-100 transition-transform duration-300 ease-out ${
               isMenuOpen ? 'translate-y-0' : '-translate-y-4'
             }`}
           >
             <Link
               href='/features'
-              className='block text-gray-600 hover:text-gray-900 transition-colors px-6 py-3 text-center'
+              className='block text-gray-600 hover:text-gray-900 transition-colors px-6 py-3 text-center font-bold'
               onClick={() => setIsMenuOpen(false)}
             >
               Jak to działa
             </Link>
             <Link
               href='/pricing'
-              className='block text-gray-600 hover:text-gray-900 transition-colors px-6 py-3 text-center'
+              className='block text-gray-600 hover:text-gray-900 transition-colors px-6 py-3 text-center font-bold'
               onClick={() => setIsMenuOpen(false)}
             >
               Cennik
             </Link>
             <Link
               href='/about'
-              className='block text-gray-600 hover:text-gray-900 transition-colors px-6 py-3 text-center'
+              className='block text-gray-600 hover:text-gray-900 transition-colors px-6 py-3 text-center font-bold'
               onClick={() => setIsMenuOpen(false)}
             >
               O nas

@@ -1,84 +1,56 @@
+'use client'
 import PageLayout from '@/components/page-layout'
+import { useState } from 'react'
 
 export default function Features() {
+  const [openStep, setOpenStep] = useState<string | null>('01')
   const steps = [
     {
       number: '01',
       title: 'Wybierz usługę',
       description: 'Przeglądaj nasze pakiety sprzątania i wybierz ten, który najlepiej odpowiada Twoim potrzebom. Standardowe, głębokie czy specjalistyczne - mamy coś dla każdego.',
-      icon: (
-        <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' />
-        </svg>
-      ),
       color: 'blue'
     },
     {
       number: '02',
       title: 'Zarezerwuj termin',
       description: 'Wybierz dogodny dla Ciebie termin i potwierdź rezerwację. Otrzymasz szczegółowe instrukcje dotyczące przygotowania kamery do nagrywania.',
-      icon: (
-        <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' />
-        </svg>
-      ),
       color: 'green'
     },
     {
       number: '03',
       title: 'Ustaw kamerę',
       description: 'Przed przyjściem sprzątaczki ustaw kamerę w dogodnym miejscu. Dzięki temu będziesz mieć pełny wgląd w proces sprzątania w czasie rzeczywistym.',
-      icon: (
-        <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z' />
-        </svg>
-      ),
       color: 'purple'
     },
     {
       number: '04',
       title: 'Wpuść sprzątaczkę',
       description: 'W umówionym terminie wpuść naszą profesjonalną sprzątaczkę. Możesz wyjść z domu wiedząc, że wszystko jest nagrywane i monitorowane.',
-      icon: (
-        <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z' />
-        </svg>
-      ),
       color: 'orange'
     },
     {
       number: '05',
       title: 'Oglądaj na żywo',
       description: 'Przez całą usługę możesz obserwować postępy sprzątania na żywo przez naszą aplikację. Pełna transparentność i kontrola nad procesem.',
-      icon: (
-        <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' />
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z' />
-        </svg>
-      ),
       color: 'red'
     },
     {
       number: '06',
       title: 'Odbierz nagranie',
       description: 'Po zakończeniu usługi otrzymujesz dostęp do pełnego nagrania. Możesz je oglądać w dowolnym momencie jako potwierdzenie jakości wykonanych prac.',
-      icon: (
-        <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 3v11a2 2 0 002 2h8a2 2 0 002-2V7m-9 0h10M9 11v6m6-6v6' />
-        </svg>
-      ),
       color: 'indigo'
     }
   ]
 
   const getColorClasses = (color: string, variant: 'bg' | 'text' | 'border') => {
     const colorMap = {
-      blue: { bg: 'bg-blue-100', text: 'text-blue-600', border: 'border-blue-200' },
-      green: { bg: 'bg-green-100', text: 'text-green-600', border: 'border-green-200' },
-      purple: { bg: 'bg-purple-100', text: 'text-purple-600', border: 'border-purple-200' },
-      orange: { bg: 'bg-orange-100', text: 'text-orange-600', border: 'border-orange-200' },
-      red: { bg: 'bg-red-100', text: 'text-red-600', border: 'border-red-200' },
-      indigo: { bg: 'bg-indigo-100', text: 'text-indigo-600', border: 'border-indigo-200' }
+      blue: { bg: 'bg-blue-500', text: 'text-blue-600', border: 'border-blue-200' },
+      green: { bg: 'bg-green-500', text: 'text-green-600', border: 'border-green-200' },
+      purple: { bg: 'bg-purple-500', text: 'text-purple-600', border: 'border-purple-200' },
+      orange: { bg: 'bg-orange-500', text: 'text-orange-600', border: 'border-orange-200' },
+      red: { bg: 'bg-red-500', text: 'text-red-600', border: 'border-red-200' },
+      indigo: { bg: 'bg-indigo-500', text: 'text-indigo-600', border: 'border-indigo-200' }
     }
     return colorMap[color as keyof typeof colorMap][variant]
   }
@@ -97,43 +69,64 @@ export default function Features() {
           </p>
         </div>
 
-        {/* Simple Step Cards Timeline */}
-        <div className='space-y-8'>
+        {/* Accordion Steps */}
+        <div className='space-y-4'>
           {steps.map((step, index) => (
-            <div key={step.number} className='relative'>
-              {/* Step card */}
-              <div className='bg-white rounded-xl p-6 shadow-lg border-l-4 border-gray-200 hover:shadow-xl transition-all duration-300'>
-                {/* Header */}
-                <div className='flex items-start space-x-4 mb-4'>
-                  <div className={`w-12 h-12 ${getColorClasses(step.color, 'bg')} rounded-full flex items-center justify-center flex-shrink-0 shadow-md`}>
-                    <span className='text-white font-bold text-lg'>{step.number}</span>
+            <div key={step.number} className='bg-white rounded-xl shadow-lg overflow-hidden'>
+              {/* Accordion Header */}
+              <button
+                onClick={() => setOpenStep(openStep === step.number ? null : step.number)}
+                className='w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors duration-200'
+              >
+                <div className='flex items-center space-x-4'>
+                  <div className={`w-10 h-10 ${getColorClasses(step.color, 'bg')} rounded-full flex items-center justify-center flex-shrink-0`}>
+                    <span className='text-white font-bold text-sm'>{step.number}</span>
                   </div>
-                  <div className='flex-1'>
-                    <h3 className='text-xl font-semibold text-gray-900 mb-2'>
-                      {step.title}
-                    </h3>
+                  <h3 className='text-lg font-semibold text-gray-900 text-left'>
+                    {step.title}
+                  </h3>
+                </div>
+                <div className='flex items-center space-x-3'>
+                  <svg
+                    className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
+                      openStep === step.number ? 'rotate-180' : ''
+                    }`}
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
+                  </svg>
+                </div>
+              </button>
+
+              {/* Accordion Content */}
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  openStep === step.number ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                }`}
+              >
+                <div className='px-6 pb-6 pt-2'>
+                  <div className={`border-l-4 ${getColorClasses(step.color, 'border')} pl-4 ml-5`}>
                     <p className='text-gray-600 leading-relaxed'>
                       {step.description}
                     </p>
                   </div>
-                  <div className={`${getColorClasses(step.color, 'text')} flex-shrink-0`}>
-                    {step.icon}
-                  </div>
-                </div>
-
-                {/* Progress indicator */}
-                {index < steps.length - 1 && (
-                  <div className='flex items-center justify-center mt-6'>
-                    <div className='flex items-center space-x-2 text-gray-400'>
-                      <div className='w-2 h-2 bg-gray-300 rounded-full'></div>
-                      <div className='w-2 h-2 bg-gray-300 rounded-full'></div>
-                      <div className='w-2 h-2 bg-gray-300 rounded-full'></div>
-                      <svg className='w-4 h-4 ml-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 14l-7 7m0 0l-7-7m0 0l7-7' />
-                      </svg>
+                  
+                  {/* Progress bar */}
+                  <div className='mt-4 ml-5'>
+                    <div className='flex items-center justify-between text-sm text-gray-500 mb-2'>
+                      <span>Postęp</span>
+                      <span>{index + 1}/{steps.length}</span>
+                    </div>
+                    <div className='w-full bg-gray-200 rounded-full h-2'>
+                      <div 
+                        className={`${getColorClasses(step.color, 'bg')} h-2 rounded-full transition-all duration-500`}
+                        style={{ width: `${((index + 1) / steps.length) * 100}%` }}
+                      ></div>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
             </div>
           ))}
