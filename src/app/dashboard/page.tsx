@@ -225,7 +225,6 @@ export default function DashboardPage() {
               </svg>
               <div>
                 <span className='font-semibold text-lg'>Zarezerwuj termin</span>
-                <p className='text-sm text-gray-300 mt-1'>Umów się na sprzątanie</p>
               </div>
             </div>
           </a>
@@ -247,7 +246,6 @@ export default function DashboardPage() {
               </svg>
               <div>
                 <span className='font-semibold text-lg'>Doładuj konto</span>
-                <p className='text-sm text-gray-500 mt-1'>Dodaj środki na konto</p>
               </div>
             </div>
           </button>
