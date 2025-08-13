@@ -94,20 +94,6 @@ export default function Features() {
                       {step.description}
                     </p>
                   </div>
-                  
-                  {/* Progress bar */}
-                  <div className='mt-4 ml-5'>
-                    <div className='flex items-center justify-between text-sm text-gray-500 mb-2'>
-                      <span>Postęp</span>
-                      <span>{index + 1}/{steps.length}</span>
-                    </div>
-                    <div className='w-full bg-gray-200 rounded-full h-2'>
-                      <div 
-                        className={`${getColorClasses(step.color, 'bg')} h-2 rounded-full transition-all duration-500`}
-                        style={{ width: `${((index + 1) / steps.length) * 100}%` }}
-                      ></div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
