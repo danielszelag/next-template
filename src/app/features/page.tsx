@@ -8,31 +8,57 @@ export default function Features() {
     {
       number: '01',
       title: 'Zarezerwuj termin',
-      description: 'Wybierz dogodny dla Ciebie termin i potwierdź rezerwację. Otrzymasz szczegółowe instrukcje dotyczące przygotowania kamery do nagrywania.',
-      color: 'blue'
+      description:
+        'Wybierz dogodny dla Ciebie termin i potwierdź rezerwację. Otrzymasz szczegółowe instrukcje dotyczące przygotowania kamery do nagrywania.',
+      color: 'blue',
     },
     {
       number: '02',
       title: 'Określ zakres',
-      description: 'Przeglądaj nasze pakiety sprzątania i wybierz ten, który najlepiej odpowiada Twoim potrzebom. Standardowe, głębokie czy specjalistyczne - mamy coś dla każdego.',
-      color: 'green'
+      description:
+        'Przeglądaj nasze pakiety sprzątania i wybierz ten, który najlepiej odpowiada Twoim potrzebom. Standardowe, głębokie czy specjalistyczne - mamy coś dla każdego.',
+      color: 'green',
     },
     {
       number: '03',
       title: 'Poczuj kontrolę',
-      description: 'Przez całą usługę możesz obserwować postępy sprzątania na żywo przez naszą aplikację. Pełna transparentność i kontrola nad procesem.',
-      color: 'purple'
-    }
+      description:
+        'Przez całą usługę możesz obserwować postępy sprzątania na żywo przez naszą aplikację. Pełna transparentność i kontrola nad procesem.',
+      color: 'purple',
+    },
   ]
 
-  const getColorClasses = (color: string, variant: 'bg' | 'text' | 'border') => {
+  const getColorClasses = (
+    color: string,
+    variant: 'bg' | 'text' | 'border'
+  ) => {
     const colorMap = {
-      blue: { bg: 'bg-blue-500', text: 'text-blue-600', border: 'border-blue-500' },
-      green: { bg: 'bg-green-500', text: 'text-green-600', border: 'border-green-500' },
-      purple: { bg: 'bg-purple-500', text: 'text-purple-600', border: 'border-purple-500' },
-      orange: { bg: 'bg-orange-500', text: 'text-orange-600', border: 'border-orange-500' },
+      blue: {
+        bg: 'bg-blue-500',
+        text: 'text-blue-600',
+        border: 'border-blue-500',
+      },
+      green: {
+        bg: 'bg-green-500',
+        text: 'text-green-600',
+        border: 'border-green-500',
+      },
+      purple: {
+        bg: 'bg-purple-500',
+        text: 'text-purple-600',
+        border: 'border-purple-500',
+      },
+      orange: {
+        bg: 'bg-orange-500',
+        text: 'text-orange-600',
+        border: 'border-orange-500',
+      },
       red: { bg: 'bg-red-500', text: 'text-red-600', border: 'border-red-500' },
-      indigo: { bg: 'bg-indigo-500', text: 'text-indigo-600', border: 'border-indigo-500' }
+      indigo: {
+        bg: 'bg-indigo-500',
+        text: 'text-indigo-600',
+        border: 'border-indigo-500',
+      },
     }
     return colorMap[color as keyof typeof colorMap][variant]
   }
@@ -46,23 +72,40 @@ export default function Features() {
             Jak to działa?
           </h1>
           <p className='text-xl text-gray-600 max-w-3xl mx-auto'>
-            Prosty, przejrzysty proces od zamówienia do odbioru nagrania. 
-            Pełna kontrola i transparentność w każdym kroku.
+            Prosty, przejrzysty proces od zamówienia do odbioru nagrania. Pełna
+            kontrola i transparentność w każdym kroku.
           </p>
         </div>
 
         {/* Accordion Steps */}
         <div className='space-y-4'>
-          {steps.map((step, index) => (
-            <div key={step.number} className='bg-white rounded-xl shadow-lg overflow-hidden'>
+          {steps.map((step) => (
+            <div
+              key={step.number}
+              className='bg-white rounded-xl shadow-lg overflow-hidden'
+            >
               {/* Accordion Header */}
               <button
-                onClick={() => setOpenStep(openStep === step.number ? null : step.number)}
+                onClick={() =>
+                  setOpenStep(openStep === step.number ? null : step.number)
+                }
                 className='w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors duration-200'
               >
                 <div className='flex items-center space-x-4'>
-                  <div className={`w-10 h-10 bg-white border-2 ${getColorClasses(step.color, 'border')} rounded-full flex items-center justify-center flex-shrink-0`}>
-                    <span className={`${getColorClasses(step.color, 'text')} font-bold text-sm`}>{step.number}</span>
+                  <div
+                    className={`w-10 h-10 bg-white border-2 ${getColorClasses(
+                      step.color,
+                      'border'
+                    )} rounded-full flex items-center justify-center flex-shrink-0`}
+                  >
+                    <span
+                      className={`${getColorClasses(
+                        step.color,
+                        'text'
+                      )} font-bold text-sm`}
+                    >
+                      {step.number}
+                    </span>
                   </div>
                   <h3 className='text-lg font-semibold text-gray-900 text-left'>
                     {step.title}
@@ -77,7 +120,12 @@ export default function Features() {
                     stroke='currentColor'
                     viewBox='0 0 24 24'
                   >
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M19 9l-7 7-7-7'
+                    />
                   </svg>
                 </div>
               </button>
@@ -85,11 +133,18 @@ export default function Features() {
               {/* Accordion Content */}
               <div
                 className={`overflow-hidden transition-all duration-300 ${
-                  openStep === step.number ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  openStep === step.number
+                    ? 'max-h-96 opacity-100'
+                    : 'max-h-0 opacity-0'
                 }`}
               >
                 <div className='px-6 pb-6 pt-2'>
-                  <div className={`border-l-4 ${getColorClasses(step.color, 'border')} pl-4 ml-5`}>
+                  <div
+                    className={`border-l-4 ${getColorClasses(
+                      step.color,
+                      'border'
+                    )} pl-4 ml-5`}
+                  >
                     <p className='text-gray-600 leading-relaxed'>
                       {step.description}
                     </p>
