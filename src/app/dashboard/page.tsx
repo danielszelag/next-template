@@ -6,7 +6,6 @@ import { useState } from 'react'
 import PageLayout from '@/components/page-layout'
 import RecordingsGallery from '@/components/recordings-gallery'
 import { mockCleaningSessions } from '@/db/mock-data'
-import LightningIcon from '@/components/icons/LightningIcon'
 import VideoIcon from '@/components/icons/VideoIcon'
 import ChartBarIcon from '@/components/icons/ChartBarIcon'
 import ClockIcon from '@/components/icons/ClockIcon'
@@ -202,54 +201,57 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* Elegant Accordion Dashboard */}
+            {/* Elegant Accordion Dashboard */}
       <div className='space-y-4'>
-        {/* Quick Actions */}
-        <AccordionSection
-          id='actions'
-          title='Szybkie akcje'
-          icon={<LightningIcon className='w-6 h-6 text-blue-600' />}
-        >
-          <div className='space-y-3'>
-            <button className='w-full bg-gray-900 text-white p-4 rounded-lg hover:bg-gray-800 transition-colors text-left'>
-              <div className='flex items-center space-x-3'>
-                <svg
-                  className='w-5 h-5'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M12 6v6m0 0v6m0-6h6m-6 0H6'
-                  />
-                </svg>
-                <span className='font-medium'>Zamów sprzątanie</span>
+        {/* Main Actions */}
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <a
+            href='/calendar'
+            className='w-full bg-gray-900 text-white p-6 rounded-lg hover:bg-gray-800 transition-colors text-left block'
+          >
+            <div className='flex items-center space-x-4'>
+              <svg
+                className='w-6 h-6'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
+                />
+              </svg>
+              <div>
+                <span className='font-semibold text-lg'>Zarezerwuj termin</span>
+                <p className='text-sm text-gray-300 mt-1'>Umów się na sprzątanie</p>
               </div>
-            </button>
+            </div>
+          </a>
 
-            <button className='w-full border border-gray-200 bg-white text-gray-700 p-4 rounded-lg hover:bg-gray-50 transition-colors text-left'>
-              <div className='flex items-center space-x-3'>
-                <svg
-                  className='w-5 h-5'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
-                  />
-                </svg>
-                <span className='font-medium'>Zmień termin</span>
+          <button className='w-full border border-gray-200 bg-white text-gray-700 p-6 rounded-lg hover:bg-gray-50 transition-colors text-left'>
+            <div className='flex items-center space-x-4'>
+              <svg
+                className='w-6 h-6'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'
+                />
+              </svg>
+              <div>
+                <span className='font-semibold text-lg'>Doładuj konto</span>
+                <p className='text-sm text-gray-500 mt-1'>Dodaj środki na konto</p>
               </div>
-            </button>
-          </div>
-        </AccordionSection>
+            </div>
+          </button>
+        </div>
 
         {/* Main Recordings Section */}
         <AccordionSection

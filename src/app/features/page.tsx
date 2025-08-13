@@ -7,50 +7,32 @@ export default function Features() {
   const steps = [
     {
       number: '01',
-      title: 'Wybierz usługę',
-      description: 'Przeglądaj nasze pakiety sprzątania i wybierz ten, który najlepiej odpowiada Twoim potrzebom. Standardowe, głębokie czy specjalistyczne - mamy coś dla każdego.',
+      title: 'Zarezerwuj termin',
+      description: 'Wybierz dogodny dla Ciebie termin i potwierdź rezerwację. Otrzymasz szczegółowe instrukcje dotyczące przygotowania kamery do nagrywania.',
       color: 'blue'
     },
     {
       number: '02',
-      title: 'Zarezerwuj termin',
-      description: 'Wybierz dogodny dla Ciebie termin i potwierdź rezerwację. Otrzymasz szczegółowe instrukcje dotyczące przygotowania kamery do nagrywania.',
+      title: 'Określ zakres',
+      description: 'Przeglądaj nasze pakiety sprzątania i wybierz ten, który najlepiej odpowiada Twoim potrzebom. Standardowe, głębokie czy specjalistyczne - mamy coś dla każdego.',
       color: 'green'
     },
     {
       number: '03',
-      title: 'Ustaw kamerę',
-      description: 'Przed przyjściem sprzątaczki ustaw kamerę w dogodnym miejscu. Dzięki temu będziesz mieć pełny wgląd w proces sprzątania w czasie rzeczywistym.',
-      color: 'purple'
-    },
-    {
-      number: '04',
-      title: 'Wpuść sprzątaczkę',
-      description: 'W umówionym terminie wpuść naszą profesjonalną sprzątaczkę. Możesz wyjść z domu wiedząc, że wszystko jest nagrywane i monitorowane.',
-      color: 'orange'
-    },
-    {
-      number: '05',
-      title: 'Oglądaj na żywo',
+      title: 'Poczuj kontrolę',
       description: 'Przez całą usługę możesz obserwować postępy sprzątania na żywo przez naszą aplikację. Pełna transparentność i kontrola nad procesem.',
-      color: 'red'
-    },
-    {
-      number: '06',
-      title: 'Odbierz nagranie',
-      description: 'Po zakończeniu usługi otrzymujesz dostęp do pełnego nagrania. Możesz je oglądać w dowolnym momencie jako potwierdzenie jakości wykonanych prac.',
-      color: 'indigo'
+      color: 'purple'
     }
   ]
 
   const getColorClasses = (color: string, variant: 'bg' | 'text' | 'border') => {
     const colorMap = {
-      blue: { bg: 'bg-blue-500', text: 'text-blue-600', border: 'border-blue-200' },
-      green: { bg: 'bg-green-500', text: 'text-green-600', border: 'border-green-200' },
-      purple: { bg: 'bg-purple-500', text: 'text-purple-600', border: 'border-purple-200' },
-      orange: { bg: 'bg-orange-500', text: 'text-orange-600', border: 'border-orange-200' },
-      red: { bg: 'bg-red-500', text: 'text-red-600', border: 'border-red-200' },
-      indigo: { bg: 'bg-indigo-500', text: 'text-indigo-600', border: 'border-indigo-200' }
+      blue: { bg: 'bg-blue-500', text: 'text-blue-600', border: 'border-blue-500' },
+      green: { bg: 'bg-green-500', text: 'text-green-600', border: 'border-green-500' },
+      purple: { bg: 'bg-purple-500', text: 'text-purple-600', border: 'border-purple-500' },
+      orange: { bg: 'bg-orange-500', text: 'text-orange-600', border: 'border-orange-500' },
+      red: { bg: 'bg-red-500', text: 'text-red-600', border: 'border-red-500' },
+      indigo: { bg: 'bg-indigo-500', text: 'text-indigo-600', border: 'border-indigo-500' }
     }
     return colorMap[color as keyof typeof colorMap][variant]
   }
@@ -79,8 +61,8 @@ export default function Features() {
                 className='w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors duration-200'
               >
                 <div className='flex items-center space-x-4'>
-                  <div className={`w-10 h-10 ${getColorClasses(step.color, 'bg')} rounded-full flex items-center justify-center flex-shrink-0`}>
-                    <span className='text-white font-bold text-sm'>{step.number}</span>
+                  <div className={`w-10 h-10 bg-white border-2 ${getColorClasses(step.color, 'border')} rounded-full flex items-center justify-center flex-shrink-0`}>
+                    <span className={`${getColorClasses(step.color, 'text')} font-bold text-sm`}>{step.number}</span>
                   </div>
                   <h3 className='text-lg font-semibold text-gray-900 text-left'>
                     {step.title}
@@ -138,24 +120,12 @@ export default function Features() {
             <h2 className='text-3xl md:text-4xl font-light text-gray-900 mb-6'>
               Gotowy na przejrzyste sprzątanie?
             </h2>
-            <p className='text-xl text-gray-600 mb-8'>
-              Dołącz do setek zadowolonych klientów, którzy wybierają nasze 
-              bezpieczne i transparentne usługi sprzątania.
-            </p>
-            <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-              <a
-                href='/pricing'
-                className='bg-gray-900 text-white px-8 py-4 rounded-xl hover:bg-gray-800 transition-all duration-200 transform hover:scale-105 font-medium'
-              >
-                Zobacz Cennik
-              </a>
-              <a
-                href='/dashboard'
-                className='border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl hover:bg-white hover:border-gray-400 transition-all duration-200 transform hover:scale-105 font-medium'
-              >
-                Zacznij Teraz
-              </a>
-            </div>
+            <a
+              href='/dashboard'
+              className='inline-block bg-gray-900 text-white px-8 py-4 rounded-xl hover:bg-gray-800 transition-all duration-200 transform hover:scale-105 font-medium'
+            >
+              Przejdź do panelu
+            </a>
           </div>
         </div>
       </div>
