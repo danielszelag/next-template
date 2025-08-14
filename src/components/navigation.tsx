@@ -44,12 +44,6 @@ export default function Navigation() {
                 Jak to działa
               </Link>
               <Link
-                href='/pricing'
-                className='text-gray-600 hover:text-gray-900 transition-colors font-bold'
-              >
-                Cennik
-              </Link>
-              <Link
                 href='/about'
                 className='text-gray-600 hover:text-gray-900 transition-colors font-bold'
               >
@@ -130,13 +124,6 @@ export default function Navigation() {
               onClick={() => setIsMenuOpen(false)}
             >
               Jak to działa
-            </Link>
-            <Link
-              href='/pricing'
-              className='block text-gray-600 hover:text-gray-900 transition-colors px-6 py-3 text-center font-bold'
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Cennik
             </Link>
             <Link
               href='/about'

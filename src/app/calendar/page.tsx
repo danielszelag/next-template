@@ -60,12 +60,11 @@ export default function CalendarPage() {
   }
 
   const formatDate = (day: number) => {
-    const date = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth(),
-      day
-    )
-    return date.toISOString().split('T')[0]
+    const year = currentMonth.getFullYear()
+    const month = currentMonth.getMonth() + 1
+    const formattedMonth = month.toString().padStart(2, '0')
+    const formattedDay = day.toString().padStart(2, '0')
+    return `${year}-${formattedMonth}-${formattedDay}`
   }
 
   const isDateDisabled = (day: number) => {
@@ -143,7 +142,7 @@ export default function CalendarPage() {
               <div className='flex items-center justify-between'>
                 <h3 className='text-xl font-semibold text-gray-900'>Data</h3>
                 <span className={`text-lg font-semibold ${selectedDate ? 'text-gray-800' : 'text-gray-500'}`}>
-                  {formatDisplayDate(selectedDate) || 'Wybierz...'}
+                  {formatDisplayDate(selectedDate) || 'dd.mm.yyyy'}
                 </span>
               </div>
             </button>
@@ -159,7 +158,7 @@ export default function CalendarPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
                   </button>
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  <h2 className="text-2xl font-semibold text-gray-900 whitespace-nowrap">
                     {months[currentMonth.getMonth()]} {currentMonth.getFullYear()}
                   </h2>
                   <button
@@ -191,7 +190,7 @@ export default function CalendarPage() {
               <div className='flex items-center justify-between'>
                 <h3 className='text-xl font-semibold text-gray-900'>Godzina</h3>
                 <span className={`text-lg font-semibold ${selectedTime ? 'text-gray-800' : 'text-gray-500'}`}>
-                  {selectedTime || 'Wybierz...'}
+                  {selectedTime || '--:--'}
                 </span>
               </div>
             </button>
@@ -223,18 +222,29 @@ export default function CalendarPage() {
             )}
           </div>
 
-          {/* Confirmation Button */}
-          <button
-            onClick={() => alert('Rezerwacja potwierdzona!')}
-            disabled={!selectedDate || !selectedTime}
-            className={`w-full p-6 rounded-2xl text-xl font-semibold transition-all duration-300 ${
-              !selectedDate || !selectedTime
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-blue-500 text-white hover:bg-blue-600 shadow-lg'
-            }`}
-          >
-            Potwierdź Wybór
-          </button>
+          {/* Action Buttons */}
+          <div className='flex flex-col-reverse sm:flex-row gap-4'>
+            <a
+              href='/dashboard'
+              className='w-full sm:w-1/2 px-6 py-4 border border-gray-200 bg-white text-gray-700 rounded-2xl text-lg font-semibold hover:bg-gray-50 transition-all duration-300 text-center flex items-center justify-center'
+            >
+              <svg className='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
+              </svg>
+              Wróć
+            </a>
+            <button
+              onClick={() => alert('Rezerwacja potwierdzona!')}
+              disabled={!selectedDate || !selectedTime}
+              className={`w-full sm:w-1/2 p-4 rounded-2xl text-lg font-semibold transition-all duration-300 ${
+                !selectedDate || !selectedTime
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'bg-blue-500 text-white hover:bg-blue-600 shadow-lg'
+              }`}
+            >
+              Potwierdź Wybór
+            </button>
+          </div>
         </div>
       </div>
     </PageLayout>

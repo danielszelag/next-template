@@ -207,9 +207,9 @@ export default function DashboardPage() {
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           <a
             href='/calendar'
-            className='w-full bg-gray-900 text-white p-6 rounded-lg hover:bg-gray-800 transition-colors text-left block'
+            className='w-full bg-gray-900 text-white border border-gray-900 rounded-lg shadow-sm hover:bg-gray-800 transition-colors text-left block overflow-hidden'
           >
-            <div className='flex items-center space-x-4'>
+            <div className='flex items-center space-x-4 px-6 py-4'>
               <svg
                 className='w-6 h-6'
                 fill='none'
@@ -229,8 +229,11 @@ export default function DashboardPage() {
             </div>
           </a>
 
-          <button className='w-full border border-gray-200 bg-white text-gray-700 p-6 rounded-lg hover:bg-gray-50 transition-colors text-left'>
-            <div className='flex items-center space-x-4'>
+          <a
+            href='/account'
+            className='w-full border border-gray-200 bg-white text-gray-700 rounded-lg shadow-sm hover:bg-gray-50 transition-colors text-left overflow-hidden block'
+          >
+            <div className='flex items-center space-x-4 px-6 py-4'>
               <svg
                 className='w-6 h-6'
                 fill='none'
@@ -241,14 +244,14 @@ export default function DashboardPage() {
                   strokeLinecap='round'
                   strokeLinejoin='round'
                   strokeWidth={2}
-                  d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'
+                  d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'
                 />
               </svg>
               <div>
-                <span className='font-semibold text-lg'>Doładuj konto</span>
+                <span className='font-semibold text-lg'>Twoje konto</span>
               </div>
             </div>
-          </button>
+          </a>
         </div>
 
         {/* Main Recordings Section */}
