@@ -80,12 +80,18 @@ export default function CalendarPage() {
 
   const handleDateSelect = (dateStr: string) => {
     setSelectedDate(dateStr)
-    setOpenSection('time')
+    // Brief delay to show the selection feedback before transitioning
+    setTimeout(() => {
+      setOpenSection('time')
+    }, 200) // 200ms delay to show the selected date
   }
 
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time)
-    setOpenSection(null)
+    // Brief delay to show the selection feedback before closing accordion
+    setTimeout(() => {
+      setOpenSection(null)
+    }, 200) // 200ms delay to show the selected time
   }
 
   const formatDisplayDate = (dateStr: string | null) => {
@@ -113,12 +119,12 @@ export default function CalendarPage() {
           key={day}
           onClick={() => !isDisabled && handleDateSelect(dateStr)}
           disabled={isDisabled}
-          className={`h-12 w-full rounded-xl text-lg font-semibold transition-all duration-300 ${
+          className={`h-12 w-full rounded-lg text-lg font-semibold transition-colors border ${
             isSelected
-              ? 'bg-blue-500 text-white shadow-lg transform scale-105'
+              ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
               : isDisabled
-              ? 'text-gray-300 cursor-not-allowed'
-              : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md'
+              ? 'text-gray-300 cursor-not-allowed border-transparent'
+              : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent hover:border-gray-200'
           }`}
         >
           {day}
@@ -134,10 +140,10 @@ export default function CalendarPage() {
       <div className='max-w-2xl mx-auto'>
         <div className='space-y-4'>
           {/* Date Accordion */}
-          <div className='bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden'>
+          <div className='bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden'>
             <button
               onClick={() => setOpenSection(openSection === 'date' ? null : 'date')}
-              className='w-full p-6 text-left'
+              className='w-full p-4 text-left'
             >
               <div className='flex items-center justify-between'>
                 <h3 className='text-xl font-semibold text-gray-900'>Data</h3>
@@ -181,11 +187,11 @@ export default function CalendarPage() {
           </div>
 
           {/* Time Accordion */}
-          <div className={`bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden ${!selectedDate ? 'opacity-50' : ''}`}>
+          <div className={`bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden ${!selectedDate ? 'opacity-50' : ''}`}>
             <button
               onClick={() => selectedDate && setOpenSection(openSection === 'time' ? null : 'time')}
               disabled={!selectedDate}
-              className='w-full p-6 text-left'
+              className='w-full p-4 text-left'
             >
               <div className='flex items-center justify-between'>
                 <h3 className='text-xl font-semibold text-gray-900'>Godzina</h3>
@@ -203,12 +209,12 @@ export default function CalendarPage() {
                       key={slot.time}
                       onClick={() => slot.available && handleTimeSelect(slot.time)}
                       disabled={!slot.available}
-                      className={`p-4 rounded-lg transition-all duration-200 flex flex-col items-center justify-center ${
+                      className={`p-4 rounded-lg transition-colors flex flex-col items-center justify-center border ${
                         selectedTime === slot.time
-                          ? 'bg-blue-500 text-white shadow-md'
+                          ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
                           : slot.available
-                          ? 'bg-white text-gray-900 hover:bg-gray-50 border border-gray-200 hover:border-gray-300'
-                          : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
+                          ? 'bg-white text-gray-900 hover:bg-gray-50 border-gray-200 hover:border-gray-300'
+                          : 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'
                       }`}
                     >
                       <span className='text-lg font-medium'>{slot.time}</span>
@@ -226,7 +232,7 @@ export default function CalendarPage() {
           <div className='flex flex-col-reverse sm:flex-row gap-4'>
             <a
               href='/dashboard'
-              className='w-full sm:w-1/2 px-6 py-4 border border-gray-200 bg-white text-gray-700 rounded-2xl text-lg font-semibold hover:bg-gray-50 transition-all duration-300 text-center flex items-center justify-center'
+              className='w-full sm:w-1/2 px-6 py-4 border border-gray-200 bg-white text-gray-700 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all duration-300 text-center flex items-center justify-center'
             >
               <svg className='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
@@ -236,7 +242,7 @@ export default function CalendarPage() {
             <button
               onClick={() => alert('Rezerwacja potwierdzona!')}
               disabled={!selectedDate || !selectedTime}
-              className={`w-full sm:w-1/2 p-4 rounded-2xl text-lg font-semibold transition-all duration-300 ${
+              className={`w-full sm:w-1/2 p-4 rounded-lg text-lg font-semibold transition-all duration-300 ${
                 !selectedDate || !selectedTime
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   : 'bg-blue-500 text-white hover:bg-blue-600 shadow-lg'

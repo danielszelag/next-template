@@ -62,7 +62,7 @@ export default function Navigation() {
               <SignedIn>
                 <Link
                   href='/dashboard'
-                  className='bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors font-medium'
+                  className='bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors font-bold'
                 >
                   Twój panel
                 </Link>
@@ -148,7 +148,7 @@ export default function Navigation() {
               <div className='px-6'>
                 <Link
                   href='/dashboard'
-                  className='block bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors text-center font-medium'
+                  className='block bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors text-center font-bold'
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Twój panel
