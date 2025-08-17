@@ -6,8 +6,15 @@ import PageLayout from '@/components/page-layout'
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [selectedTime, setSelectedTime] = useState<string | null>(null)
-  const [openSection, setOpenSection] = useState<'date' | 'time' | null>('date')
+  const [selectedAddress, setSelectedAddress] = useState<string | null>(null)
+  const [openSection, setOpenSection] = useState<'date' | 'time' | 'address' | null>('date')
   const [currentMonth, setCurrentMonth] = useState(new Date())
+
+  // Mock addresses - replace with your preferred data sharing method
+  const savedAddresses = [
+    { id: '1', name: 'Dom', street: 'ul. Marszałkowska 123/45', postalCode: '00-123', city: 'Warszawa' },
+    { id: '2', name: 'Biuro', street: 'ul. Nowy Świat 67', postalCode: '00-456', city: 'Warszawa' },
+  ]
 
   const months = [
     'Styczeń',
@@ -83,15 +90,23 @@ export default function CalendarPage() {
     // Brief delay to show the selection feedback before transitioning
     setTimeout(() => {
       setOpenSection('time')
-    }, 200) // 200ms delay to show the selected date
+    }, 150) // 150ms delay to show the selected date
   }
 
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time)
+    // Brief delay to show the selection feedback before transitioning to address
+    setTimeout(() => {
+      setOpenSection('address')
+    }, 150) // 150ms delay to show the selected time
+  }
+
+  const handleAddressSelect = (addressId: string) => {
+    setSelectedAddress(addressId)
     // Brief delay to show the selection feedback before closing accordion
     setTimeout(() => {
       setOpenSection(null)
-    }, 200) // 200ms delay to show the selected time
+    }, 150) // 150ms delay to show the selected address
   }
 
   const formatDisplayDate = (dateStr: string | null) => {
@@ -140,7 +155,7 @@ export default function CalendarPage() {
       <div className='max-w-2xl mx-auto'>
         <div className='space-y-4'>
           {/* Date Accordion */}
-          <div className='bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden'>
+          <div className='bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden'>
             <button
               onClick={() => setOpenSection(openSection === 'date' ? null : 'date')}
               className='w-full p-4 text-left'
@@ -187,7 +202,7 @@ export default function CalendarPage() {
           </div>
 
           {/* Time Accordion */}
-          <div className={`bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden ${!selectedDate ? 'opacity-50' : ''}`}>
+          <div className={`bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden ${!selectedDate ? 'opacity-50' : ''}`}>
             <button
               onClick={() => selectedDate && setOpenSection(openSection === 'time' ? null : 'time')}
               disabled={!selectedDate}
@@ -228,6 +243,63 @@ export default function CalendarPage() {
             )}
           </div>
 
+          {/* Address Accordion */}
+          <div className={`bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden ${!selectedDate || !selectedTime ? 'opacity-50' : ''}`}>
+            <button
+              onClick={() => selectedDate && selectedTime && setOpenSection(openSection === 'address' ? null : 'address')}
+              disabled={!selectedDate || !selectedTime}
+              className='w-full p-4 text-left'
+            >
+              <div className='flex items-center justify-between'>
+                <h3 className='text-xl font-semibold text-gray-900'>Lokacja</h3>
+                <span className={`text-lg font-semibold ${selectedAddress ? 'text-gray-800' : 'text-gray-500'}`}>
+                  {selectedAddress ? savedAddresses.find(addr => addr.id === selectedAddress)?.name || 'Wybierz lokację' : 'Wybierz lokację'}
+                </span>
+              </div>
+            </button>
+            {openSection === 'address' && (
+              <div className='p-6 bg-gray-50'>
+                {savedAddresses.length > 0 ? (
+                  <div className="space-y-3">
+                    {savedAddresses.map((address) => (
+                      <button
+                        key={address.id}
+                        onClick={() => handleAddressSelect(address.id)}
+                        className={`w-full p-4 rounded-lg transition-colors text-left border ${
+                          selectedAddress === address.id
+                            ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                            : 'bg-white text-gray-900 hover:bg-gray-50 border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <div className='font-medium text-lg'>{address.name}</div>
+                        <div className={`text-sm mt-1 ${selectedAddress === address.id ? 'text-blue-100' : 'text-gray-600'}`}>
+                          {address.street}
+                        </div>
+                        <div className={`text-sm ${selectedAddress === address.id ? 'text-blue-100' : 'text-gray-600'}`}>
+                          {address.postalCode} {address.city}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <div className="text-gray-500 text-lg mb-2">Brak zapisanych adresów</div>
+                    <div className="text-gray-400 text-sm mb-4">Dodaj adres w swoim profilu, aby móc go wybrać tutaj</div>
+                    <a
+                      href="/account?section=addresses"
+                      className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      Dodaj adres
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           {/* Action Buttons */}
           <div className='flex flex-col-reverse sm:flex-row gap-4'>
             <a
@@ -241,9 +313,9 @@ export default function CalendarPage() {
             </a>
             <button
               onClick={() => alert('Rezerwacja potwierdzona!')}
-              disabled={!selectedDate || !selectedTime}
+              disabled={!selectedDate || !selectedTime || !selectedAddress}
               className={`w-full sm:w-1/2 p-4 rounded-lg text-lg font-semibold transition-all duration-300 ${
-                !selectedDate || !selectedTime
+                !selectedDate || !selectedTime || !selectedAddress
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   : 'bg-blue-500 text-white hover:bg-blue-600 shadow-lg'
               }`}

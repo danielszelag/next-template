@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PageLayout from '@/components/page-layout'
 
 const AccordionSection = ({
@@ -96,6 +96,19 @@ export default function AccountPage() {
     city: '',
   })
 
+  // Check URL parameters to auto-open specific sections
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const section = urlParams.get('section')
+    if (section === 'addresses') {
+      setOpenSections(prev => ({
+        ...prev,
+        addresses: true,
+        profile: false, // Close profile section to focus on addresses
+      }))
+    }
+  }, [])
+
   const handleSaveAddress = (e: React.FormEvent) => {
     e.preventDefault()
     if (
@@ -148,23 +161,21 @@ export default function AccountPage() {
             onToggle={toggleSection}
           >
             <div className='space-y-4 pt-4'>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                <div>
-                  <input
-                    type='text'
-                    defaultValue='Jan'
-                    placeholder='Imię'
-                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-                  />
-                </div>
-                <div>
-                  <input
-                    type='text'
-                    defaultValue='Kowalski'
-                    placeholder='Nazwisko'
-                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-                  />
-                </div>
+              <div>
+                <input
+                  type='text'
+                  defaultValue='Jan'
+                  placeholder='Imię'
+                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                />
+              </div>
+              <div>
+                <input
+                  type='text'
+                  defaultValue='Kowalski'
+                  placeholder='Nazwisko'
+                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                />
               </div>
               <div>
                 <input
@@ -359,7 +370,7 @@ export default function AccountPage() {
         <div className='mt-8'>
           <a
             href='/dashboard'
-            className='w-full sm:w-1/2 px-6 py-4 border border-gray-200 bg-white text-gray-700 rounded-2xl text-lg font-semibold hover:bg-gray-50 transition-all duration-300 text-center flex items-center justify-center'
+            className='w-full sm:w-1/2 px-6 py-4 border border-gray-200 bg-white text-gray-700 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all duration-300 text-center flex items-center justify-center'
           >
             <svg
               className='w-5 h-5 mr-2'

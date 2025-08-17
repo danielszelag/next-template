@@ -43,12 +43,6 @@ export default function Navigation() {
               >
                 Jak to działa
               </Link>
-              <Link
-                href='/about'
-                className='text-gray-600 hover:text-gray-900 transition-colors font-bold'
-              >
-                O nas
-              </Link>
 
               {/* Auth Section */}
               <SignedOut>
@@ -124,13 +118,6 @@ export default function Navigation() {
               onClick={() => setIsMenuOpen(false)}
             >
               Jak to działa
-            </Link>
-            <Link
-              href='/about'
-              className='block text-gray-600 hover:text-gray-900 transition-colors px-6 py-3 text-center font-bold'
-              onClick={() => setIsMenuOpen(false)}
-            >
-              O nas
             </Link>
 
             {/* Mobile Auth Section */}
