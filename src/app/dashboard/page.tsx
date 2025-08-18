@@ -211,7 +211,7 @@ export default function DashboardPage() {
           >
             <div className='flex items-center space-x-4 px-6 py-4'>
               <svg
-                className='w-6 h-6'
+                className='w-6 h-6 text-blue-400'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'
@@ -235,7 +235,7 @@ export default function DashboardPage() {
           >
             <div className='flex items-center space-x-4 px-6 py-4'>
               <svg
-                className='w-6 h-6'
+                className='w-6 h-6 text-green-500'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'

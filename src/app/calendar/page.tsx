@@ -7,13 +7,27 @@ export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [selectedTime, setSelectedTime] = useState<string | null>(null)
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null)
-  const [openSection, setOpenSection] = useState<'date' | 'time' | 'address' | null>('date')
+  const [openSection, setOpenSection] = useState<
+    'date' | 'time' | 'address' | null
+  >('date')
   const [currentMonth, setCurrentMonth] = useState(new Date())
 
   // Mock addresses - replace with your preferred data sharing method
   const savedAddresses = [
-    { id: '1', name: 'Dom', street: 'ul. Marszałkowska 123/45', postalCode: '00-123', city: 'Warszawa' },
-    { id: '2', name: 'Biuro', street: 'ul. Nowy Świat 67', postalCode: '00-456', city: 'Warszawa' },
+    {
+      id: '1',
+      name: 'Dom',
+      street: 'ul. Marszałkowska 123/45',
+      postalCode: '00-123',
+      city: 'Warszawa',
+    },
+    {
+      id: '2',
+      name: 'Biuro',
+      street: 'ul. Nowy Świat 67',
+      postalCode: '00-456',
+      city: 'Warszawa',
+    },
   ]
 
   const months = [
@@ -90,7 +104,7 @@ export default function CalendarPage() {
     // Brief delay to show the selection feedback before transitioning
     setTimeout(() => {
       setOpenSection('time')
-    }, 150) // 150ms delay to show the selected date
+    }, 100) // 100ms delay to show the selected date
   }
 
   const handleTimeSelect = (time: string) => {
@@ -98,7 +112,7 @@ export default function CalendarPage() {
     // Brief delay to show the selection feedback before transitioning to address
     setTimeout(() => {
       setOpenSection('address')
-    }, 150) // 150ms delay to show the selected time
+    }, 100) // 100ms delay to show the selected time
   }
 
   const handleAddressSelect = (addressId: string) => {
@@ -106,7 +120,7 @@ export default function CalendarPage() {
     // Brief delay to show the selection feedback before closing accordion
     setTimeout(() => {
       setOpenSection(null)
-    }, 150) // 150ms delay to show the selected address
+    }, 100) // 100ms delay to show the selected address
   }
 
   const formatDisplayDate = (dateStr: string | null) => {
@@ -136,10 +150,10 @@ export default function CalendarPage() {
           disabled={isDisabled}
           className={`h-12 w-full rounded-lg text-lg font-semibold transition-colors border ${
             isSelected
-              ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+              ? 'bg-emerald-500 text-white border-emerald-500 shadow-sm'
               : isDisabled
               ? 'text-gray-300 cursor-not-allowed border-transparent'
-              : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent hover:border-gray-200'
+              : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 border-transparent hover:border-gray-200'
           }`}
         >
           {day}
@@ -157,76 +171,125 @@ export default function CalendarPage() {
           {/* Date Accordion */}
           <div className='bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden'>
             <button
-              onClick={() => setOpenSection(openSection === 'date' ? null : 'date')}
+              onClick={() =>
+                setOpenSection(openSection === 'date' ? null : 'date')
+              }
               className='w-full p-4 text-left'
             >
               <div className='flex items-center justify-between'>
                 <h3 className='text-xl font-semibold text-gray-900'>Data</h3>
-                <span className={`text-lg font-semibold ${selectedDate ? 'text-gray-800' : 'text-gray-500'}`}>
+                <span
+                  className={`text-lg font-semibold ${
+                    selectedDate ? 'text-gray-800' : 'text-gray-500'
+                  }`}
+                >
                   {formatDisplayDate(selectedDate) || 'dd.mm.yyyy'}
                 </span>
               </div>
             </button>
-            {openSection === 'date' && (
+            <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
+              openSection === 'date' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            }`}>
               <div className='p-6 bg-gray-50'>
                 {/* Calendar Content */}
-                <div className="flex items-center justify-between mb-4">
+                <div className='flex items-center justify-between mb-4'>
                   <button
                     onClick={() => navigateMonth('prev')}
-                    className="p-3 hover:bg-gray-100 rounded-full transition-colors"
+                    className='p-3 hover:bg-gray-100 rounded-full transition-colors'
                   >
-                    <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    <svg
+                      className='w-6 h-6 text-gray-600'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M15 19l-7-7 7-7'
+                      />
                     </svg>
                   </button>
-                  <h2 className="text-2xl font-semibold text-gray-900 whitespace-nowrap">
-                    {months[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+                  <h2 className='text-2xl font-semibold text-gray-900 whitespace-nowrap'>
+                    {months[currentMonth.getMonth()]}{' '}
+                    {currentMonth.getFullYear()}
                   </h2>
                   <button
                     onClick={() => navigateMonth('next')}
-                    className="p-3 hover:bg-gray-100 rounded-full transition-colors"
+                    className='p-3 hover:bg-gray-100 rounded-full transition-colors'
                   >
-                    <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg
+                      className='w-6 h-6 text-gray-600'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M9 5l7 7-7 7'
+                      />
                     </svg>
                   </button>
                 </div>
-                <div className="grid grid-cols-7 gap-2 mb-2">
+                <div className='grid grid-cols-7 gap-2 mb-2'>
                   {['N', 'P', 'W', 'Ś', 'C', 'P', 'S'].map((day, i) => (
-                    <div key={i} className="text-center text-sm font-medium text-gray-500 py-2">{day}</div>
+                    <div
+                      key={i}
+                      className='text-center text-sm font-medium text-gray-500 py-2'
+                    >
+                      {day}
+                    </div>
                   ))}
                 </div>
-                <div className="grid grid-cols-7 gap-2">{renderCalendar()}</div>
+                <div className='grid grid-cols-7 gap-2'>{renderCalendar()}</div>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Time Accordion */}
-          <div className={`bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden ${!selectedDate ? 'opacity-50' : ''}`}>
+          <div
+            className={`bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden ${
+              !selectedDate ? 'opacity-50' : ''
+            }`}
+          >
             <button
-              onClick={() => selectedDate && setOpenSection(openSection === 'time' ? null : 'time')}
+              onClick={() =>
+                selectedDate &&
+                setOpenSection(openSection === 'time' ? null : 'time')
+              }
               disabled={!selectedDate}
               className='w-full p-4 text-left'
             >
               <div className='flex items-center justify-between'>
                 <h3 className='text-xl font-semibold text-gray-900'>Godzina</h3>
-                <span className={`text-lg font-semibold ${selectedTime ? 'text-gray-800' : 'text-gray-500'}`}>
+                <span
+                  className={`text-lg font-semibold ${
+                    selectedTime ? 'text-gray-800' : 'text-gray-500'
+                  }`}
+                >
                   {selectedTime || '--:--'}
                 </span>
               </div>
             </button>
-            {openSection === 'time' && (
+            <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
+              openSection === 'time' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            }`}>
               <div className='p-6 bg-gray-50'>
                 {/* Time Slot Content */}
-                <div className="grid grid-cols-3 gap-3 max-w-sm mx-auto">
+                <div className='grid grid-cols-3 gap-3 max-w-sm mx-auto'>
                   {timeSlots.map((slot) => (
                     <button
                       key={slot.time}
-                      onClick={() => slot.available && handleTimeSelect(slot.time)}
+                      onClick={() =>
+                        slot.available && handleTimeSelect(slot.time)
+                      }
                       disabled={!slot.available}
                       className={`p-4 rounded-lg transition-colors flex flex-col items-center justify-center border ${
                         selectedTime === slot.time
-                          ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                          ? 'bg-emerald-500 text-white border-emerald-500 shadow-sm'
                           : slot.available
                           ? 'bg-white text-gray-900 hover:bg-gray-50 border-gray-200 hover:border-gray-300'
                           : 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'
@@ -234,70 +297,117 @@ export default function CalendarPage() {
                     >
                       <span className='text-lg font-medium'>{slot.time}</span>
                       {!slot.available && (
-                        <span className='text-xs mt-1 text-gray-500'>Zajęte</span>
+                        <span className='text-xs mt-1 text-gray-500'>
+                          Zajęte
+                        </span>
                       )}
                     </button>
                   ))}
                 </div>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Address Accordion */}
-          <div className={`bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden ${!selectedDate || !selectedTime ? 'opacity-50' : ''}`}>
+          <div
+            className={`bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden ${
+              !selectedDate || !selectedTime ? 'opacity-50' : ''
+            }`}
+          >
             <button
-              onClick={() => selectedDate && selectedTime && setOpenSection(openSection === 'address' ? null : 'address')}
+              onClick={() =>
+                selectedDate &&
+                selectedTime &&
+                setOpenSection(openSection === 'address' ? null : 'address')
+              }
               disabled={!selectedDate || !selectedTime}
               className='w-full p-4 text-left'
             >
               <div className='flex items-center justify-between'>
                 <h3 className='text-xl font-semibold text-gray-900'>Lokacja</h3>
-                <span className={`text-lg font-semibold ${selectedAddress ? 'text-gray-800' : 'text-gray-500'}`}>
-                  {selectedAddress ? savedAddresses.find(addr => addr.id === selectedAddress)?.name || 'Wybierz lokację' : 'Wybierz lokację'}
+                <span
+                  className={`text-lg font-semibold ${
+                    selectedAddress ? 'text-gray-800' : 'text-gray-500'
+                  }`}
+                >
+                  {selectedAddress
+                    ? savedAddresses.find((addr) => addr.id === selectedAddress)
+                        ?.name || 'Wybierz lokację'
+                    : 'Wybierz lokację'}
                 </span>
               </div>
             </button>
-            {openSection === 'address' && (
+            <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
+              openSection === 'address' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            }`}>
               <div className='p-6 bg-gray-50'>
                 {savedAddresses.length > 0 ? (
-                  <div className="space-y-3">
+                  <div className='space-y-3'>
                     {savedAddresses.map((address) => (
                       <button
                         key={address.id}
                         onClick={() => handleAddressSelect(address.id)}
                         className={`w-full p-4 rounded-lg transition-colors text-left border ${
                           selectedAddress === address.id
-                            ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                            ? 'bg-emerald-500 text-white border-emerald-500 shadow-sm'
                             : 'bg-white text-gray-900 hover:bg-gray-50 border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <div className='font-medium text-lg'>{address.name}</div>
-                        <div className={`text-sm mt-1 ${selectedAddress === address.id ? 'text-blue-100' : 'text-gray-600'}`}>
+                        <div className='font-medium text-lg'>
+                          {address.name}
+                        </div>
+                        <div
+                          className={`text-sm mt-1 ${
+                            selectedAddress === address.id
+                              ? 'text-emerald-100'
+                              : 'text-gray-600'
+                          }`}
+                        >
                           {address.street}
                         </div>
-                        <div className={`text-sm ${selectedAddress === address.id ? 'text-blue-100' : 'text-gray-600'}`}>
+                        <div
+                          className={`text-sm ${
+                            selectedAddress === address.id
+                              ? 'text-emerald-100'
+                              : 'text-gray-600'
+                          }`}
+                        >
                           {address.postalCode} {address.city}
                         </div>
                       </button>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8">
-                    <div className="text-gray-500 text-lg mb-2">Brak zapisanych adresów</div>
-                    <div className="text-gray-400 text-sm mb-4">Dodaj adres w swoim profilu, aby móc go wybrać tutaj</div>
+                  <div className='text-center py-8'>
+                    <div className='text-gray-500 text-lg mb-2'>
+                      Brak zapisanych adresów
+                    </div>
+                    <div className='text-gray-400 text-sm mb-4'>
+                      Dodaj adres w swoim profilu, aby móc go wybrać tutaj
+                    </div>
                     <a
-                      href="/account?section=addresses"
-                      className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                      href='/account?section=addresses'
+                      className='inline-flex items-center px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors'
                     >
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      <svg
+                        className='w-4 h-4 mr-2'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth={2}
+                          d='M12 6v6m0 0v6m0-6h6m-6 0H6'
+                        />
                       </svg>
                       Dodaj adres
                     </a>
                   </div>
                 )}
               </div>
-            )}
+            </div>
           </div>
 
           {/* Action Buttons */}
@@ -306,8 +416,18 @@ export default function CalendarPage() {
               href='/dashboard'
               className='w-full sm:w-1/2 px-6 py-4 border border-gray-200 bg-white text-gray-700 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all duration-300 text-center flex items-center justify-center'
             >
-              <svg className='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
+              <svg
+                className='w-5 h-5 mr-2'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M15 19l-7-7 7-7'
+                />
               </svg>
               Wróć
             </a>
@@ -317,14 +437,14 @@ export default function CalendarPage() {
               className={`w-full sm:w-1/2 p-4 rounded-lg text-lg font-semibold transition-all duration-300 ${
                 !selectedDate || !selectedTime || !selectedAddress
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-blue-500 text-white hover:bg-blue-600 shadow-lg'
+                  : 'bg-gray-900 text-white hover:bg-gray-800 shadow-sm'
               }`}
             >
-              Potwierdź Wybór
+              Rezerwuj
             </button>
           </div>
         </div>
       </div>
     </PageLayout>
-  );
+  )
 }
