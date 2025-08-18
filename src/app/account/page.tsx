@@ -66,11 +66,13 @@ const AccordionSection = ({
           </svg>
         </div>
       </button>
-      {isOpen && (
+      <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
+        isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+      }`}>
         <div className='px-6 pb-6 bg-gray-50 border-t border-gray-200'>
           {children}
         </div>
-      )}
+      </div>
     </div>
   )
 }
@@ -88,7 +90,15 @@ export default function AccountPage() {
       postalCode: string
       city: string
     }>
-  >([])
+  >([
+    {
+      id: '1',
+      name: 'Dom',
+      street: 'ul. Krakowska 123',
+      postalCode: '00-001',
+      city: 'Warszawa'
+    }
+  ])
   const [formData, setFormData] = useState({
     name: '',
     street: '',
@@ -138,6 +148,40 @@ export default function AccountPage() {
     <PageLayout>
       <div className='max-w-4xl mx-auto'>
         <div className='space-y-4'>
+          {/* Account Balance & Top-up */}
+          <AccordionSection
+            id='balance'
+            title='Saldo konta'
+            icon={
+              <svg
+                className='w-6 h-6'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'
+                />
+              </svg>
+            }
+            isOpen={openSections.balance ?? false}
+            onToggle={toggleSection}
+          >
+            <div className='space-y-4 pt-4'>
+              <div className='bg-white rounded-lg border border-gray-200 p-6'>
+                <div className='text-center'>
+                  <p className='text-3xl font-bold text-gray-900'>250,00 zł</p>
+                </div>
+              </div>
+              <button className='w-full bg-emerald-500 text-white py-3 rounded-lg hover:bg-emerald-600 transition-colors font-bold'>
+                Doładuj konto
+              </button>
+            </div>
+          </AccordionSection>
+
           {/* Profile Information */}
           <AccordionSection
             id='profile'
@@ -166,7 +210,7 @@ export default function AccountPage() {
                   type='text'
                   defaultValue='Jan'
                   placeholder='Imię'
-                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
                 />
               </div>
               <div>
@@ -174,7 +218,7 @@ export default function AccountPage() {
                   type='text'
                   defaultValue='Kowalski'
                   placeholder='Nazwisko'
-                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
                 />
               </div>
               <div>
@@ -182,7 +226,7 @@ export default function AccountPage() {
                   type='email'
                   defaultValue='jan.kowalski@example.com'
                   placeholder='Email'
-                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
                 />
               </div>
               <div>
@@ -190,10 +234,10 @@ export default function AccountPage() {
                   type='tel'
                   defaultValue='+48 123 456 789'
                   placeholder='Numer telefonu'
-                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
                 />
               </div>
-              <button className='bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors'>
+              <button className='bg-emerald-500 text-white px-6 py-2 rounded-lg hover:bg-emerald-600 transition-colors font-bold'>
                 Zapisz zmiany
               </button>
             </div>
@@ -243,7 +287,7 @@ export default function AccountPage() {
                         {address.postalCode} {address.city}
                       </p>
                     </div>
-                    <button className='text-blue-500 hover:text-blue-600 text-sm'>
+                    <button className='text-emerald-500 hover:text-emerald-600 text-sm'>
                       Edytuj
                     </button>
                   </div>
@@ -257,7 +301,11 @@ export default function AccountPage() {
                 >
                   + Dodaj nowy adres
                 </button>
-              ) : (
+              ) : null}
+              
+              <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                showAddressForm ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+              }`}>
                 <div className='bg-white rounded-lg border border-gray-200 p-6'>
                   <form className='space-y-4' onSubmit={handleSaveAddress}>
                     <div>
@@ -268,7 +316,7 @@ export default function AccountPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, name: e.target.value })
                         }
-                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
                       />
                     </div>
                     <div>
@@ -279,7 +327,7 @@ export default function AccountPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, street: e.target.value })
                         }
-                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
                       />
                     </div>
                     <div className='grid grid-cols-2 gap-4'>
@@ -294,7 +342,7 @@ export default function AccountPage() {
                               postalCode: e.target.value,
                             })
                           }
-                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
                         />
                       </div>
                       <div>
@@ -305,7 +353,7 @@ export default function AccountPage() {
                           onChange={(e) =>
                             setFormData({ ...formData, city: e.target.value })
                           }
-                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
                         />
                       </div>
                     </div>
@@ -319,49 +367,14 @@ export default function AccountPage() {
                       </button>
                       <button
                         type='submit'
-                        className='flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors'
+                        className='flex-1 px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors'
                       >
                         Zapisz
                       </button>
                     </div>
                   </form>
                 </div>
-              )}
-            </div>
-          </AccordionSection>
-
-          {/* Account Balance & Top-up */}
-          <AccordionSection
-            id='balance'
-            title='Saldo konta'
-            icon={
-              <svg
-                className='w-6 h-6'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'
-                />
-              </svg>
-            }
-            isOpen={openSections.balance ?? false}
-            onToggle={toggleSection}
-          >
-            <div className='space-y-4 pt-4'>
-              <div className='bg-white rounded-lg border border-gray-200 p-6'>
-                <div className='text-center'>
-                  <p className='text-sm text-gray-600 mb-2'>Aktualne saldo</p>
-                  <p className='text-3xl font-bold text-gray-900'>250,00 zł</p>
-                </div>
               </div>
-              <button className='w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors font-medium'>
-                Doładuj konto
-              </button>
             </div>
           </AccordionSection>
         </div>

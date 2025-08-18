@@ -207,7 +207,7 @@ export default function DashboardPage() {
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           <a
             href='/calendar'
-            className='w-full bg-gray-900 text-white border border-gray-900 rounded-lg shadow-sm hover:bg-gray-800 transition-colors text-left block overflow-hidden'
+            className='w-full bg-white text-gray-700 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 transition-colors text-left block overflow-hidden'
           >
             <div className='flex items-center space-x-4 px-6 py-4'>
               <svg
