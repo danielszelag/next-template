@@ -187,7 +187,7 @@ export default function DashboardPage() {
   return (
     <PageLayout>
       {/* Header */}
-      <div className='text-center mb-4'>
+      <div className='text-center mb-6 sm:mb-12'>
         <h1 className='text-4xl md:text-5xl font-light text-gray-900 mb-4'>
           Witaj,{' '}
           {user?.firstName ||
