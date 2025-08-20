@@ -8,6 +8,7 @@ const AccordionSection = ({
   title,
   icon,
   children,
+  rightContent,
   //   defaultOpen = false,
   isOpen,
   onToggle,
@@ -16,6 +17,7 @@ const AccordionSection = ({
   title: string
   icon?: React.ReactNode
   children: React.ReactNode
+  rightContent?: React.ReactNode
   defaultOpen?: boolean
   isOpen: boolean
   onToggle: (id: string) => void
@@ -46,24 +48,27 @@ const AccordionSection = ({
             </h3>
           </div>
         </div>
-        <div
-          className={`transition-all duration-300 ease-in-out ${
-            isOpen ? 'rotate-180 text-gray-900' : 'text-gray-400'
-          }`}
-        >
-          <svg
-            className='w-5 h-5'
-            fill='none'
-            stroke='currentColor'
-            viewBox='0 0 24 24'
+        <div className='flex items-center space-x-3'>
+          {rightContent}
+          <div
+            className={`transition-all duration-300 ease-in-out ${
+              isOpen ? 'rotate-180 text-gray-900' : 'text-gray-400'
+            }`}
           >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M19 9l-7 7-7-7'
-            />
-          </svg>
+            <svg
+              className='w-5 h-5'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M19 9l-7 7-7-7'
+              />
+            </svg>
+          </div>
         </div>
       </button>
       <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
@@ -149,34 +154,36 @@ export default function AccountPage() {
       <div className='max-w-4xl mx-auto'>
         <div className='space-y-4'>
           {/* Account Balance & Top-up */}
-          <div className='bg-white rounded-lg border border-gray-200 shadow-sm'>
-            <div className='px-6 py-4 border-b border-gray-200'>
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center space-x-3'>
-                  <svg
-                    className='w-6 h-6'
-                    fill='none'
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'
-                    />
-                  </svg>
-                  <h3 className='text-lg font-semibold text-gray-900'>Saldo konta</h3>
-                </div>
-                <p className='text-2xl font-bold text-gray-900'>250,00 zł</p>
-              </div>
-            </div>
-            <div className='p-6'>
+          <AccordionSection
+            id='balance'
+            title='Saldo'
+            icon={
+              <svg
+                className='w-6 h-6'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'
+                />
+              </svg>
+            }
+            rightContent={
+              <span className='text-xl font-bold text-gray-900 px-3 py-1 border border-gray-300 rounded-lg bg-gray-50 min-w-[120px] text-center'>250,00 zł</span>
+            }
+            isOpen={openSections.balance ?? false}
+            onToggle={toggleSection}
+          >
+            <div className='pt-4'>
               <button className='w-full bg-emerald-500 text-white py-3 rounded-lg hover:bg-emerald-600 transition-colors font-bold'>
                 Doładuj konto
               </button>
             </div>
-          </div>
+          </AccordionSection>
 
           {/* Profile Information */}
           <AccordionSection
@@ -279,10 +286,15 @@ export default function AccountPage() {
                   className='bg-white rounded-lg border border-gray-200 p-3'
                 >
                   <div className='flex justify-between items-center'>
-                    <p className='text-gray-900 text-sm'>
-                      {address.name} | {address.street}
-                    </p>
-                    <button className='text-emerald-500 hover:text-emerald-600 text-sm'>
+                    <div>
+                      <h4 className='text-gray-900 text-lg font-bold'>
+                        {address.name}
+                      </h4>
+                      <p className='text-gray-900 text-sm'>
+                        {address.street}
+                      </p>
+                    </div>
+                    <button className='text-emerald-500 hover:text-emerald-600 text-sm font-bold'>
                       Edytuj
                     </button>
                   </div>
@@ -292,9 +304,9 @@ export default function AccountPage() {
               {!showAddressForm ? (
                 <button
                   onClick={() => setShowAddressForm(true)}
-                  className='w-full border border-gray-300 rounded-lg py-4 text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-colors'
+                  className='w-full border border-gray-300 rounded-lg py-4 text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-colors font-bold'
                 >
-                  + Dodaj nowy adres
+                  Dodaj
                 </button>
               ) : null}
               
@@ -356,13 +368,13 @@ export default function AccountPage() {
                       <button
                         type='button'
                         onClick={() => setShowAddressForm(false)}
-                        className='flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors'
+                        className='flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-bold'
                       >
                         Anuluj
                       </button>
                       <button
                         type='submit'
-                        className='flex-1 px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors'
+                        className='flex-1 px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors font-bold'
                       >
                         Zapisz
                       </button>
@@ -375,7 +387,7 @@ export default function AccountPage() {
         </div>
 
         {/* Action Button */}
-        <div className='mt-8'>
+        <div className='mt-4'>
           <a
             href='/dashboard'
             className='w-full sm:w-1/2 px-6 py-4 border border-gray-200 bg-white text-gray-700 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all duration-300 text-center flex items-center justify-center'
