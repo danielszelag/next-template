@@ -153,7 +153,7 @@ export default function CalendarPage() {
               ? 'bg-emerald-500 text-white border-emerald-500 shadow-sm'
               : isDisabled
               ? 'text-gray-300 cursor-not-allowed border-transparent'
-              : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 border-transparent hover:border-gray-200'
+              : 'text-gray-700 border-transparent hover:bg-gray-50 hover:border-gray-300'
           }`}
         >
           {day}
@@ -188,7 +188,7 @@ export default function CalendarPage() {
               </div>
             </button>
             <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
-              openSection === 'date' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+              openSection === 'date' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
             }`}>
               <div className='p-6 bg-gray-50'>
                 {/* Calendar Content */}
@@ -378,7 +378,7 @@ export default function CalendarPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className='text-center py-8'>
+                  <div className='text-center py-6'>
                     <div className='text-gray-500 text-lg mb-2'>
                       Brak zapisanych adresów
                     </div>

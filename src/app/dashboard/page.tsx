@@ -187,7 +187,7 @@ export default function DashboardPage() {
   return (
     <PageLayout>
       {/* Header */}
-      <div className='text-center mb-8'>
+      <div className='text-center mb-4'>
         <h1 className='text-4xl md:text-5xl font-light text-gray-900 mb-4'>
           Witaj,{' '}
           {user?.firstName ||
@@ -201,7 +201,7 @@ export default function DashboardPage() {
         </p>
       </div>
 
-            {/* Elegant Accordion Dashboard */}
+      {/* Elegant Accordion Dashboard */}
       <div className='space-y-4'>
         {/* Main Actions */}
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
