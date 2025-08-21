@@ -118,7 +118,7 @@ export default function VideoPlayer({ session, onClose }: VideoPlayerProps) {
                       session.serviceType as keyof typeof serviceTypeLabels
                     ]
                   }{' '}
-                  • {session.location}
+                  • Lokalizacja nieznana
                 </p>
               </div>
             </div>

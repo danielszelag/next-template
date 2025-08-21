@@ -19,7 +19,8 @@ export default function RecordingCard({ session, onPlay }: RecordingCardProps) {
     }).format(date)
   }
 
-  const formatLocation = (location: string) => {
+  const formatLocation = (location?: string) => {
+    if (!location) return 'Lokalizacja nieznana'
     // Extract just the street name, remove numbers and districts
     const parts = location.split(',').map((part) => part.trim())
     // Take the street name (first part) and remove numbers
@@ -70,7 +71,7 @@ export default function RecordingCard({ session, onPlay }: RecordingCardProps) {
       <div className='absolute bottom-3 left-3 right-3'>
         <div className='bg-black/20 backdrop-blur-sm rounded px-2 py-1'>
           <p className='text-sm font-medium text-white truncate'>
-            {formatLocation(session.location)}
+            {formatLocation(undefined)}
           </p>
         </div>
       </div>

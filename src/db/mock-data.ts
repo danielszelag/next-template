@@ -7,12 +7,12 @@ export const mockCleaningSessions: Omit<
   {
     id: '1',
     userId: 'user_mock_1', // This will be replaced with actual Clerk user ID
+    addressId: null, // Could reference an address if we have address data
     streamId: 'stream_abc123',
     liveInputId: null,
     cleanerName: 'Anna Kowalska',
     cleanerAvatar:
       'https://images.unsplash.com/photo-1494790108755-2616b9da6f87?w=64&h=64&fit=crop&crop=face',
-    location: 'Wrocław - Stare Miasto, ul. Rynek 15',
     serviceType: 'standard',
     scheduledTime: new Date('2025-01-25T14:00:00'),
     startTime: new Date('2025-01-25T14:05:00'),
@@ -33,12 +33,12 @@ export const mockCleaningSessions: Omit<
   {
     id: '2',
     userId: 'user_mock_1',
+    addressId: null, // Could reference an address if we have address data
     streamId: 'stream_def456',
     liveInputId: null,
     cleanerName: 'Piotr Nowak',
     cleanerAvatar:
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop&crop=face',
-    location: 'Wrocław - Krzyki, os. Huby 5/12',
     serviceType: 'deep',
     scheduledTime: new Date('2025-01-20T10:00:00'),
     startTime: new Date('2025-01-20T10:10:00'),
@@ -59,12 +59,12 @@ export const mockCleaningSessions: Omit<
   {
     id: '3',
     userId: 'user_mock_1',
+    addressId: null, // Could reference an address if we have address data
     streamId: null,
     liveInputId: 'live_input_789',
     cleanerName: 'Maria Wiśniewska',
     cleanerAvatar:
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&crop=face',
-    location: 'Wrocław - Fabryczna, ul. Legnicka 52',
     serviceType: 'window',
     scheduledTime: new Date('2025-01-25T15:30:00'),
     startTime: new Date('2025-01-25T15:30:00'),
