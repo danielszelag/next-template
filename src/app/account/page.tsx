@@ -483,16 +483,16 @@ export default function AccountPage() {
                   {!isEditingProfile ? (
                     // Display mode
                     <div className='space-y-4'>
-                      <div className='px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 min-h-[42px] flex items-center'>
+                      <div className='px-3 py-2 bg-white border border-gray-200 rounded-lg text-gray-800 min-h-[42px] flex items-center'>
                         {profileFormData.firstName || 'Imię'}
                       </div>
-                      <div className='px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 min-h-[42px] flex items-center'>
+                      <div className='px-3 py-2 bg-white border border-gray-200 rounded-lg text-gray-800 min-h-[42px] flex items-center'>
                         {profileFormData.lastName || 'Nazwisko'}
                       </div>
-                      <div className='px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 min-h-[42px] flex items-center'>
+                      <div className='px-3 py-2 bg-white border border-gray-200 rounded-lg text-gray-800 min-h-[42px] flex items-center'>
                         {profileFormData.email || 'Email'}
                       </div>
-                      <div className='px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 min-h-[42px] flex items-center'>
+                      <div className='px-3 py-2 bg-white border border-gray-200 rounded-lg text-gray-800 min-h-[42px] flex items-center'>
                         {profileFormData.phone || 'Numer telefonu'}
                       </div>
                       <button
@@ -515,7 +515,7 @@ export default function AccountPage() {
                           }))
                         }
                         placeholder='Imię'
-                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-h-[42px]'
+                        className='w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-h-[42px]'
                       />
                       <input
                         type='text'
@@ -527,7 +527,7 @@ export default function AccountPage() {
                           }))
                         }
                         placeholder='Nazwisko'
-                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-h-[42px]'
+                        className='w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-h-[42px]'
                       />
                       <input
                         type='email'
@@ -539,7 +539,7 @@ export default function AccountPage() {
                           }))
                         }
                         placeholder='Email'
-                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-h-[42px]'
+                        className='w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-h-[42px]'
                       />
                       <input
                         type='tel'
@@ -551,7 +551,7 @@ export default function AccountPage() {
                           }))
                         }
                         placeholder='Numer telefonu'
-                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-h-[42px]'
+                        className='w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-h-[42px]'
                       />
                       <div className='flex space-x-3'>
                         <button
