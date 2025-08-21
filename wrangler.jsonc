@@ -11,6 +11,14 @@
     "binding": "ASSETS",
     "directory": ".open-next/assets"
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "cleanrecord-db",
+      "database_id": "89ddfb9e-002b-4ea1-9bbc-8656b569a582",
+      "migrations_dir": "drizzle/migrations"
+    }
+  ],
   "observability": {
     "enabled": true
   },

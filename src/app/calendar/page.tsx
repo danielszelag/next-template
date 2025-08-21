@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PageLayout from '@/components/page-layout'
+import type { Address } from '@/types/api'
 
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
@@ -11,24 +12,32 @@ export default function CalendarPage() {
     'date' | 'time' | 'address' | null
   >('date')
   const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [savedAddresses, setSavedAddresses] = useState<Address[]>([])
+  const [loadingAddresses, setLoadingAddresses] = useState(true)
 
-  // Mock addresses - replace with your preferred data sharing method
-  const savedAddresses = [
-    {
-      id: '1',
-      name: 'Dom',
-      street: 'ul. Marszałkowska 123/45',
-      postalCode: '00-123',
-      city: 'Warszawa',
-    },
-    {
-      id: '2',
-      name: 'Biuro',
-      street: 'ul. Nowy Świat 67',
-      postalCode: '00-456',
-      city: 'Warszawa',
-    },
-  ]
+  // Fetch addresses from API
+  const fetchAddresses = async () => {
+    try {
+      const response = await fetch('/api/addresses')
+      if (response.ok) {
+        const data = await response.json() as Address[]
+        setSavedAddresses(data)
+      } else {
+        console.error('Failed to fetch addresses')
+        setSavedAddresses([])
+      }
+    } catch (error) {
+      console.error('Error fetching addresses:', error)
+      setSavedAddresses([])
+    } finally {
+      setLoadingAddresses(false)
+    }
+  }
+
+  // Load addresses on component mount
+  useEffect(() => {
+    fetchAddresses()
+  }, [])
 
   const months = [
     'Styczeń',
@@ -341,7 +350,11 @@ export default function CalendarPage() {
               openSection === 'address' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
             }`}>
               <div className='p-6 bg-gray-50'>
-                {savedAddresses.length > 0 ? (
+                {loadingAddresses ? (
+                  <div className='flex justify-center py-8'>
+                    <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500'></div>
+                  </div>
+                ) : savedAddresses.length > 0 ? (
                   <div className='space-y-3'>
                     {savedAddresses.map((address) => (
                       <button
