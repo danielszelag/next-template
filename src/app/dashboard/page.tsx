@@ -189,7 +189,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div className='text-center mb-6 sm:mb-12'>
         <h1 className='text-4xl md:text-5xl font-light text-gray-900 mb-4'>
-          Witaj,{' '}
+          Witaj, LOLOL{' '}
           {user?.firstName ||
             user?.emailAddresses[0]?.emailAddress?.split('@')[0] ||
             'Użytkowniku'}
