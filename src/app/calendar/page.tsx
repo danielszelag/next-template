@@ -304,7 +304,7 @@ export default function CalendarPage() {
                         slot.available && handleTimeSelect(slot.time)
                       }
                       disabled={!slot.available}
-                      className={`p-4 rounded-lg transition-colors flex flex-col items-center justify-center border ${
+                      className={`p-4 rounded-lg transition-colors flex items-center justify-center border min-h-[60px] ${
                         selectedTime === slot.time
                           ? 'bg-emerald-500 text-white border-emerald-500 shadow-sm'
                           : slot.available
@@ -313,11 +313,6 @@ export default function CalendarPage() {
                       }`}
                     >
                       <span className='text-lg font-medium'>{slot.time}</span>
-                      {!slot.available && (
-                        <span className='text-xs mt-1 text-gray-500'>
-                          Zajęte
-                        </span>
-                      )}
                     </button>
                   ))}
                 </div>

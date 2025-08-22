@@ -400,22 +400,23 @@ export default function AccountPage() {
             title='Saldo'
             icon={
               <svg
-                className='w-6 h-6'
+                className='w-6 h-6 text-green-500'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'
+                strokeWidth={2}
               >
+                <circle cx="12" cy="12" r="10" />
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
-                  strokeWidth={2}
                   d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'
                 />
               </svg>
             }
             rightContent={
               <span className='text-xl font-bold text-gray-900 px-3 py-1 border border-gray-300 rounded-lg bg-gray-50 min-w-[120px] text-center'>
-                250,00 zł
+                1250,00 zł
               </span>
             }
             isOpen={openSections.balance ?? false}
@@ -440,7 +441,7 @@ export default function AccountPage() {
             title='Dane osobowe'
             icon={
               <svg
-                className='w-6 h-6'
+                className='w-6 h-6 text-blue-400'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'
@@ -597,7 +598,7 @@ export default function AccountPage() {
             title='Adresy'
             icon={
               <svg
-                className='w-6 h-6'
+                className='w-6 h-6 text-red-500'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'
