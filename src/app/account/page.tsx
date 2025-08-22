@@ -83,7 +83,7 @@ const AccordionSection = ({
           isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className='px-6 pb-6 bg-gray-50 border-t border-gray-200'>
+        <div className='px-6 py-6 bg-gray-50 border-t border-gray-200'>
           {children}
         </div>
       </div>
@@ -421,8 +421,8 @@ export default function AccountPage() {
             isOpen={openSections.balance ?? false}
             onToggle={toggleSection}
           >
-            <div className='pt-4 space-y-3'>
-              <button className='w-full bg-white text-black py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'>
+            <div className='space-y-3'>
+              <button className='w-full bg-black text-white py-3 rounded-lg border border-gray-300 hover:bg-gray-800 transition-colors font-bold'>
                 Doładuj konto
               </button>
               <button className='w-full bg-white text-black py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'>
@@ -456,7 +456,7 @@ export default function AccountPage() {
             isOpen={openSections.profile ?? true}
             onToggle={toggleSection}
           >
-            <div className='space-y-4 pt-4'>
+            <div className='space-y-4'>
               {loadingProfile ? (
                 <div className='flex justify-center py-8'>
                   <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500'></div>
@@ -502,7 +502,7 @@ export default function AccountPage() {
                       </div>
                       <button
                         onClick={() => setIsEditingProfile(true)}
-                        className='w-full bg-white text-black py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'
+                        className='w-full bg-black text-white py-2 rounded-lg border border-gray-300 hover:bg-gray-800 transition-colors font-bold'
                       >
                         Edytuj
                       </button>
@@ -619,155 +619,175 @@ export default function AccountPage() {
             isOpen={openSections.addresses ?? false}
             onToggle={toggleSection}
           >
-            <div className='space-y-4 pt-4'>
+            <div className={`${showAddressForm ? '' : 'space-y-4'}`}>
               {loading ? (
                 <div className='flex justify-center py-8'>
                   <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500'></div>
                 </div>
-              ) : addresses.length === 0 ? (
-                <div className='text-center py-2 text-gray-500'>
-                  <p>Brak zapisanych adresów</p>
-                </div>
               ) : (
-                addresses.map((address) => (
+                <>
+                  {addresses.length > 0 &&
+                    addresses.map((address) => (
+                      <div
+                        key={address.id}
+                        className='bg-white rounded-lg border border-gray-200 p-3'
+                      >
+                        {editingAddressId === address.id ? (
+                          // Editing mode
+                          <div className='space-y-3'>
+                            <input
+                              type='text'
+                              value={editFormData.name}
+                              onChange={(e) =>
+                                setEditFormData((prev) => ({
+                                  ...prev,
+                                  name: e.target.value,
+                                }))
+                              }
+                              placeholder='Dom, Praca, Biuro...'
+                              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                            />
+                            <input
+                              type='text'
+                              value={editFormData.street}
+                              onChange={(e) =>
+                                setEditFormData((prev) => ({
+                                  ...prev,
+                                  street: e.target.value,
+                                }))
+                              }
+                              placeholder='Ulica i numer'
+                              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                            />
+                            <div className='grid grid-cols-2 gap-3'>
+                              <input
+                                type='text'
+                                value={editFormData.postalCode}
+                                onChange={(e) =>
+                                  setEditFormData((prev) => ({
+                                    ...prev,
+                                    postalCode: e.target.value,
+                                  }))
+                                }
+                                placeholder='Kod pocztowy'
+                                className='px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                              />
+                              <input
+                                type='text'
+                                value={editFormData.city}
+                                onChange={(e) =>
+                                  setEditFormData((prev) => ({
+                                    ...prev,
+                                    city: e.target.value,
+                                  }))
+                                }
+                                placeholder='Miasto'
+                                className='px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                              />
+                            </div>
+                            <div className='flex space-x-3'>
+                              <button
+                                onClick={() => {
+                                  setEditingAddressId(null)
+                                  setEditFormData({
+                                    name: '',
+                                    street: '',
+                                    postalCode: '',
+                                    city: '',
+                                  })
+                                }}
+                                type='button'
+                                className='flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-bold'
+                              >
+                                Anuluj
+                              </button>
+                              <button
+                                onClick={async () => {
+                                  await updateAddress(address.id, editFormData)
+                                }}
+                                type='button'
+                                className='flex-1 bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-colors font-bold'
+                              >
+                                Zapisz
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          // Display mode
+                          <div className='flex justify-between items-center gap-3'>
+                            <div className='flex flex-col sm:flex-row sm:items-center sm:gap-4 flex-1 min-w-0'>
+                              <h4 className='text-gray-900 text-lg font-bold'>
+                                {address.name}
+                              </h4>
+                              <p className='text-gray-900 text-sm'>
+                                {address.street}
+                              </p>
+                              <p className='text-gray-600 text-sm'>
+                                {address.postalCode} {address.city}
+                              </p>
+                            </div>
+                            <div className='flex flex-col space-y-4 flex-shrink-0'>
+                              <button
+                                onClick={() => {
+                                  setAddressToDelete(address)
+                                  setShowDeleteModal(true)
+                                }}
+                                className='text-red-500 hover:text-red-600 text-sm font-bold'
+                              >
+                                Usuń
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setEditingAddressId(address.id)
+                                  setEditFormData({
+                                    name: address.name,
+                                    street: address.street,
+                                    postalCode: address.postalCode,
+                                    city: address.city,
+                                  })
+                                }}
+                                className='text-emerald-500 hover:text-emerald-600 text-sm font-bold'
+                              >
+                                Edytuj
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+
+                  {/* Empty state with smooth transition */}
                   <div
-                    key={address.id}
-                    className='bg-white rounded-lg border border-gray-200 p-3'
+                    className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                      addresses.length === 0 && !showAddressForm
+                        ? 'max-h-16 opacity-100'
+                        : 'max-h-0 opacity-0'
+                    }`}
                   >
-                    {editingAddressId === address.id ? (
-                      // Editing mode
-                      <div className='space-y-3'>
-                        <input
-                          type='text'
-                          value={editFormData.name}
-                          onChange={(e) =>
-                            setEditFormData((prev) => ({
-                              ...prev,
-                              name: e.target.value,
-                            }))
-                          }
-                          placeholder='Dom, Praca, Biuro...'
-                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
-                        />
-                        <input
-                          type='text'
-                          value={editFormData.street}
-                          onChange={(e) =>
-                            setEditFormData((prev) => ({
-                              ...prev,
-                              street: e.target.value,
-                            }))
-                          }
-                          placeholder='Ulica i numer'
-                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
-                        />
-                        <div className='grid grid-cols-2 gap-3'>
-                          <input
-                            type='text'
-                            value={editFormData.postalCode}
-                            onChange={(e) =>
-                              setEditFormData((prev) => ({
-                                ...prev,
-                                postalCode: e.target.value,
-                              }))
-                            }
-                            placeholder='Kod pocztowy'
-                            className='px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
-                          />
-                          <input
-                            type='text'
-                            value={editFormData.city}
-                            onChange={(e) =>
-                              setEditFormData((prev) => ({
-                                ...prev,
-                                city: e.target.value,
-                              }))
-                            }
-                            placeholder='Miasto'
-                            className='px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
-                          />
-                        </div>
-                        <div className='flex space-x-3'>
-                          <button
-                            onClick={() => {
-                              setEditingAddressId(null)
-                              setEditFormData({
-                                name: '',
-                                street: '',
-                                postalCode: '',
-                                city: '',
-                              })
-                            }}
-                            type='button'
-                            className='flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-bold'
-                          >
-                            Anuluj
-                          </button>
-                          <button
-                            onClick={async () => {
-                              await updateAddress(address.id, editFormData)
-                            }}
-                            type='button'
-                            className='flex-1 bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-colors font-bold'
-                          >
-                            Zapisz
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      // Display mode
-                      <div className='flex justify-between items-center gap-3'>
-                        <div className='flex flex-col sm:flex-row sm:items-center sm:gap-4 flex-1 min-w-0'>
-                          <h4 className='text-gray-900 text-lg font-bold'>
-                            {address.name}
-                          </h4>
-                          <p className='text-gray-900 text-sm'>
-                            {address.street}
-                          </p>
-                          <p className='text-gray-600 text-sm'>
-                            {address.postalCode} {address.city}
-                          </p>
-                        </div>
-                        <div className='flex flex-col space-y-4 flex-shrink-0'>
-                          <button
-                            onClick={() => {
-                              setAddressToDelete(address)
-                              setShowDeleteModal(true)
-                            }}
-                            className='text-red-500 hover:text-red-600 text-sm font-bold'
-                          >
-                            Usuń
-                          </button>
-                          <button
-                            onClick={() => {
-                              setEditingAddressId(address.id)
-                              setEditFormData({
-                                name: address.name,
-                                street: address.street,
-                                postalCode: address.postalCode,
-                                city: address.city,
-                              })
-                            }}
-                            className='text-emerald-500 hover:text-emerald-600 text-sm font-bold'
-                          >
-                            Edytuj
-                          </button>
-                        </div>
-                      </div>
-                    )}
+                    <div className='text-center py-2 text-gray-500'>
+                      <p>Brak zapisanych adresów</p>
+                    </div>
                   </div>
-                ))
+
+                  {/* Add button with smooth transition */}
+                  <div
+                    className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                      !showAddressForm
+                        ? 'max-h-12 opacity-100'
+                        : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <button
+                      onClick={() => setShowAddressForm(true)}
+                      className='w-full bg-black text-white py-2 rounded-lg border border-gray-300 hover:bg-gray-800 transition-colors font-bold'
+                    >
+                      Dodaj
+                    </button>
+                  </div>
+                </>
               )}
 
-              {!showAddressForm ? (
-                <button
-                  onClick={() => setShowAddressForm(true)}
-                  className='w-full bg-white text-black py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'
-                >
-                  Dodaj
-                </button>
-              ) : null}
-
+              {/* Add form with smooth transition */}
               <div
                 className={`transition-all duration-300 ease-in-out overflow-hidden ${
                   showAddressForm

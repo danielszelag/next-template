@@ -20,7 +20,7 @@ export default function CalendarPage() {
     try {
       const response = await fetch('/api/addresses')
       if (response.ok) {
-        const data = await response.json() as Address[]
+        const data = (await response.json()) as Address[]
         setSavedAddresses(data)
       } else {
         console.error('Failed to fetch addresses')
@@ -196,9 +196,13 @@ export default function CalendarPage() {
                 </span>
               </div>
             </button>
-            <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
-              openSection === 'date' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
-            }`}>
+            <div
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                openSection === 'date'
+                  ? 'max-h-[500px] opacity-100'
+                  : 'max-h-0 opacity-0'
+              }`}
+            >
               <div className='p-6 bg-gray-50'>
                 {/* Calendar Content */}
                 <div className='flex items-center justify-between mb-4'>
@@ -283,9 +287,13 @@ export default function CalendarPage() {
                 </span>
               </div>
             </button>
-            <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
-              openSection === 'time' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-            }`}>
+            <div
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                openSection === 'time'
+                  ? 'max-h-96 opacity-100'
+                  : 'max-h-0 opacity-0'
+              }`}
+            >
               <div className='p-6 bg-gray-50'>
                 {/* Time Slot Content */}
                 <div className='grid grid-cols-3 gap-3 max-w-sm mx-auto'>
@@ -346,9 +354,13 @@ export default function CalendarPage() {
                 </span>
               </div>
             </button>
-            <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
-              openSection === 'address' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-            }`}>
+            <div
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                openSection === 'address'
+                  ? 'max-h-96 opacity-100'
+                  : 'max-h-0 opacity-0'
+              }`}
+            >
               <div className='p-6 bg-gray-50'>
                 {loadingAddresses ? (
                   <div className='flex justify-center py-8'>
@@ -366,37 +378,38 @@ export default function CalendarPage() {
                             : 'bg-white text-gray-900 hover:bg-gray-50 border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <div className='font-medium text-lg'>
-                          {address.name}
-                        </div>
-                        <div
-                          className={`text-sm mt-1 ${
-                            selectedAddress === address.id
-                              ? 'text-emerald-100'
-                              : 'text-gray-600'
-                          }`}
-                        >
-                          {address.street}
-                        </div>
-                        <div
-                          className={`text-sm ${
-                            selectedAddress === address.id
-                              ? 'text-emerald-100'
-                              : 'text-gray-600'
-                          }`}
-                        >
-                          {address.postalCode} {address.city}
+                        <div className='flex justify-between items-start'>
+                          <div className='font-medium text-lg'>
+                            {address.name}
+                          </div>
+                          <div className='text-right'>
+                            <div
+                              className={`text-sm ${
+                                selectedAddress === address.id
+                                  ? 'text-emerald-100'
+                                  : 'text-gray-600'
+                              }`}
+                            >
+                              {address.street}
+                            </div>
+                            <div
+                              className={`text-sm ${
+                                selectedAddress === address.id
+                                  ? 'text-emerald-100'
+                                  : 'text-gray-600'
+                              }`}
+                            >
+                              {address.postalCode} {address.city}
+                            </div>
+                          </div>
                         </div>
                       </button>
                     ))}
                   </div>
                 ) : (
-                  <div className='text-center py-6'>
-                    <div className='text-gray-500 text-lg mb-2'>
+                  <div className='text-center'>
+                    <div className='text-gray-500 text-lg mb-6'>
                       Brak zapisanych adresów
-                    </div>
-                    <div className='text-gray-400 text-sm mb-4'>
-                      Dodaj adres w swoim profilu, aby móc go wybrać tutaj
                     </div>
                     <a
                       href='/account?section=addresses'

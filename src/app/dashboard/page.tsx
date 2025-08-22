@@ -188,11 +188,13 @@ export default function DashboardPage() {
     <PageLayout>
       {/* Header */}
       <div className='text-center mb-6 sm:mb-12'>
-        <h1 className='text-4xl md:text-5xl font-light text-gray-900 mb-4'>
-          Witaj, LOLOL{' '}
-          {user?.firstName ||
-            user?.emailAddresses[0]?.emailAddress?.split('@')[0] ||
-            'Użytkowniku'}
+        <h1 className='text-4xl md:text-5xl font-light text-gray-900 mb-4 break-words'>
+          Witaj,{' '}
+          <span className='inline-block'>
+            {user?.firstName ||
+              user?.emailAddresses[0]?.emailAddress?.split('@')[0] ||
+              'Użytkowniku'}
+          </span>
           ! 👋
         </h1>
         <p className='text-lg text-gray-600 max-w-2xl mx-auto'>
