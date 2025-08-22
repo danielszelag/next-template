@@ -19,6 +19,13 @@
       "migrations_dir": "drizzle/migrations"
     }
   ],
+  "vars": {
+    "DATABASE_MODE": "production",
+    "NEXT_PUBLIC_CLERK_SIGN_IN_URL": "/sign-in",
+    "NEXT_PUBLIC_CLERK_SIGN_UP_URL": "/sign-up",
+    "NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL": "/dashboard",
+    "NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL": "/dashboard"
+  },
   "observability": {
     "enabled": true
   },
