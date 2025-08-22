@@ -4,36 +4,6 @@ import { createDB, userAddresses } from '@/db'
 import { eq, and } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 
-// Access D1 database from Cloudflare environment
-function getDatabase(): ReturnType<typeof createDB> {
-  // Check database mode from environment
-  const databaseMode = process.env.DATABASE_MODE || process.env.NODE_ENV
-  
-  if (databaseMode === 'development') {
-    return createDB()
-  }
-  
-  // In production mode, try to get D1 binding from different sources
-  // Method 1: From globalThis (Cloudflare Workers)
-  const globalEnv = (globalThis as typeof globalThis & { env?: { DB?: D1Database } })?.env
-  if (globalEnv?.DB) {
-    return createDB(globalEnv.DB)
-  }
-  
-  // Method 2: From process.env (alternative binding method)
-  const processEnv = process.env as typeof process.env & { DB?: D1Database }
-  if (processEnv?.DB) {
-    return createDB(processEnv.DB)
-  }
-  
-  // Method 3: Try to get from Cloudflare runtime
-  if (typeof globalThis !== 'undefined' && 'DB' in globalThis) {
-    return createDB((globalThis as typeof globalThis & { DB: D1Database }).DB)
-  }
-  
-  throw new Error('D1 database binding not found. Make sure DB is configured in wrangler.toml and DATABASE_MODE is set correctly.')
-}
-
 // GET /api/addresses - Get all addresses for authenticated user
 export async function GET() {
   try {
@@ -43,7 +13,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const db = getDatabase()
+    const db = createDB()
     const addresses = await db.select().from(userAddresses).where(eq(userAddresses.userId, userId))
     
     return NextResponse.json(addresses)
@@ -75,7 +45,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert into database
-    const db = getDatabase()
+    const db = createDB()
     
     const newAddress = {
       id: nanoid(),
@@ -119,7 +89,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const db = getDatabase()
+    const db = createDB()
     
     // Update the address - ensure it belongs to the authenticated user
     const updatedAddress = await db
@@ -163,7 +133,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Missing address ID' }, { status: 400 })
     }
 
-    const db = getDatabase()
+    const db = createDB()
     
     // Delete the address - ensure it belongs to the authenticated user
     const deletedAddress = await db
