@@ -373,8 +373,8 @@ export default function CalendarPage() {
                             : 'bg-white text-gray-900 hover:bg-gray-50 border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <div className='flex justify-between items-start'>
-                          <div className='font-medium text-lg'>
+                        <div className='flex justify-between items-center'>
+                          <div className='font-bold text-lg'>
                             {address.name}
                           </div>
                           <div className='text-right'>
