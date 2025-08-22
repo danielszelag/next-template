@@ -6,17 +6,32 @@ import { nanoid } from 'nanoid'
 
 // Access D1 database from Cloudflare environment
 function getDatabase(): ReturnType<typeof createDB> {
-  // In development mode, use local database
-  if (process.env.NODE_ENV === 'development') {
+  // Check database mode from environment
+  const databaseMode = process.env.DATABASE_MODE || process.env.NODE_ENV
+  
+  if (databaseMode === 'development') {
     return createDB()
   }
   
-  // In production, use Cloudflare D1 binding
-  const env = (globalThis as { env?: { DB?: D1Database } }).env || (process.env as { DB?: D1Database })
-  if (!env.DB) {
-    throw new Error('D1 database binding not found. Make sure DB is configured in wrangler.toml')
+  // In production mode, try to get D1 binding from different sources
+  // Method 1: From globalThis (Cloudflare Workers)
+  const globalEnv = (globalThis as typeof globalThis & { env?: { DB?: D1Database } })?.env
+  if (globalEnv?.DB) {
+    return createDB(globalEnv.DB)
   }
-  return createDB(env.DB)
+  
+  // Method 2: From process.env (alternative binding method)
+  const processEnv = process.env as typeof process.env & { DB?: D1Database }
+  if (processEnv?.DB) {
+    return createDB(processEnv.DB)
+  }
+  
+  // Method 3: Try to get from Cloudflare runtime
+  if (typeof globalThis !== 'undefined' && 'DB' in globalThis) {
+    return createDB((globalThis as typeof globalThis & { DB: D1Database }).DB)
+  }
+  
+  throw new Error('D1 database binding not found. Make sure DB is configured in wrangler.toml and DATABASE_MODE is set correctly.')
 }
 
 // GET /api/addresses - Get all addresses for authenticated user

@@ -29,14 +29,17 @@ function getLocalDatabase() {
 
 // This will be initialized with the actual D1 database in API routes
 export function createDB(d1?: D1Database) {
-  // In development, use local SQLite database
-  if (process.env.NODE_ENV === 'development' && !d1) {
+  // Check database mode from environment
+  const databaseMode = process.env.DATABASE_MODE || process.env.NODE_ENV
+  
+  // In development mode, use local SQLite database
+  if (databaseMode === 'development' && !d1) {
     return getLocalDatabase()
   }
   
-  // In production, use the D1 database binding
+  // In production mode, use the D1 database binding
   if (!d1) {
-    throw new Error('D1 database binding not found')
+    throw new Error('D1 database binding not found. Set DATABASE_MODE=development to use local database.')
   }
   
   return drizzle(d1, { schema })
