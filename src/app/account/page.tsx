@@ -240,7 +240,10 @@ export default function AccountPage() {
   }
 
   // Update existing address
-  const updateAddress = async (addressId: string, addressData: CreateAddressRequest) => {
+  const updateAddress = async (
+    addressId: string,
+    addressData: CreateAddressRequest
+  ) => {
     try {
       const response = await fetch('/api/addresses', {
         method: 'PUT',
@@ -252,9 +255,11 @@ export default function AccountPage() {
 
       if (response.ok) {
         const updatedAddress = (await response.json()) as Address
-        setAddresses(addresses.map(addr => 
-          addr.id === addressId ? updatedAddress : addr
-        ))
+        setAddresses(
+          addresses.map((addr) =>
+            addr.id === addressId ? updatedAddress : addr
+          )
+        )
         setEditFormData({ name: '', street: '', postalCode: '', city: '' })
         setEditingAddressId(null)
       } else {
@@ -277,7 +282,7 @@ export default function AccountPage() {
       })
 
       if (response.ok) {
-        setAddresses(addresses.filter(addr => addr.id !== addressId))
+        setAddresses(addresses.filter((addr) => addr.id !== addressId))
         // If we're editing this address, clear the editing state
         if (editingAddressId === addressId) {
           setEditingAddressId(null)
@@ -479,7 +484,7 @@ export default function AccountPage() {
                         </div>
                       </div>
                     )}
-                  
+
                   {!isEditingProfile ? (
                     // Display mode
                     <div className='space-y-4'>
@@ -636,7 +641,10 @@ export default function AccountPage() {
                           type='text'
                           value={editFormData.name}
                           onChange={(e) =>
-                            setEditFormData((prev) => ({ ...prev, name: e.target.value }))
+                            setEditFormData((prev) => ({
+                              ...prev,
+                              name: e.target.value,
+                            }))
                           }
                           placeholder='Dom, Praca, Biuro...'
                           className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
@@ -645,7 +653,10 @@ export default function AccountPage() {
                           type='text'
                           value={editFormData.street}
                           onChange={(e) =>
-                            setEditFormData((prev) => ({ ...prev, street: e.target.value }))
+                            setEditFormData((prev) => ({
+                              ...prev,
+                              street: e.target.value,
+                            }))
                           }
                           placeholder='Ulica i numer'
                           className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
@@ -655,7 +666,10 @@ export default function AccountPage() {
                             type='text'
                             value={editFormData.postalCode}
                             onChange={(e) =>
-                              setEditFormData((prev) => ({ ...prev, postalCode: e.target.value }))
+                              setEditFormData((prev) => ({
+                                ...prev,
+                                postalCode: e.target.value,
+                              }))
                             }
                             placeholder='Kod pocztowy'
                             className='px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
@@ -664,13 +678,16 @@ export default function AccountPage() {
                             type='text'
                             value={editFormData.city}
                             onChange={(e) =>
-                              setEditFormData((prev) => ({ ...prev, city: e.target.value }))
+                              setEditFormData((prev) => ({
+                                ...prev,
+                                city: e.target.value,
+                              }))
                             }
                             placeholder='Miasto'
                             className='px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
                           />
                         </div>
-                                                <div className='flex space-x-3'>
+                        <div className='flex space-x-3'>
                           <button
                             onClick={() => {
                               setEditingAddressId(null)
