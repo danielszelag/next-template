@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 interface BookingCalendarProps {
-  onDateSelect?: (date: Date, timeSlot: string) => void
+  onDateSelect?: (date: Date) => void
 }
 
 export default function BookingCalendar({ onDateSelect }: BookingCalendarProps) {
@@ -60,13 +60,13 @@ export default function BookingCalendar({ onDateSelect }: BookingCalendarProps) 
     if (isDateDisabled(date)) return
     setSelectedDate(date)
     setSelectedTimeSlot('')
+    if (onDateSelect) {
+      onDateSelect(date)
+    }
   }
 
   const handleTimeSlotClick = (timeSlot: string) => {
     setSelectedTimeSlot(timeSlot)
-    if (selectedDate && onDateSelect) {
-      onDateSelect(selectedDate, timeSlot)
-    }
   }
 
   const navigateMonth = (direction: 'prev' | 'next') => {
