@@ -47,7 +47,7 @@ export default function Navigation() {
               {/* Auth Section */}
               <SignedOut>
                 <SignInButton mode='modal' forceRedirectUrl='/dashboard'>
-                  <button className='bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors font-medium'>
+                  <button className='bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors font-bold'>
                     Zaloguj się
                   </button>
                 </SignInButton>
@@ -124,7 +124,7 @@ export default function Navigation() {
             <SignedOut>
               <div className='px-6'>
                 <SignInButton mode='modal' forceRedirectUrl='/dashboard'>
-                  <button className='w-full bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium'>
+                  <button className='w-full bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-bold'>
                     Zaloguj się
                   </button>
                 </SignInButton>

@@ -117,6 +117,7 @@ export default function AccountPage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [loadingProfile, setLoadingProfile] = useState(true)
   const [isEditingProfile, setIsEditingProfile] = useState(false)
+  const [showTransactionHistory, setShowTransactionHistory] = useState(false)
   const [profileFormData, setProfileFormData] = useState<CreateProfileRequest>({
     firstName: '',
     lastName: '',
@@ -124,6 +125,50 @@ export default function AccountPage() {
     phone: '',
     language: 'pl',
   })
+
+  // Mock transaction data
+  const mockTransactions = [
+    {
+      id: '1',
+      date: '2025-01-15',
+      type: 'doładowanie',
+      amount: 500.00,
+      description: 'Doładowanie konta kartą',
+      status: 'zakończona'
+    },
+    {
+      id: '2', 
+      date: '2025-01-10',
+      type: 'płatność',
+      amount: -120.00,
+      description: 'Sprzątanie mieszkania - ul. Warszawska 15',
+      status: 'zakończona'
+    },
+    {
+      id: '3',
+      date: '2025-01-08',
+      type: 'doładowanie', 
+      amount: 300.00,
+      description: 'Doładowanie konta BLIK',
+      status: 'zakończona'
+    },
+    {
+      id: '4',
+      date: '2025-01-05',
+      type: 'płatność',
+      amount: -85.00,
+      description: 'Sprzątanie biura - ul. Marszałkowska 100',
+      status: 'zakończona'
+    },
+    {
+      id: '5',
+      date: '2025-01-03',
+      type: 'zwrot',
+      amount: 45.00,
+      description: 'Zwrot za anulowane sprzątanie',
+      status: 'zakończona'
+    }
+  ]
 
   // Fetch addresses from API
   const fetchAddresses = async () => {
@@ -351,28 +396,22 @@ export default function AccountPage() {
 
   return (
     <PageLayout>
-      <div className='max-w-4xl mx-auto'>
-        {/* Delete Confirmation Modal */}
-        {showDeleteModal && (
-          <div
-            className='fixed inset-0 z-50 flex items-center justify-center p-4'
-            style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
-            onClick={handleDeleteCancel}
-          >
+      <div className='bg-green-50/20 min-h-screen -mx-6 px-6'>
+        <div className='max-w-4xl mx-auto pt-8'>
+          {/* Delete Confirmation Modal */}
+          {showDeleteModal && (
+            <div
+              className='fixed inset-0 z-50 flex items-center justify-center p-4'
+              style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
+              onClick={handleDeleteCancel}
+            >
             <div
               className='bg-white rounded-lg shadow-lg max-w-md w-full p-6'
               onClick={(e) => e.stopPropagation()}
             >
               <div className='mb-4'>
-                <h3 className='text-lg font-bold text-gray-900 mb-2'>
-                  Potwierdź usunięcie
-                </h3>
-                <p className='text-gray-600'>
-                  Czy na pewno chcesz usunąć adres{' '}
-                  <span className='font-semibold text-gray-900'>
-                    &ldquo;{addressToDelete?.name}&rdquo;
-                  </span>
-                  ? Tej operacji nie można cofnąć.
+                <p className='text-gray-600 text-center font-bold'>
+                  Czy na pewno chcesz usunąć ten adres?
                 </p>
               </div>
               <div className='flex space-x-3'>
@@ -429,9 +468,56 @@ export default function AccountPage() {
               <button className='w-full bg-white text-black py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'>
                 Wypłać z konta
               </button>
-              <button className='w-full bg-white text-black py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'>
+              <button 
+                onClick={() => setShowTransactionHistory(!showTransactionHistory)}
+                className='w-full bg-white text-black py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'
+              >
                 Historia transakcji
               </button>
+              
+              {/* Transaction History */}
+              {showTransactionHistory && (
+                <div className='mt-4 bg-white rounded-lg border border-gray-200 p-4'>
+                  <div className='space-y-3 max-h-80 overflow-y-auto'>
+                    {mockTransactions.map((transaction) => (
+                      <div 
+                        key={transaction.id}
+                        className='flex justify-between items-center py-3 px-4 bg-gray-50 rounded-lg'
+                      >
+                        <div className='flex-1'>
+                          <div className='flex items-center gap-2 mb-1'>
+                            <span className={`text-sm font-medium px-2 py-1 rounded-full ${
+                              transaction.type === 'doładowanie' 
+                                ? 'bg-green-100 text-green-800'
+                                : transaction.type === 'płatność'
+                                ? 'bg-red-100 text-red-800' 
+                                : 'bg-blue-100 text-blue-800'
+                            }`}>
+                              {transaction.type === 'doładowanie' ? 'Doładowanie' : 
+                               transaction.type === 'płatność' ? 'Płatność' : 'Zwrot'}
+                            </span>
+                            <span className='text-xs text-gray-500'>{transaction.date}</span>
+                          </div>
+                          <p className='text-sm text-gray-700'>{transaction.description}</p>
+                        </div>
+                        <div className='text-right ml-4'>
+                          <span className={`text-lg font-bold ${
+                            transaction.amount > 0 ? 'text-green-600' : 'text-red-600'
+                          }`}>
+                            {transaction.amount > 0 ? '+' : ''}{transaction.amount.toFixed(2)} zł
+                          </span>
+                          <p className='text-xs text-gray-500 mt-1'>{transaction.status}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {mockTransactions.length === 0 && (
+                    <div className='text-center py-8 text-gray-500'>
+                      <p>Brak transakcji do wyświetlenia</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </AccordionSection>
 
@@ -892,6 +978,7 @@ export default function AccountPage() {
           </a>
         </div>
       </div>
+    </div>
     </PageLayout>
   )
 }

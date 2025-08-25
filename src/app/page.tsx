@@ -9,7 +9,7 @@ export default function Home() {
   useAuthRedirect()
 
   return (
-    <div className='bg-white'>
+    <div className='bg-gray-50/30 min-h-screen'>
       {/* Hero Section */}
       <main className='relative'>
         <div className='max-w-7xl mx-auto px-6 pt-24 pb-32'>

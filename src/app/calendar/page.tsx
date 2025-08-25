@@ -1,10 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import PageLayout from '@/components/page-layout'
 import type { Address } from '@/types/api'
 
 export default function CalendarPage() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [selectedTime, setSelectedTime] = useState<string | null>(null)
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null)
@@ -14,6 +17,9 @@ export default function CalendarPage() {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [savedAddresses, setSavedAddresses] = useState<Address[]>([])
   const [loadingAddresses, setLoadingAddresses] = useState(true)
+  const [submittingBooking, setSubmittingBooking] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [editingBookingId, setEditingBookingId] = useState<string | null>(null)
 
   // Fetch addresses from API
   const fetchAddresses = async () => {
@@ -38,6 +44,99 @@ export default function CalendarPage() {
   useEffect(() => {
     fetchAddresses()
   }, [])
+
+  // Load data from URL parameters (for editing existing booking)
+  useEffect(() => {
+    const date = searchParams.get('date')
+    const time = searchParams.get('time')
+    const address = searchParams.get('address')
+    const bookingId = searchParams.get('bookingId')
+    const editing = searchParams.get('editing')
+
+    console.log('URL params:', { date, time, address, bookingId, editing })
+
+    if (date && time && address && editing === 'true') {
+      console.log('Setting editing mode with bookingId:', bookingId)
+      setSelectedDate(date)
+      setSelectedTime(time)
+      setSelectedAddress(address)
+      setIsEditing(true)
+      
+      if (bookingId) {
+        setEditingBookingId(bookingId)
+      }
+      
+      // Set the current month to the selected date's month
+      const selectedDateObj = new Date(date)
+      setCurrentMonth(selectedDateObj)
+      
+      // Open the date section first, but user can see all pre-filled data
+      setOpenSection('date')
+    }
+  }, [searchParams])
+
+  // Handle booking submission
+  const handleBooking = async () => {
+    if (!selectedDate || !selectedTime || !selectedAddress) {
+      alert('Proszę wypełnić wszystkie pola')
+      return
+    }
+
+    console.log('handleBooking - isEditing:', isEditing)
+    console.log('handleBooking - editingBookingId:', editingBookingId)
+
+    setSubmittingBooking(true)
+    
+    try {
+      const bookingData = {
+        date: selectedDate,
+        time: selectedTime,
+        addressId: selectedAddress,
+        serviceType: 'standard',
+        notes: isEditing ? 'Zaktualizowana rezerwacja' : 'Rezerwacja z kalendarza',
+      }
+
+      let response
+      if (isEditing && editingBookingId) {
+        console.log('Updating existing booking:', editingBookingId)
+        // Update existing booking
+        response = await fetch(`/api/bookings/${editingBookingId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(bookingData),
+        })
+      } else {
+        console.log('Creating new booking')
+        // Create new booking
+        response = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(bookingData),
+        })
+      }
+
+      if (response.ok) {
+        const result = await response.json()
+        console.log(isEditing ? 'Booking updated:' : 'Booking created:', result)
+        
+        // Redirect to dashboard
+        router.push('/dashboard')
+      } else {
+        const error = await response.json()
+        console.error('Booking failed:', error)
+        alert('Nie udało się ' + (isEditing ? 'zaktualizować' : 'utworzyć') + ' rezerwacji. Spróbuj ponownie.')
+      }
+    } catch (error) {
+      console.error('Error with booking:', error)
+      alert('Wystąpił błąd. Spróbuj ponownie.')
+    } finally {
+      setSubmittingBooking(false)
+    }
+  }
 
   const months = [
     'Styczeń',
@@ -453,15 +552,15 @@ export default function CalendarPage() {
               Wróć
             </a>
             <button
-              onClick={() => alert('Rezerwacja potwierdzona!')}
-              disabled={!selectedDate || !selectedTime || !selectedAddress}
+              onClick={handleBooking}
+              disabled={!selectedDate || !selectedTime || !selectedAddress || submittingBooking}
               className={`w-full sm:w-1/2 p-4 rounded-lg text-lg font-semibold transition-all duration-300 ${
-                !selectedDate || !selectedTime || !selectedAddress
+                !selectedDate || !selectedTime || !selectedAddress || submittingBooking
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   : 'bg-gray-900 text-white hover:bg-gray-800 shadow-sm'
               }`}
             >
-              Rezerwuj
+              {submittingBooking ? 'Rezerwowanie...' : 'Rezerwuj'}
             </button>
           </div>
         </div>

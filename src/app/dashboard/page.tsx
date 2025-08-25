@@ -2,29 +2,142 @@
 
 import { useUser } from '@clerk/nextjs'
 import { SignInButton } from '@clerk/nextjs'
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import PageLayout from '@/components/page-layout'
 import RecordingsGallery from '@/components/recordings-gallery'
 import { mockCleaningSessions } from '@/db/mock-data'
 import VideoIcon from '@/components/icons/VideoIcon'
 import ChartBarIcon from '@/components/icons/ChartBarIcon'
 import ClockIcon from '@/components/icons/ClockIcon'
+import type { CleaningSession } from '@/db/schema'
+
+type BookingWithAddress = CleaningSession & {
+  addressName?: string
+}
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser()
-  const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({
-    recordings: true, // Keep recordings open by default
+  const router = useRouter()
+  const [openSections, setOpenSections] = useState<{[key: string]: boolean}>({
+    overview: false,
+    recent: true,
+    recordings: true,
     stats: false,
-    recent: false,
-    actions: false,
-    history: false,
   })
+  const [nextBooking, setNextBooking] = useState<BookingWithAddress | null>(null)
+  const [loadingBookings, setLoadingBookings] = useState(true)
+  const [historyBookings, setHistoryBookings] = useState<BookingWithAddress[]>([])
+  const [loadingHistory, setLoadingHistory] = useState(true)
+  const [showCancelModal, setShowCancelModal] = useState(false)
 
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({
       ...prev,
       [section]: !prev[section],
     }))
+  }
+
+    // Fetch next upcoming booking
+  const fetchNextBooking = useCallback(async () => {
+    if (!user?.id) return
+    
+    try {
+      const response = await fetch('/api/bookings')
+      if (response.ok) {
+        const bookings = await response.json() as BookingWithAddress[]
+        // Find the next upcoming booking (scheduled status and future date)
+        const upcoming = bookings
+          .filter(booking => {
+            const bookingDate = new Date(booking.scheduledTime || 0)
+            const now = new Date()
+            return booking.status === 'scheduled' && bookingDate > now
+          })
+          .sort((a, b) => {
+            const dateA = new Date(a.scheduledTime || 0).getTime()
+            const dateB = new Date(b.scheduledTime || 0).getTime()
+            return dateA - dateB
+          })
+        
+        setNextBooking(upcoming.length > 0 ? upcoming[0] : null)
+
+        // Set history bookings (completed and past scheduled ones)
+        const history = bookings
+          .filter(booking => {
+            const bookingDate = new Date(booking.scheduledTime || 0)
+            const now = new Date()
+            return booking.status === 'completed' || 
+                   (booking.status === 'scheduled' && bookingDate <= now)
+          })
+          .sort((a, b) => {
+            const dateA = new Date(a.scheduledTime || 0).getTime()
+            const dateB = new Date(b.scheduledTime || 0).getTime()
+            return dateB - dateA // Latest first
+          })
+        
+        setHistoryBookings(history)
+      } else {
+        setNextBooking(null)
+        setHistoryBookings([])
+      }
+    } catch (error) {
+      console.error('Error fetching bookings:', error)
+      setNextBooking(null)
+      setHistoryBookings([])
+    } finally {
+      setLoadingBookings(false)
+      setLoadingHistory(false)
+    }
+  }, [user?.id])
+
+  // Fetch bookings when component mounts or user changes
+  useEffect(() => {
+    if (user?.id) {
+      fetchNextBooking()
+    }
+  }, [user?.id, fetchNextBooking])
+
+  const handleCancelBooking = () => {
+    setShowCancelModal(true)
+  }
+
+  const handleCancelConfirm = async () => {
+    if (!nextBooking) return
+    
+    try {
+      // Tu będzie API call do usunięcia bookingu
+      console.log('Cancelling booking:', nextBooking.id)
+      
+      // Odśwież dane po usunięciu
+      await fetchNextBooking()
+      setShowCancelModal(false)
+    } catch (error) {
+      console.error('Failed to cancel booking:', error)
+    }
+  }
+
+  const handleCancelModalClose = () => {
+    setShowCancelModal(false)
+  }
+
+  const handleEditBooking = () => {
+    if (!nextBooking) return
+    
+    // Format date and time for URL parameters
+    const scheduledDate = new Date(nextBooking.scheduledTime || 0)
+    const dateStr = scheduledDate.toISOString().split('T')[0] // YYYY-MM-DD
+    const timeStr = scheduledDate.toTimeString().slice(0, 5) // HH:MM
+    
+    // Navigate to calendar with current booking data
+    const params = new URLSearchParams({
+      date: dateStr,
+      time: timeStr,
+      address: nextBooking.addressId || '',
+      bookingId: nextBooking.id,
+      editing: 'true'
+    })
+    
+    router.push(`/calendar?${params.toString()}`)
   }
 
   // Simple, elegant accordion section component
@@ -198,10 +311,64 @@ export default function DashboardPage() {
           ! 👋
         </h1>
         <p className='text-lg text-gray-600 max-w-2xl mx-auto'>
-          Zarządzaj swoimi sprzątaniami i monitoruj postępy w przejrzystym,
-          zorganizowanym interfejsie.
+          {loadingBookings ? (
+            'Sprawdzam twoje rezerwacje...'
+          ) : nextBooking ? (
+            'Masz zaplanowane sprzątanie'
+          ) : (
+            'Nie masz zaplanowanego sprzątania'
+          )}
         </p>
       </div>
+
+      {/* Next Booking Card */}
+      {!loadingBookings && nextBooking && (
+        <div className='mb-8 max-w-md mx-auto'>
+          <div className='bg-white rounded-lg border border-gray-200 p-4 shadow-sm relative'>
+            {/* Przycisk Odwołaj - prawy górny róg */}
+            <button 
+              onClick={handleCancelBooking}
+              className='absolute top-4 right-4 text-red-500 hover:text-red-600 text-sm font-bold'
+            >
+              Odwołaj
+            </button>
+            
+            {/* Główna zawartość */}
+            <div className='pr-16'>
+              <h4 className='text-gray-900 text-xl font-bold mb-3'>
+                {nextBooking.addressName || nextBooking.addressId || 'Do ustalenia'}
+              </h4>
+              <div className='space-y-1'>
+                <p className='text-gray-900 text-base'>
+                  {nextBooking.scheduledTime
+                    ? new Date(nextBooking.scheduledTime).toLocaleDateString('pl-PL', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      })
+                    : 'Data do ustalenia'}
+                </p>
+                <p className='text-gray-900 text-base'>
+                  Godzina: {nextBooking.scheduledTime
+                    ? new Date(nextBooking.scheduledTime).toLocaleTimeString('pl-PL', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })
+                    : 'Do ustalenia'}
+                </p>
+              </div>
+            </div>
+            
+            {/* Przycisk Zmień - prawy dolny róg */}
+            <button 
+              onClick={handleEditBooking}
+              className='absolute bottom-4 right-4 text-emerald-500 hover:text-emerald-600 text-sm font-bold'
+            >
+              Zmień
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Elegant Accordion Dashboard */}
       <div className='space-y-4'>
@@ -255,6 +422,93 @@ export default function DashboardPage() {
             </div>
           </a>
         </div>
+
+        {/* Historia sprzątania - at the top */}
+        <AccordionSection
+          id='recent'
+          title='Historia sprzątania'
+          icon={<ClockIcon className='w-6 h-6 text-orange-600' />}
+        >
+          <div className='space-y-3'>
+            {loadingHistory ? (
+              <div className='flex justify-center py-8'>
+                <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500'></div>
+              </div>
+            ) : historyBookings.length > 0 ? (
+              historyBookings.map((booking) => (
+                <div key={booking.id} className='bg-white rounded-lg border border-gray-200 p-4'>
+                  <div className='flex items-center space-x-3'>
+                    <div className='flex items-center justify-center flex-shrink-0 w-8 h-8'>
+                      <svg
+                        className={`w-5 h-5 ${
+                          booking.status === 'completed' 
+                            ? 'text-green-600' 
+                            : 'text-orange-600'
+                        }`}
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                      >
+                        {booking.status === 'completed' ? (
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth={3}
+                            d='M5 13l4 4L19 7'
+                          />
+                        ) : (
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth={3}
+                            d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
+                          />
+                        )}
+                      </svg>
+                    </div>
+                    <div className='flex-1 min-w-0'>
+                      <p className='font-medium text-gray-900 text-sm mb-2'>
+                        {booking.addressName || booking.addressId || 'Lokalizacja nieznana'}
+                      </p>
+                      <div className='flex items-center justify-between'>
+                        <p className='text-xs text-gray-500'>
+                          {booking.scheduledTime 
+                            ? new Date(booking.scheduledTime).toLocaleDateString('pl-PL', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric'
+                              })
+                            : 'Data nieznana'}
+                        </p>
+                        {booking.status === 'completed' ? (
+                          <div className='bg-green-50 border border-green-200 px-2 py-1 rounded-md'>
+                            <p className='font-medium text-green-800 text-sm'>200 zł</p>
+                          </div>
+                        ) : (
+                          <div className='w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center'>
+                            <span className='text-gray-500 font-medium text-lg'>?</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className='text-center py-8'>
+                <div className='w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center'>
+                  <ClockIcon className='w-8 h-8 text-gray-400' />
+                </div>
+                <h3 className='text-lg font-medium text-gray-900 mb-2'>
+                  Brak historii sprzątania
+                </h3>
+                <p className='text-gray-600'>
+                  Twoje ukończone sprzątania pojawią się tutaj.
+                </p>
+              </div>
+            )}
+          </div>
+        </AccordionSection>
 
         {/* Main Recordings Section */}
         <AccordionSection
@@ -374,105 +628,41 @@ export default function DashboardPage() {
             </div>
           </div>
         </AccordionSection>
+      </div>
 
-        {/* Recent Activities */}
-        <AccordionSection
-          id='recent'
-          title='Historia sprzątania'
-          icon={<ClockIcon className='w-6 h-6 text-orange-600' />}
+      {/* Cancel Booking Modal */}
+      {showCancelModal && (
+        <div
+          className='fixed inset-0 z-50 flex items-center justify-center p-4'
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
+          onClick={handleCancelModalClose}
         >
-          <div className='space-y-3'>
-            <div className='bg-white rounded-lg border border-gray-200 p-4'>
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center space-x-3'>
-                  <div className='w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center'>
-                    <svg
-                      className='w-4 h-4 text-gray-600'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth={2}
-                        d='M5 13l4 4L19 7'
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className='font-medium text-gray-900 text-sm'>
-                      Sprzątanie mieszkania
-                    </p>
-                    <p className='text-xs text-gray-500'>20 stycznia 2025</p>
-                  </div>
-                </div>
-                <p className='font-medium text-gray-900 text-sm'>200 zł</p>
-              </div>
+          <div
+            className='bg-white rounded-lg shadow-lg max-w-md w-full p-6'
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className='mb-4'>
+              <p className='text-gray-600 text-center font-bold'>
+                Czy na pewno chcesz odwołać to sprzątanie?
+              </p>
             </div>
-
-            <div className='bg-white rounded-lg border border-gray-200 p-4'>
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center space-x-3'>
-                  <div className='w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center'>
-                    <svg
-                      className='w-4 h-4 text-gray-600'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth={2}
-                        d='M5 13l4 4L19 7'
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className='font-medium text-gray-900 text-sm'>
-                      Pranie okien
-                    </p>
-                    <p className='text-xs text-gray-500'>15 stycznia 2025</p>
-                  </div>
-                </div>
-                <p className='font-medium text-gray-900 text-sm'>120 zł</p>
-              </div>
-            </div>
-
-            <div className='bg-white rounded-lg border border-gray-200 p-4'>
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center space-x-3'>
-                  <div className='w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center'>
-                    <svg
-                      className='w-4 h-4 text-gray-600'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth={2}
-                        d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className='font-medium text-gray-900 text-sm'>
-                      Sprzątanie biura
-                    </p>
-                    <p className='text-xs text-gray-500'>
-                      28 stycznia 2025 • 10:00
-                    </p>
-                  </div>
-                </div>
-                <p className='font-medium text-gray-900 text-sm'>350 zł</p>
-              </div>
+            <div className='flex space-x-3'>
+              <button
+                onClick={handleCancelModalClose}
+                className='flex-1 bg-white text-black py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'
+              >
+                Anuluj
+              </button>
+              <button
+                onClick={handleCancelConfirm}
+                className='flex-1 bg-white text-red-500 py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'
+              >
+                Odwołaj
+              </button>
             </div>
           </div>
-        </AccordionSection>
-      </div>
+        </div>
+      )}
     </PageLayout>
   )
 }

@@ -1,144 +1,117 @@
 export default function PolandMap() {
   return (
-    <div className='max-w-2xl mx-auto'>
+    <div className='max-w-4xl mx-auto'>
       <h2 className='text-3xl font-medium text-gray-900 mb-12 text-center'>
         Tutaj działamy
       </h2>
-      <div className='relative bg-gray-50 rounded-2xl p-12 border border-gray-100'>
-        <svg
-          viewBox='0 0 600 500'
-          className='w-full h-auto max-w-xl mx-auto'
-          fill='none'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          {/* Poland outline - more accurate shape */}
-          <path
-            d='M 100 180 
-               L 120 160 
-               L 140 150 
-               L 170 140 
-               L 200 135 
-               L 230 130 
-               L 260 125 
-               L 290 120 
-               L 320 118 
-               L 350 115 
-               L 380 118 
-               L 410 125 
-               L 440 135 
-               L 470 150 
-               L 490 170 
-               L 500 190 
-               L 505 210 
-               L 500 230 
-               L 490 250 
-               L 480 270 
-               L 465 290 
-               L 450 305 
-               L 430 320 
-               L 410 330 
-               L 390 340 
-               L 370 350 
-               L 350 355 
-               L 330 360 
-               L 310 365 
-               L 290 368 
-               L 270 370 
-               L 250 369 
-               L 230 366 
-               L 210 360 
-               L 190 352 
-               L 170 340 
-               L 155 325 
-               L 145 308 
-               L 138 290 
-               L 135 270 
-               L 132 250 
-               L 130 230 
-               L 125 210 
-               L 118 195 
-               L 108 185 
-               Z'
-            fill='#f3f4f6'
-            stroke='#9ca3af'
-            strokeWidth='3'
-            strokeLinejoin='round'
-          />
+      
+      {/* Modern location-based approach instead of map */}
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 items-center'>
+        {/* Location info */}
+        <div className='space-y-6'>
+          <div className='bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-8 text-white'>
+            <div className='flex items-center space-x-3 mb-4'>
+              <div className='text-3xl'>📍</div>
+              <div>
+                <h3 className='text-xl font-semibold'>Główna lokalizacja</h3>
+                <p className='text-red-100'>Wrocław, Dolnośląskie</p>
+              </div>
+            </div>
+            <p className='text-red-100 leading-relaxed'>
+              Świadczymy profesjonalne usługi sprzątania w całym Wrocławiu 
+              oraz w promieniu 30km od miasta.
+            </p>
+          </div>
 
-          {/* Wrocław dot - positioned in Lower Silesia (southwestern Poland) */}
-          <circle
-            cx='220'
-            cy='300'
-            r='12'
-            fill='#dc2626'
-            stroke='#ffffff'
-            strokeWidth='3'
-            className='animate-pulse'
-          />
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+              <div className='text-2xl mb-3'>🏙️</div>
+              <h4 className='font-semibold text-gray-900 mb-2'>Centrum Wrocławia</h4>
+              <p className='text-sm text-gray-600'>Stare Miasto, Śródmieście, Nadodrze</p>
+            </div>
+            
+            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+              <div className='text-2xl mb-3'>🏘️</div>
+              <h4 className='font-semibold text-gray-900 mb-2'>Dzielnice</h4>
+              <p className='text-sm text-gray-600'>Krzyki, Fabryczna, Psie Pole, Biskupin</p>
+            </div>
+            
+            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+              <div className='text-2xl mb-3'>🌆</div>
+              <h4 className='font-semibold text-gray-900 mb-2'>Okolice</h4>
+              <p className='text-sm text-gray-600'>Oława, Sobótka, Siechnice, Kąty Wrocławskie</p>
+            </div>
+            
+            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+              <div className='text-2xl mb-3'>⚡</div>
+              <h4 className='font-semibold text-gray-900 mb-2'>Express</h4>
+              <p className='text-sm text-gray-600'>Pilne sprzątanie w ciągu 24h</p>
+            </div>
+          </div>
+        </div>
 
-          {/* Wrocław label */}
-          <text
-            x='220'
-            y='335'
-            textAnchor='middle'
-            className='fill-gray-900 font-semibold'
-            fontSize='18'
-          >
-            Wrocław
-          </text>
+        {/* Visual representation */}
+        <div className='bg-gray-50 rounded-2xl p-8 border border-gray-100'>
+          <div className='relative'>
+            {/* Simple, clean visual */}
+            <div className='w-full h-80 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl relative overflow-hidden'>
+              {/* Poland silhouette - very simplified */}
+              <div className='absolute inset-4 bg-white rounded-lg shadow-inner flex items-center justify-center'>
+                {/* Central Wrocław dot */}
+                <div className='relative'>
+                  <div className='w-4 h-4 bg-red-600 rounded-full animate-pulse relative z-10'></div>
+                  
+                  {/* Ripple effect */}
+                  <div className='absolute inset-0 w-4 h-4 bg-red-600 rounded-full animate-ping opacity-20'></div>
+                  
+                  {/* Service area circles */}
+                  <div className='absolute -inset-8 border-2 border-red-300 border-dashed rounded-full opacity-50'></div>
+                  <div className='absolute -inset-16 border-2 border-red-200 border-dashed rounded-full opacity-30'></div>
+                  
+                  {/* Label */}
+                  <div className='absolute top-6 left-1/2 transform -translate-x-1/2 text-center'>
+                    <div className='bg-white px-3 py-1 rounded-full shadow-sm border border-gray-200'>
+                      <span className='text-sm font-semibold text-gray-900'>Wrocław</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Decorative elements */}
+              <div className='absolute top-4 right-4 text-gray-400'>
+                <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
+                  <path d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/>
+                </svg>
+              </div>
+            </div>
+            
+            {/* Legend */}
+            <div className='mt-6 flex items-center justify-center space-x-6 text-sm text-gray-600'>
+              <div className='flex items-center space-x-2'>
+                <div className='w-3 h-3 bg-red-600 rounded-full'></div>
+                <span>Główna lokalizacja</span>
+              </div>
+              <div className='flex items-center space-x-2'>
+                <div className='w-3 h-3 border-2 border-red-300 border-dashed rounded-full'></div>
+                <span>Obszar obsługi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          {/* Add some major cities for reference */}
-          <circle cx='300' cy='160' r='4' fill='#6b7280' />
-          <text
-            x='300'
-            y='150'
-            textAnchor='middle'
-            className='fill-gray-600'
-            fontSize='12'
-          >
-            Warszawa
-          </text>
-
-          <circle cx='180' cy='200' r='4' fill='#6b7280' />
-          <text
-            x='180'
-            y='190'
-            textAnchor='middle'
-            className='fill-gray-600'
-            fontSize='12'
-          >
-            Poznań
-          </text>
-
-          <circle cx='410' cy='220' r='4' fill='#6b7280' />
-          <text
-            x='410'
-            y='210'
-            textAnchor='middle'
-            className='fill-gray-600'
-            fontSize='12'
-          >
-            Kraków
-          </text>
-
-          <circle cx='450' cy='180' r='4' fill='#6b7280' />
-          <text
-            x='450'
-            y='170'
-            textAnchor='middle'
-            className='fill-gray-600'
-            fontSize='12'
-          >
-            Gdańsk
-          </text>
-        </svg>
-
-        <div className='text-center mt-8'>
-          <p className='text-gray-600 leading-relaxed'>
-            Świadczymy profesjonalne usługi sprzątania w całym Wrocławiu i
-            okolicach. Skontaktuj się z nami, aby poznać dostępność w Twojej
-            dzielnicy.
+      {/* Call to action */}
+      <div className='text-center mt-12'>
+        <div className='bg-white rounded-xl border border-gray-200 p-8 shadow-sm'>
+          <h3 className='text-xl font-semibold text-gray-900 mb-3'>
+            Nie widzisz swojej lokalizacji?
+          </h3>
+          <p className='text-gray-600 mb-6'>
+            Skontaktuj się z nami - możemy rozszerzyć obszar działania dla stałych klientów
           </p>
+          <button className='bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors'>
+            Sprawdź dostępność
+          </button>
         </div>
       </div>
     </div>
