@@ -57,12 +57,44 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const { userId } = await auth()
     
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Support fetching a single booking by id via query string: /api/bookings?id=...
+    const { searchParams } = new URL(request.url)
+    const singleId = searchParams.get('id')
+
+    if (singleId) {
+      const dbSingle = createDB()
+      const booking = await dbSingle
+        .select()
+        .from(cleaningSessions)
+        .where(eq(cleaningSessions.id, singleId))
+        .limit(1)
+
+      if (!booking || booking.length === 0) {
+        return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
+      }
+
+      // Verify ownership
+      if (booking[0].userId !== userId) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+      }
+
+      // Attach address name if available
+      const addresses = await dbSingle
+        .select()
+        .from(userAddresses)
+        .where(eq(userAddresses.userId, userId))
+
+      const addressMap = new Map(addresses.map(addr => [addr.id, addr.name]))
+      const result = { ...booking[0], addressName: booking[0].addressId ? addressMap.get(booking[0].addressId) : null }
+      return NextResponse.json(result)
     }
 
     const db = createDB()
@@ -96,6 +128,63 @@ export async function GET() {
       { error: 'Internal server error' },
       { status: 500 }
     )
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const { userId } = await auth()
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const body = (await request.json()) as {
+      id?: string
+      date?: string
+      time?: string
+      addressId?: string
+      serviceType?: string
+      notes?: string
+    }
+    const { id: bookingId, date, time, addressId, serviceType, notes } = body
+
+    if (!bookingId) {
+      return NextResponse.json({ error: 'Booking ID required' }, { status: 400 })
+    }
+
+    const db = createDB()
+
+    // Verify booking exists and belongs to user
+    const booking = await db
+      .select()
+      .from(cleaningSessions)
+      .where(eq(cleaningSessions.id, bookingId))
+      .limit(1)
+
+    if (booking.length === 0) {
+      return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
+    }
+
+    if (booking[0].userId !== userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+    }
+
+    // Build updated fields
+  const updates: Record<string, unknown> = {}
+    if (addressId) updates.addressId = addressId
+    if (serviceType) updates.serviceType = serviceType
+    if (notes !== undefined) updates.notes = notes
+    if (date && time) {
+      updates.scheduledTime = new Date(`${date}T${time}:00`)
+    }
+
+    // Perform update
+    await db.update(cleaningSessions).set(updates).where(eq(cleaningSessions.id, bookingId))
+
+    return NextResponse.json({ success: true, bookingId })
+  } catch (error) {
+    console.error('Error updating booking:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 

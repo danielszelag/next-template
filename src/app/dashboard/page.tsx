@@ -10,6 +10,7 @@ import VideoIcon from '@/components/icons/VideoIcon'
 import ChartBarIcon from '@/components/icons/ChartBarIcon'
 import ClockIcon from '@/components/icons/ClockIcon'
 import type { CleaningSession } from '@/db/schema'
+import Toast from '@/components/ui/toast'
 
 type BookingWithAddress = CleaningSession & {
   addressName?: string
@@ -30,6 +31,8 @@ export default function DashboardPage() {
   const [loadingHistory, setLoadingHistory] = useState(true)
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [isCardAnimatingOut, setIsCardAnimatingOut] = useState(false)
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const [toastType, setToastType] = useState<'success' | 'error'>('success')
 
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({
@@ -120,6 +123,20 @@ export default function DashboardPage() {
   useEffect(() => {
     if (user?.id) {
       fetchNextBooking()
+    }
+    // Read any toast set in sessionStorage (e.g. after editing a booking)
+    try {
+      const msg = sessionStorage.getItem('toast_message')
+      const type = sessionStorage.getItem('toast_type') as 'success' | 'error' | null
+      if (msg) {
+        setToastMessage(msg)
+        setToastType(type === 'error' ? 'error' : 'success')
+        // Clear it so it doesn't persist across navigations
+        sessionStorage.removeItem('toast_message')
+        sessionStorage.removeItem('toast_type')
+      }
+    } catch {
+      // ignore sessionStorage errors
     }
   }, [user?.id, fetchNextBooking])
 
@@ -329,6 +346,13 @@ export default function DashboardPage() {
 
   return (
     <PageLayout>
+      {toastMessage && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          onClose={() => setToastMessage(null)}
+        />
+      )}
       {/* Header */}
       <div className='text-center mb-6 sm:mb-12'>
         <h1 className='text-4xl md:text-5xl font-light text-gray-900 mb-4 break-words'>
@@ -395,9 +419,14 @@ export default function DashboardPage() {
             </div>
             
             {/* Przycisk Zmień - prawy dolny róg */}
-            <button className='absolute bottom-4 right-4 text-emerald-500 hover:text-emerald-600 text-sm font-bold'>
-              Zmień
-            </button>
+            {nextBooking?.id && (
+              <a
+                href={`/calendar?edit=${encodeURIComponent(nextBooking.id)}`}
+                className='absolute bottom-4 right-4 text-emerald-500 hover:text-emerald-600 text-sm font-bold'
+              >
+                Zmień
+              </a>
+            )}
           </div>
         </div>
       )}

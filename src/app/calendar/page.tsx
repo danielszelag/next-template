@@ -1,4 +1,6 @@
-'use client'
+"use client"
+
+export const dynamic = 'force-dynamic'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -17,6 +19,8 @@ export default function CalendarPage() {
   const [savedAddresses, setSavedAddresses] = useState<Address[]>([])
   const [loadingAddresses, setLoadingAddresses] = useState(true)
   const [submittingBooking, setSubmittingBooking] = useState(false)
+  const [editId, setEditId] = useState<string | null>(null)
+  const [isEditing, setIsEditing] = useState(false)
 
   // Fetch addresses from API
   const fetchAddresses = async () => {
@@ -40,6 +44,49 @@ export default function CalendarPage() {
   // Load addresses on component mount
   useEffect(() => {
     fetchAddresses()
+
+    // Read edit id from the URL on client side to avoid useSearchParams prerender issues
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const id = params.get('edit')
+      if (id) {
+        setEditId(id)
+        // Prefill booking data for editing
+        const fetchBooking = async () => {
+          try {
+            const res = await fetch(`/api/bookings?id=${encodeURIComponent(id)}`)
+            if (res.ok) {
+              const data = (await res.json()) as {
+                id?: string
+                scheduledTime?: string
+                addressId?: string
+              }
+              // data should include scheduledTime and addressId
+              if (data.scheduledTime) {
+                const dt = new Date(data.scheduledTime)
+                const yyyy = dt.getFullYear()
+                const mm = String(dt.getMonth() + 1).padStart(2, '0')
+                const dd = String(dt.getDate()).padStart(2, '0')
+                setSelectedDate(`${yyyy}-${mm}-${dd}`)
+                const hh = String(dt.getHours()).padStart(2, '0')
+                const min = String(dt.getMinutes()).padStart(2, '0')
+                setSelectedTime(`${hh}:${min}`)
+              }
+              if (data.addressId) setSelectedAddress(data.addressId)
+              setIsEditing(true)
+            } else {
+              console.error('Failed to fetch booking for edit')
+            }
+          } catch (err) {
+            console.error('Error fetching booking:', err)
+          }
+        }
+        fetchBooking()
+      }
+    } catch (err) {
+      // window not available or other error
+      console.error('Error reading edit param:', err)
+    }
   }, [])
 
   // Handle booking submission
@@ -60,17 +107,27 @@ export default function CalendarPage() {
         notes: 'Rezerwacja z kalendarza',
       }
 
-      const response = await fetch('/api/bookings', {
-        method: 'POST',
+      const response = await fetch(isEditing && editId ? `/api/bookings` : '/api/bookings', {
+        method: isEditing && editId ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(bookingData),
+        body: JSON.stringify(isEditing && editId ? { id: editId, ...bookingData } : bookingData),
       })
 
       if (response.ok) {
         const result = await response.json()
         console.log('Booking created:', result)
+
+        // If this was an edit, set a toast message in sessionStorage so dashboard can show confirmation
+        if (isEditing && editId) {
+          try {
+            sessionStorage.setItem('toast_message', 'Rezerwacja została zmieniona')
+            sessionStorage.setItem('toast_type', 'success')
+          } catch {
+            // ignore sessionStorage errors
+          }
+        }
 
         // Redirect to dashboard
         router.push('/dashboard')
