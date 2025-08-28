@@ -98,3 +98,53 @@ export async function GET() {
     )
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { userId } = await auth()
+    
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { searchParams } = new URL(request.url)
+    const bookingId = searchParams.get('id')
+
+    if (!bookingId) {
+      return NextResponse.json({ error: 'Booking ID required' }, { status: 400 })
+    }
+
+    const db = createDB()
+
+    // First verify the booking belongs to the user
+    const booking = await db
+      .select()
+      .from(cleaningSessions)
+      .where(eq(cleaningSessions.id, bookingId))
+      .limit(1)
+
+    if (booking.length === 0) {
+      return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
+    }
+
+    if (booking[0].userId !== userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+    }
+
+    // Delete the booking
+    await db
+      .delete(cleaningSessions)
+      .where(eq(cleaningSessions.id, bookingId))
+
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Booking cancelled successfully' 
+    })
+  } catch (error) {
+    console.error('Error cancelling booking:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}

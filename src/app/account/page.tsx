@@ -125,6 +125,16 @@ export default function AccountPage() {
     phone: '',
     language: 'pl',
   })
+  const [addressNameError, setAddressNameError] = useState('')
+  const [editAddressNameError, setEditAddressNameError] = useState('')
+
+  // Helper function to validate address name length
+  const validateAddressName = (name: string): string => {
+    if (name.length > 16) {
+      return 'Nazwa adresu nie może być dłuższa niż 16 znaków'
+    }
+    return ''
+  }
 
   // Mock transaction data
   const mockTransactions = [
@@ -275,6 +285,7 @@ export default function AccountPage() {
         const newAddress = (await response.json()) as Address
         setAddresses([newAddress, ...addresses])
         setFormData({ name: '', street: '', postalCode: '', city: '' })
+        setAddressNameError('') // Clear validation error
         setShowAddressForm(false)
       } else {
         console.error('Failed to create address')
@@ -306,6 +317,7 @@ export default function AccountPage() {
           )
         )
         setEditFormData({ name: '', street: '', postalCode: '', city: '' })
+        setEditAddressNameError('') // Clear validation error
         setEditingAddressId(null)
       } else {
         console.error('Failed to update address')
@@ -364,6 +376,15 @@ export default function AccountPage() {
 
   const handleSaveAddress = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validate address name length
+    const nameError = validateAddressName(formData.name)
+    setAddressNameError(nameError)
+    
+    if (nameError) {
+      return // Don't submit if there's a validation error
+    }
+    
     if (
       formData.name &&
       formData.street &&
@@ -371,6 +392,7 @@ export default function AccountPage() {
       formData.city
     ) {
       await createAddress(formData)
+      setAddressNameError('') // Clear error on successful save
     }
   }
 
@@ -725,15 +747,23 @@ export default function AccountPage() {
                             <input
                               type='text'
                               value={editFormData.name}
-                              onChange={(e) =>
+                              onChange={(e) => {
+                                const newValue = e.target.value
                                 setEditFormData((prev) => ({
                                   ...prev,
-                                  name: e.target.value,
+                                  name: newValue,
                                 }))
-                              }
+                                const error = validateAddressName(newValue)
+                                setEditAddressNameError(error)
+                              }}
                               placeholder='Dom, Praca, Biuro...'
-                              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
+                                editAddressNameError ? 'border-red-500' : 'border-gray-300'
+                              }`}
                             />
+                            {editAddressNameError && (
+                              <p className='text-red-500 text-sm mt-1'>{editAddressNameError}</p>
+                            )}
                             <input
                               type='text'
                               value={editFormData.street}
@@ -790,7 +820,16 @@ export default function AccountPage() {
                               </button>
                               <button
                                 onClick={async () => {
+                                  // Validate address name length
+                                  const nameError = validateAddressName(editFormData.name)
+                                  setEditAddressNameError(nameError)
+                                  
+                                  if (nameError) {
+                                    return // Don't submit if there's a validation error
+                                  }
+                                  
                                   await updateAddress(address.id, editFormData)
+                                  setEditAddressNameError('') // Clear error on successful save
                                 }}
                                 type='button'
                                 className='flex-1 bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-colors font-bold'
@@ -889,11 +928,19 @@ export default function AccountPage() {
                         type='text'
                         placeholder='Dom, Praca, Biuro...'
                         value={formData.name}
-                        onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
-                        }
-                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                        onChange={(e) => {
+                          const newValue = e.target.value
+                          setFormData({ ...formData, name: newValue })
+                          const error = validateAddressName(newValue)
+                          setAddressNameError(error)
+                        }}
+                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
+                          addressNameError ? 'border-red-500' : 'border-gray-300'
+                        }`}
                       />
+                      {addressNameError && (
+                        <p className='text-red-500 text-sm mt-1'>{addressNameError}</p>
+                      )}
                     </div>
                     <div>
                       <input

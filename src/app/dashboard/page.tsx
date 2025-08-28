@@ -3,7 +3,6 @@
 import { useUser } from '@clerk/nextjs'
 import { SignInButton } from '@clerk/nextjs'
 import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
 import PageLayout from '@/components/page-layout'
 import RecordingsGallery from '@/components/recordings-gallery'
 import { mockCleaningSessions } from '@/db/mock-data'
@@ -18,7 +17,6 @@ type BookingWithAddress = CleaningSession & {
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser()
-  const router = useRouter()
   const [openSections, setOpenSections] = useState<{[key: string]: boolean}>({
     overview: false,
     recent: true,
@@ -28,8 +26,10 @@ export default function DashboardPage() {
   const [nextBooking, setNextBooking] = useState<BookingWithAddress | null>(null)
   const [loadingBookings, setLoadingBookings] = useState(true)
   const [historyBookings, setHistoryBookings] = useState<BookingWithAddress[]>([])
+  const [upcomingBookings, setUpcomingBookings] = useState<BookingWithAddress[]>([])
   const [loadingHistory, setLoadingHistory] = useState(true)
   const [showCancelModal, setShowCancelModal] = useState(false)
+  const [isCardAnimatingOut, setIsCardAnimatingOut] = useState(false)
 
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({
@@ -37,6 +37,8 @@ export default function DashboardPage() {
       [section]: !prev[section],
     }))
   }
+
+  // ...existing code...
 
     // Fetch next upcoming booking
   const fetchNextBooking = useCallback(async () => {
@@ -59,23 +61,47 @@ export default function DashboardPage() {
             return dateA - dateB
           })
         
-        setNextBooking(upcoming.length > 0 ? upcoming[0] : null)
+        // Prefer truly upcoming (future) scheduled bookings
+        let selectedNext = upcoming.length > 0 ? upcoming[0] : null
 
-        // Set history bookings (completed and past scheduled ones)
-        const history = bookings
+        // If there are no future scheduled bookings, fallback to any scheduled booking
+        // (e.g. scheduled but with time in the past) and treat it as nextBooking so user
+        // still sees a scheduled item on the dashboard instead of only history entries.
+        if (!selectedNext) {
+          const anyScheduled = bookings
+            .filter(b => b.status === 'scheduled')
+            .sort((a, b) => {
+              const dateA = new Date(a.scheduledTime || 0).getTime()
+              const dateB = new Date(b.scheduledTime || 0).getTime()
+              return dateA - dateB
+            })
+          selectedNext = anyScheduled.length > 0 ? anyScheduled[0] : null
+        }
+
+  setNextBooking(selectedNext)
+
+  // Save upcoming (future) scheduled bookings and exclude the selected next
+  // from the list so we can show "other upcoming" below the main card.
+  const upcomingFiltered = upcoming.filter(b => selectedNext ? b.id !== selectedNext.id : true)
+  setUpcomingBookings(upcomingFiltered)
+
+  // Set history bookings (completed and past scheduled ones), but exclude the
+  // selected next booking to avoid showing it both as next and in history.
+  const history = bookings
           .filter(booking => {
             const bookingDate = new Date(booking.scheduledTime || 0)
             const now = new Date()
             return booking.status === 'completed' || 
                    (booking.status === 'scheduled' && bookingDate <= now)
           })
+          .filter(b => selectedNext ? b.id !== selectedNext.id : true)
           .sort((a, b) => {
             const dateA = new Date(a.scheduledTime || 0).getTime()
             const dateB = new Date(b.scheduledTime || 0).getTime()
             return dateB - dateA // Latest first
           })
-        
-        setHistoryBookings(history)
+
+  setHistoryBookings(history)
       } else {
         setNextBooking(null)
         setHistoryBookings([])
@@ -102,15 +128,38 @@ export default function DashboardPage() {
   }
 
   const handleCancelConfirm = async () => {
-    if (!nextBooking) return
-    
-    try {
-      // Tu będzie API call do usunięcia bookingu
-      console.log('Cancelling booking:', nextBooking.id)
-      
-      // Odśwież dane po usunięciu
-      await fetchNextBooking()
+    if (!nextBooking || !nextBooking.id) {
+      console.error('Brak bookingId do anulowania!', nextBooking)
       setShowCancelModal(false)
+      return
+    }
+
+    console.log('Anulowanie rezerwacji:', nextBooking)
+    try {
+      const response = await fetch(`/api/bookings?id=${encodeURIComponent(nextBooking.id)}`, {
+        method: 'DELETE',
+      })
+
+      if (response.ok) {
+        setIsCardAnimatingOut(true)
+        // Po animacji zamykamy modal i odświeżamy dane
+        setTimeout(() => {
+          setShowCancelModal(false)
+          setIsCardAnimatingOut(false)
+          // Clear local nextBooking optimistically, then refetch
+          setNextBooking(null)
+          fetchNextBooking()
+        }, 300)
+      } else {
+        let errorText = 'Unknown error'
+        try {
+          const errorData = await response.json() as { error?: string }
+          errorText = errorData.error || errorText
+        } catch {
+          // ignore
+        }
+        console.error('Failed to cancel booking:', errorText)
+      }
     } catch (error) {
       console.error('Failed to cancel booking:', error)
     }
@@ -118,26 +167,7 @@ export default function DashboardPage() {
 
   const handleCancelModalClose = () => {
     setShowCancelModal(false)
-  }
-
-  const handleEditBooking = () => {
-    if (!nextBooking) return
-    
-    // Format date and time for URL parameters
-    const scheduledDate = new Date(nextBooking.scheduledTime || 0)
-    const dateStr = scheduledDate.toISOString().split('T')[0] // YYYY-MM-DD
-    const timeStr = scheduledDate.toTimeString().slice(0, 5) // HH:MM
-    
-    // Navigate to calendar with current booking data
-    const params = new URLSearchParams({
-      date: dateStr,
-      time: timeStr,
-      address: nextBooking.addressId || '',
-      bookingId: nextBooking.id,
-      editing: 'true'
-    })
-    
-    router.push(`/calendar?${params.toString()}`)
+    setIsCardAnimatingOut(false) // Resetuj animację jeśli użytkownik anuluje
   }
 
   // Simple, elegant accordion section component
@@ -323,16 +353,21 @@ export default function DashboardPage() {
 
       {/* Next Booking Card */}
       {!loadingBookings && nextBooking && (
-        <div className='mb-8 max-w-md mx-auto'>
+        <div className={`mb-8 max-w-md mx-auto transition-all duration-300 ease-in-out ${
+          isCardAnimatingOut 
+            ? 'opacity-0 scale-95 transform translate-y-2' 
+            : 'opacity-100 scale-100 transform translate-y-0'
+        }`}>
           <div className='bg-white rounded-lg border border-gray-200 p-4 shadow-sm relative'>
             {/* Przycisk Odwołaj - prawy górny róg */}
-            <button 
-              onClick={handleCancelBooking}
-              className='absolute top-4 right-4 text-red-500 hover:text-red-600 text-sm font-bold'
-            >
-              Odwołaj
-            </button>
-            
+            {nextBooking?.id && (
+              <button 
+                onClick={handleCancelBooking}
+                className='absolute top-4 right-4 text-red-500 hover:text-red-600 text-sm font-bold'
+              >
+                Odwołaj
+              </button>
+            )}
             {/* Główna zawartość */}
             <div className='pr-16'>
               <h4 className='text-gray-900 text-xl font-bold mb-3'>
@@ -360,13 +395,63 @@ export default function DashboardPage() {
             </div>
             
             {/* Przycisk Zmień - prawy dolny róg */}
-            <button 
-              onClick={handleEditBooking}
-              className='absolute bottom-4 right-4 text-emerald-500 hover:text-emerald-600 text-sm font-bold'
-            >
+            <button className='absolute bottom-4 right-4 text-emerald-500 hover:text-emerald-600 text-sm font-bold'>
               Zmień
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Other upcoming bookings (if any) */}
+      {!loadingBookings && upcomingBookings.length > 0 && (
+        <div className='max-w-md mx-auto space-y-3 mb-8'>
+          {upcomingBookings.map((booking) => (
+            <div key={booking.id} className='bg-white rounded-lg border border-gray-200 p-4 shadow-sm relative'>
+              {/* Odwołaj button (top-right) */}
+              <button
+                onClick={() => {
+                  setNextBooking(booking)
+                  setShowCancelModal(true)
+                }}
+                className='absolute top-3 right-3 text-red-500 hover:text-red-600 text-sm font-bold'
+              >
+                Odwołaj
+              </button>
+
+              <div className='pr-16'>
+                <h4 className='text-gray-900 text-xl font-bold mb-3'>
+                  {booking.addressName || booking.addressId || 'Do ustalenia'}
+                </h4>
+                <div className='space-y-1'>
+                  <p className='text-gray-900 text-base'>
+                    {booking.scheduledTime
+                      ? new Date(booking.scheduledTime).toLocaleDateString('pl-PL', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })
+                      : 'Data do ustalenia'}
+                  </p>
+                  <p className='text-gray-900 text-base'>
+                    Godzina: {booking.scheduledTime
+                      ? new Date(booking.scheduledTime).toLocaleTimeString('pl-PL', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })
+                      : 'Do ustalenia'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Zmień button (bottom-right) */}
+              <a
+                href={`/calendar?edit=${encodeURIComponent(booking.id)}`}
+                className='absolute bottom-3 right-3 text-emerald-500 hover:text-emerald-600 text-sm font-bold'
+              >
+                Zmień
+              </a>
+            </div>
+          ))}
         </div>
       )}
 
@@ -642,8 +727,8 @@ export default function DashboardPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className='mb-4'>
-              <p className='text-gray-600 text-center font-bold'>
-                Czy na pewno chcesz odwołać to sprzątanie?
+              <p className='text-gray-900 font-bold text-center'>
+                Czy chcesz odwołać to sprzątanie?
               </p>
             </div>
             <div className='flex space-x-3'>
@@ -651,7 +736,7 @@ export default function DashboardPage() {
                 onClick={handleCancelModalClose}
                 className='flex-1 bg-white text-black py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'
               >
-                Anuluj
+                Wróć
               </button>
               <button
                 onClick={handleCancelConfirm}
