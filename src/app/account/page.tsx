@@ -483,18 +483,18 @@ export default function AccountPage() {
               isOpen={openSections.balance ?? false}
               onToggle={toggleSection}
             >
-              <div className='space-y-3'>
-                <button className='w-full bg-black text-white py-3 rounded-lg border border-gray-300 hover:bg-gray-800 transition-colors font-bold'>
+              <div className='space-y-4'>
+                <button className='w-full bg-black text-white py-2 rounded-lg border border-gray-300 hover:bg-gray-800 transition-colors font-bold'>
                   Doładuj konto
                 </button>
-                <button className='w-full bg-white text-black py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'>
+                <button className='w-full bg-white text-black py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'>
                   Wypłać z konta
                 </button>
                 <button
                   onClick={() =>
                     setShowTransactionHistory(!showTransactionHistory)
                   }
-                  className='w-full bg-white text-black py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'
+                  className='w-full bg-white text-black py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors font-bold'
                 >
                   Historia transakcji
                 </button>
@@ -747,13 +747,88 @@ export default function AccountPage() {
               isOpen={openSections.addresses ?? false}
               onToggle={toggleSection}
             >
-              <div className={`${showAddressForm ? '' : 'space-y-4'}`}>
+              <div className='space-y-4'>
                 {loading ? (
                   <div className='flex justify-center py-8'>
                     <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500'></div>
                   </div>
+                ) : showAddressForm ? (
+                  <div className='bg-white rounded-lg border border-gray-200 p-6'>
+                    <form className='space-y-4' onSubmit={handleSaveAddress}>
+                      <div>
+                        <input
+                          type='text'
+                          placeholder='Dom, Praca, Biuro...'
+                          value={formData.name}
+                          onChange={(e) => {
+                            const newValue = e.target.value
+                            setFormData({ ...formData, name: newValue })
+                            const error = validateAddressName(newValue)
+                            setAddressNameError(error)
+                          }}
+                          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
+                            addressNameError
+                              ? 'border-red-500'
+                              : 'border-gray-300'
+                          }`}
+                        />
+                        {addressNameError && (
+                          <p className='text-red-500 text-sm mt-1'>
+                            {addressNameError}
+                          </p>
+                        )}
+                      </div>
+                      <input
+                        type='text'
+                        placeholder='ul. Marszałkowska 123/45'
+                        value={formData.street}
+                        onChange={(e) =>
+                          setFormData({ ...formData, street: e.target.value })
+                        }
+                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                      />
+                      <div className='grid grid-cols-2 gap-4'>
+                        <input
+                          type='text'
+                          placeholder='00-123'
+                          value={formData.postalCode}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              postalCode: e.target.value,
+                            })
+                          }
+                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                        />
+                        <input
+                          type='text'
+                          placeholder='Warszawa'
+                          value={formData.city}
+                          onChange={(e) =>
+                            setFormData({ ...formData, city: e.target.value })
+                          }
+                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                        />
+                      </div>
+                      <div className='flex space-x-3 pt-4'>
+                        <button
+                          onClick={() => setShowAddressForm(false)}
+                          type='button'
+                          className='flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-bold'
+                        >
+                          Anuluj
+                        </button>
+                        <button
+                          type='submit'
+                          className='flex-1 bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-colors font-bold'
+                        >
+                          Zapisz
+                        </button>
+                      </div>
+                    </form>
+                  </div>
                 ) : (
-                  <>
+                  <div className='space-y-4'>
                     {addresses.length > 0 &&
                       addresses.map((address) => (
                         <div
@@ -761,7 +836,6 @@ export default function AccountPage() {
                           className='bg-white rounded-lg border border-gray-200 p-3'
                         >
                           {editingAddressId === address.id ? (
-                            // Editing mode
                             <div className='space-y-3'>
                               <input
                                 type='text'
@@ -843,7 +917,6 @@ export default function AccountPage() {
                                 </button>
                                 <button
                                   onClick={async () => {
-                                    // Validate address name length
                                     const nameError = validateAddressName(
                                       editFormData.name
                                     )
@@ -910,126 +983,20 @@ export default function AccountPage() {
                         </div>
                       ))}
 
-                    {/* Empty state with smooth transition */}
-                    <div
-                      className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                        addresses.length === 0 && !showAddressForm
-                          ? 'max-h-16 opacity-100'
-                          : 'max-h-0 opacity-0'
-                      }`}
-                    >
+                    {addresses.length === 0 && (
                       <div className='text-center py-2 text-gray-500'>
                         <p>Brak zapisanych adresów</p>
                       </div>
-                    </div>
+                    )}
 
-                    {/* Add button with smooth transition */}
-                    <div
-                      className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                        !showAddressForm
-                          ? 'max-h-12 opacity-100'
-                          : 'max-h-0 opacity-0'
-                      }`}
+                    <button
+                      onClick={() => setShowAddressForm(true)}
+                      className='w-full bg-black text-white py-2 rounded-lg border border-gray-300 hover:bg-gray-800 transition-colors font-bold'
                     >
-                      <button
-                        onClick={() => setShowAddressForm(true)}
-                        className='w-full bg-black text-white py-2 rounded-lg border border-gray-300 hover:bg-gray-800 transition-colors font-bold'
-                      >
-                        Dodaj
-                      </button>
-                    </div>
-                  </>
-                )}
-
-                {/* Add form with smooth transition */}
-                <div
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    showAddressForm
-                      ? 'max-h-screen opacity-100'
-                      : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <div className='bg-white rounded-lg border border-gray-200 p-6'>
-                    <form className='space-y-4' onSubmit={handleSaveAddress}>
-                      <div>
-                        <input
-                          type='text'
-                          placeholder='Dom, Praca, Biuro...'
-                          value={formData.name}
-                          onChange={(e) => {
-                            const newValue = e.target.value
-                            setFormData({ ...formData, name: newValue })
-                            const error = validateAddressName(newValue)
-                            setAddressNameError(error)
-                          }}
-                          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
-                            addressNameError
-                              ? 'border-red-500'
-                              : 'border-gray-300'
-                          }`}
-                        />
-                        {addressNameError && (
-                          <p className='text-red-500 text-sm mt-1'>
-                            {addressNameError}
-                          </p>
-                        )}
-                      </div>
-                      <div>
-                        <input
-                          type='text'
-                          placeholder='ul. Marszałkowska 123/45'
-                          value={formData.street}
-                          onChange={(e) =>
-                            setFormData({ ...formData, street: e.target.value })
-                          }
-                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
-                        />
-                      </div>
-                      <div className='grid grid-cols-2 gap-4'>
-                        <div>
-                          <input
-                            type='text'
-                            placeholder='00-123'
-                            value={formData.postalCode}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                postalCode: e.target.value,
-                              })
-                            }
-                            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
-                          />
-                        </div>
-                        <div>
-                          <input
-                            type='text'
-                            placeholder='Warszawa'
-                            value={formData.city}
-                            onChange={(e) =>
-                              setFormData({ ...formData, city: e.target.value })
-                            }
-                            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
-                          />
-                        </div>
-                      </div>
-                      <div className='flex gap-3 pt-2'>
-                        <button
-                          type='button'
-                          onClick={() => setShowAddressForm(false)}
-                          className='flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-bold'
-                        >
-                          Anuluj
-                        </button>
-                        <button
-                          type='submit'
-                          className='flex-1 px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors font-bold'
-                        >
-                          Zapisz
-                        </button>
-                      </div>
-                    </form>
+                      Dodaj
+                    </button>
                   </div>
-                </div>
+                )}
               </div>
             </AccordionSection>
           </div>

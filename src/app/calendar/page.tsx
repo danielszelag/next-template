@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 export const dynamic = 'force-dynamic'
 
@@ -54,7 +54,9 @@ export default function CalendarPage() {
         // Prefill booking data for editing
         const fetchBooking = async () => {
           try {
-            const res = await fetch(`/api/bookings?id=${encodeURIComponent(id)}`)
+            const res = await fetch(
+              `/api/bookings?id=${encodeURIComponent(id)}`
+            )
             if (res.ok) {
               const data = (await res.json()) as {
                 id?: string
@@ -107,39 +109,54 @@ export default function CalendarPage() {
         notes: 'Rezerwacja z kalendarza',
       }
 
-      const response = await fetch(isEditing && editId ? `/api/bookings` : '/api/bookings', {
-        method: isEditing && editId ? 'PUT' : 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(isEditing && editId ? { id: editId, ...bookingData } : bookingData),
-      })
+      const response = await fetch(
+        isEditing && editId ? `/api/bookings` : '/api/bookings',
+        {
+          method: isEditing && editId ? 'PUT' : 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(
+            isEditing && editId ? { id: editId, ...bookingData } : bookingData
+          ),
+        }
+      )
 
       if (response.ok) {
         const result = await response.json()
         console.log('Booking created:', result)
 
-        // If this was an edit, set a toast message in sessionStorage so dashboard can show confirmation
-        if (isEditing && editId) {
-          try {
-            sessionStorage.setItem('toast_message', 'Rezerwacja została zmieniona')
-            sessionStorage.setItem('toast_type', 'success')
-          } catch {
-            // ignore sessionStorage errors
+        // Set appropriate toast message in sessionStorage so dashboard can show confirmation
+        try {
+          if (isEditing && editId) {
+            sessionStorage.setItem(
+              'toast_message',
+              'Rezerwacja została zmieniona'
+            )
+          } else {
+            sessionStorage.setItem(
+              'toast_message',
+              'Rezerwacja została utworzona'
+            )
           }
+          sessionStorage.setItem('toast_type', 'success')
+        } catch {
+          // ignore sessionStorage errors
         }
 
-        // Redirect to dashboard
+        // Keep the loading state active during navigation to prevent flicker
+        // Don't reset submittingBooking to false on success - let the component unmount
         router.push('/dashboard')
+        return // Exit early to prevent finally block from running
       } else {
         const error = await response.json()
         console.error('Booking failed:', error)
         alert('Nie udało się utworzyć rezerwacji. Spróbuj ponownie.')
+        setSubmittingBooking(false)
       }
     } catch (error) {
       console.error('Error with booking:', error)
       alert('Wystąpił błąd. Spróbuj ponownie.')
-    } finally {
       setSubmittingBooking(false)
     }
   }
@@ -540,7 +557,7 @@ export default function CalendarPage() {
           <div className='flex flex-col-reverse sm:flex-row gap-4'>
             <a
               href='/dashboard'
-              className='w-full sm:w-1/2 px-6 py-4 border border-gray-200 bg-white text-gray-700 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all duration-300 text-center flex items-center justify-center'
+              className='w-full sm:w-1/2 px-6 py-3 border border-gray-200 bg-white text-gray-700 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all duration-300 text-center flex items-center justify-center'
             >
               <svg
                 className='w-5 h-5 mr-2'
@@ -559,14 +576,48 @@ export default function CalendarPage() {
             </a>
             <button
               onClick={handleBooking}
-              disabled={!selectedDate || !selectedTime || !selectedAddress || submittingBooking}
-              className={`w-full sm:w-1/2 p-4 rounded-lg text-lg font-semibold transition-all duration-300 ${
-                !selectedDate || !selectedTime || !selectedAddress || submittingBooking
+              disabled={
+                !selectedDate ||
+                !selectedTime ||
+                !selectedAddress ||
+                submittingBooking
+              }
+              className={`w-full sm:w-1/2 py-3 rounded-lg text-lg font-semibold transition-all duration-300 flex items-center justify-center ${
+                !selectedDate ||
+                !selectedTime ||
+                !selectedAddress ||
+                submittingBooking
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   : 'bg-gray-900 text-white hover:bg-gray-800 shadow-sm'
               }`}
             >
-              {submittingBooking ? 'Rezerwowanie...' : 'Rezerwuj'}
+              {submittingBooking ? (
+                <>
+                  <svg
+                    className='animate-spin -ml-1 mr-3 h-5 w-5 text-current'
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                  >
+                    <circle
+                      className='opacity-25'
+                      cx='12'
+                      cy='12'
+                      r='10'
+                      stroke='currentColor'
+                      strokeWidth='4'
+                    ></circle>
+                    <path
+                      className='opacity-75'
+                      fill='currentColor'
+                      d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                    ></path>
+                  </svg>
+                  Rezerwowanie...
+                </>
+              ) : (
+                'Rezerwuj'
+              )}
             </button>
           </div>
         </div>

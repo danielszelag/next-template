@@ -377,7 +377,7 @@ export default function DashboardPage() {
 
       {/* Next Booking Card */}
       {!loadingBookings && nextBooking && (
-        <div className={`mb-8 max-w-md mx-auto transition-all duration-300 ease-in-out ${
+        <div className={`mb-4 max-w-md mx-auto transition-all duration-300 ease-in-out ${
           isCardAnimatingOut 
             ? 'opacity-0 scale-95 transform translate-y-2' 
             : 'opacity-100 scale-100 transform translate-y-0'
