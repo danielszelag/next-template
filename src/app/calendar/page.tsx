@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import PageLayout from '@/components/page-layout'
+import SuccessModal from '@/components/ui/success-modal'
 import type { Address } from '@/types/api'
 
 export default function CalendarPage() {
@@ -21,6 +22,8 @@ export default function CalendarPage() {
   const [submittingBooking, setSubmittingBooking] = useState(false)
   const [editId, setEditId] = useState<string | null>(null)
   const [isEditing, setIsEditing] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [successMessage, setSuccessMessage] = useState('')
 
   // Fetch addresses from API
   const fetchAddresses = async () => {
@@ -126,27 +129,17 @@ export default function CalendarPage() {
         const result = await response.json()
         console.log('Booking created:', result)
 
-        // Set appropriate toast message in sessionStorage so dashboard can show confirmation
-        try {
-          if (isEditing && editId) {
-            sessionStorage.setItem(
-              'toast_message',
-              'Rezerwacja została zmieniona'
-            )
-          } else {
-            sessionStorage.setItem(
-              'toast_message',
-              'Rezerwacja została utworzona'
-            )
-          }
-          sessionStorage.setItem('toast_type', 'success')
-        } catch {
-          // ignore sessionStorage errors
-        }
+        // Show success modal with appropriate message
+        const message = isEditing && editId 
+          ? 'Rezerwacja została zmieniona' 
+          : 'Rezerwacja została utworzona'
+        
+        setSuccessMessage(message)
+        setShowSuccessModal(true)
+        setSubmittingBooking(false)
 
         // Keep the loading state active during navigation to prevent flicker
         // Don't reset submittingBooking to false on success - let the component unmount
-        router.push('/dashboard')
         return // Exit early to prevent finally block from running
       } else {
         const error = await response.json()
@@ -159,6 +152,12 @@ export default function CalendarPage() {
       alert('Wystąpił błąd. Spróbuj ponownie.')
       setSubmittingBooking(false)
     }
+  }
+
+  // Handle modal close and navigation
+  const handleModalClose = () => {
+    setShowSuccessModal(false)
+    router.push('/dashboard')
   }
 
   const months = [
@@ -622,6 +621,13 @@ export default function CalendarPage() {
           </div>
         </div>
       </div>
+
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={showSuccessModal}
+        message={successMessage}
+        onClose={handleModalClose}
+      />
     </PageLayout>
   )
 }

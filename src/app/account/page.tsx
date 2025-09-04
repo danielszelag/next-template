@@ -476,7 +476,7 @@ export default function AccountPage() {
                 </svg>
               }
               rightContent={
-                <span className='text-xl font-bold text-gray-900 px-3 py-1 border border-gray-300 rounded-lg bg-gray-50 min-w-[120px] text-center'>
+                <span className='text-xl font-bold text-gray-900 px-3 border border-gray-300 rounded-lg bg-gray-50 min-w-[120px] text-center'>
                   1250,00 zł
                 </span>
               }
@@ -999,7 +999,7 @@ export default function AccountPage() {
           <div className='mt-4'>
             <a
               href='/dashboard'
-              className='w-full sm:w-1/2 px-6 py-4 border border-gray-200 bg-white text-gray-700 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all duration-300 text-center flex items-center justify-center'
+              className='w-full sm:w-1/2 px-6 py-3 border border-gray-200 bg-white text-gray-700 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all duration-300 text-center flex items-center justify-center'
             >
               <svg
                 className='w-5 h-5 mr-2'
