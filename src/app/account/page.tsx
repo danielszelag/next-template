@@ -701,7 +701,7 @@ export default function AccountPage() {
                               }
                               setIsEditingProfile(false)
                             }}
-                            className='flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-bold'
+                            className='bg-white flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-bold'
                           >
                             Anuluj
                           </button>
@@ -783,29 +783,27 @@ export default function AccountPage() {
                       }
                       className='bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
                     />
-                    <div className='flex space-x-3'>
-                      <input
-                        type='text'
-                        placeholder='00-123'
-                        value={formData.postalCode}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            postalCode: e.target.value,
-                          })
-                        }
-                        className='bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
-                      />
-                      <input
-                        type='text'
-                        placeholder='Warszawa'
-                        value={formData.city}
-                        onChange={(e) =>
-                          setFormData({ ...formData, city: e.target.value })
-                        }
-                        className='bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
-                      />
-                    </div>
+                    <input
+                      type='text'
+                      placeholder='00-123'
+                      value={formData.postalCode}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          postalCode: e.target.value,
+                        })
+                      }
+                      className='bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                    />
+                    <input
+                      type='text'
+                      placeholder='Warszawa'
+                      value={formData.city}
+                      onChange={(e) =>
+                        setFormData({ ...formData, city: e.target.value })
+                      }
+                      className='bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                    />
 
                     <div className='flex space-x-3'>
                       <button
